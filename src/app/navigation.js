@@ -20,15 +20,7 @@ function Navigation({pageList , setPageList}){
                             {
                                 props.match &&
                                 <div className='close' onClick={() => {
-                                    pageList.splice(index, 1);
-                                    var _item = pageList[index] || pageList[index - 1]
-                                    if (_item) {
-                                        props.history.push(_item.url);
-                                    }
-                                    else {
-                                        props.history.push('/');
-                                    }
-                                    setPageList(pageList);
+                                    event.emit('delete-page')
                                 }}>&#xe60c;</div>
                             }
                         </li>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import '../util/lib.js';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, useHistory } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import 'antd/dist/antd.css';
 import zhCN from 'antd/es/locale/zh_CN';
@@ -22,6 +22,7 @@ function App({ pageMap = {}, menuList = [], colStyleList=[] , topStyleList=[] , 
     let [mode ] = useState({});
     let [pageList, setPageList] = useState([]);
     let [isColMenu, setColMenu] = useState(localStorage[`/style/type`] != 'top')
+    let history = useHistory();
     useMemo(()=> {
         mode = Object.assign(mode, {
             col: {
@@ -64,10 +65,28 @@ function App({ pageMap = {}, menuList = [], colStyleList=[] , topStyleList=[] , 
             pageList.push(page);
             setPageList([...pageList]);
         });
+        event.on('delete-page' , () => {
+            var key = window.location.pathname.split('/').pop();
+            var active = -1;
+            pageList.map((item , index) => {
+                if(item.url.indexOf(key) > -1){
+                    active = index;
+                }
+            })
+            if(active > -1){
+                pageList.splice(active , 1);
+            }
+            var item = pageList[active] || pageList[active - 1]
+            if(item){
+                history.push(item.url);
+            }else{
+                history.push('/');
+            }
+            setPageList([...pageList]);
+        })
     } , [])
     return (
         <ConfigProvider locale={zhCN}>
-            <Router >
                 {
                     isColMenu && 
                     <div className='sub-content'>
@@ -89,13 +108,20 @@ function App({ pageMap = {}, menuList = [], colStyleList=[] , topStyleList=[] , 
                         <NavigationBody pageList={pageList} pageMap={pageMap} configList={configList} />
                     </div>
                 </div>
-            </Router>
         </ConfigProvider>
     )
 }
 
+function AppRouterWrap(props){
+    return (
+        <Router >
+            <App {...props} />
+        </Router>
+    )
+}
 
-export default App;
+
+export default AppRouterWrap;
 
 
 

@@ -54,6 +54,7 @@ function ResizeableTh(props){
                     <div className='content' >{item.title}</div>
                     <Resizable width={width} height={36} minConstraints={[80, 50]}
                         onResize={(event, { element, size, handle }) => {
+                            console.log('onResize', size.width);
                             setWidth(size.width);
                         }}
                         onResizeStop={(e, { size }) => {
@@ -88,7 +89,7 @@ function ResizeableDetail(props){
 }
 
 
-class BaseFlex extends React.Component{
+class ConfigCenter extends React.Component{
 
     constructor(props) {
         super(props);
@@ -131,6 +132,11 @@ class BaseFlex extends React.Component{
         if (!config) {
             throw new Error(`Config center can't find config for ${id}`);
         }
+        config.tableFieldList.map((item) => {
+            if(!item.width){
+                item.width = 80
+            }
+        })
         config.tableFieldListVersion = md5(JSON.stringify(config.tableFieldList));
         var storage = localStorage[id];
         if (storage) {
@@ -451,4 +457,4 @@ class BaseFlex extends React.Component{
     }
 }
 
-export default BaseFlex;
+export default ConfigCenter;

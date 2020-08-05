@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import App from '../app/app.js';
-import Test from '../page/test';
-import TestDetail from '../page/test-detail'
+import {App , ConfigCenter} from '../index/index';
+import Test from './test';
+import TestDetail from './test-detail'
 const pageMap = {
     'test': Test,
-    'test-detail': TestDetail
+    'test-detail': TestDetail ,
+    'config-center' : ConfigCenter
 }
 
 const user = {

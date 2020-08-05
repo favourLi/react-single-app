@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import './menu.less';
 
@@ -28,7 +28,6 @@ function setChecked(item , location){
 
 function Menu({menuList:list , type}){
     let [isFull, setFull] = useState(localStorage[`/style/menu/isFull`] == 'true');
-    
     let [refresh, setRefresh] = useState(0);
     localStorage[`/style/menu/isFull`] = isFull;
     return (
@@ -57,18 +56,24 @@ function Menu({menuList:list , type}){
                                     {
                                         item.list && item.list.length > 0 ? mainTitle : lib.getLink(item.url, mainTitle)
                                     }
-                                    <div className='sub-box'>
+                                    <div className='sub-box' onClick={(e) => { e.stopPropagation()}}>
                                         <div className='sub-list'>
                                             {item.list && item.list.length > 0 ? item.list.map((sub, key) =>
-                                                <div className={sub.checked && isFull ? 'sub-title checked' : 'sub-title'} key={key}>
-                                                    {sub.title}
-                                                </div>
-                                            )
+                                                <Fragment key={key}>
+                                                {lib.getLink(sub.url , 
+                                                    <div className={sub.checked && isFull ? 'sub-title checked' : 'sub-title'} >
+                                                        {sub.title}
+                                                    </div>    
+                                                )}
+                                                </Fragment>
+                                                )
                                                 :
                                                 !isFull && type == 'sub-menu' &&
-                                                <div className={item.checked  ? 'sub-title checked' : 'sub-title'} >
-                                                    {item.title}
-                                                </div>
+                                                lib.getLink(item.url , 
+                                                    <div className={item.checked ? 'sub-title checked' : 'sub-title'} >
+                                                        {item.title}
+                                                    </div>
+                                                )
                                             }
                                         </div>
                                     </div>
