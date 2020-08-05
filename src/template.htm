@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="https://dante-img.oss-cn-hangzhou.aliyuncs.com/7411123616.png" />
+    
+</head>
+<body>
+    <style id='dynamic-css'></style>
+    <div id="root"></div>
+    <script type="text/javascript" src='//dante-img.oss-cn-hangzhou.aliyuncs.com/30461944621.js'></script>
+    <script type="text/javascript" src='http://maria.yang800.com/api/data/36?type=js&name=json_data'></script>
+    <script type='text/javascript' src='http://maria.yang800.com/api/data/37?type=js&name=menu_data'></script>
+    <script type='text/javascript' src='http://maria.yang800.com/api/data/39?type=js&name=mode_list'></script>
+    
+    <% name=htmlWebpackPlugin.options.filename.split(".")[0]  %>
+    <script type="text/javascript" src="/<%=htmlWebpackPlugin.files.chunks[name].entry %>"></script>
+</body>
+</html>

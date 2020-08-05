@@ -1,0 +1,82 @@
+import React, { Fragment, useMemo } from 'react';
+import './app.js';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import 'antd/dist/antd.css';
+import './navigation.less';
+
+
+function Navigation({pageList , setPageList}){
+    
+    return (
+        <ul className='navigation'>
+            {
+                pageList.map((item, index) =>
+                    <Route key={index} path={item.url.split('?')[0]} children={(props) =>
+                        <li title={lib.getParam('page_title' , item.url)} 
+                            className={(props.match ? 'active ' : '') }>
+                            <Link to={item.url}>
+                                {lib.getParam('page_title', item.url)}
+                            </Link>
+                            {
+                                props.match &&
+                                <div className='close' onClick={() => {
+                                    pageList.splice(index, 1);
+                                    var _item = pageList[index] || pageList[index - 1]
+                                    if (_item) {
+                                        props.history.push(_item.url);
+                                    }
+                                    else {
+                                        props.history.push('/');
+                                    }
+                                    setPageList(pageList);
+                                }}>&#xe60c;</div>
+                            }
+                        </li>
+                    } />
+
+                )
+            }
+        </ul>
+    )
+}
+
+//useMemo
+
+function MemoPage({ match, Page, name, configList}){
+    let memoPage = useMemo(() => <Page name={name} configList={configList} />  , []);
+    return (
+        <div style={{ display: match ? 'block' : 'none' }} className='main-page'>
+            {memoPage}
+        </div>
+    )
+}
+
+
+function NavigationBody({pageList , pageMap , configList}){
+
+    return (
+        <Fragment>
+            {
+                pageList.map((item) => {
+                    var names = item.url.split('/');
+                    var name = names[0] || names[1];
+                    var Page = pageMap[name];
+                    var path = item.url.split('?')[0];
+                    if (!Page){
+                        console.error(`can't find page for name ${name}`)
+                        return (<div></div>)
+                    }
+                    return (
+                        <Route key={path} path={path} children={(props) => 
+                            <MemoPage match={props.match} Page={Page} name={name} configList={configList} />
+                        }/>
+                    )
+                })
+            }
+        </Fragment>
+    )
+}
+
+
+
+export {Navigation , NavigationBody};

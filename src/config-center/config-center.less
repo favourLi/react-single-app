@@ -1,0 +1,169 @@
+.config-center{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    height: 100%;
+
+    .operation-panel{
+        height: 60px;
+        padding:12px 24px 0;
+        margin-top:-6px;
+        display: flex;
+        .operation-left-panel{
+            flex-grow : 1;
+        }
+        .btn-group{
+            margin-left: 8px;;
+        }
+        .btn{
+            font-family: 'iconfont';
+        }
+    }
+    .table-panel{
+        overflow: scroll;
+        flex-grow : 1;
+        z-index: 100;
+        .thead{
+            position: sticky;
+            top : 0;
+            z-index:10;
+        }
+        table{
+            width: 100%;
+            word-break:break-all; 
+            word-wrap:break-all;
+            margin:0;
+            table-layout: fixed;
+            box-sizing: border-box;
+            .batch{
+                padding-left: 16px;
+            }
+            tr:nth-child(even){
+                td{
+                    background:#FAFAFA;
+                }
+            }
+            tr:hover{
+                td{
+                    background:#f0f0f0;
+                }
+            }
+            th{
+                background:#FAFAFA;
+                border:none;
+                text-align: left;
+                padding:0 10px;
+                position: relative;
+                .content{
+                    position: relative;
+                    z-index:21;
+                    user-select: none;
+                    line-height: 36px;
+                    height: 36px;
+                    overflow: hidden;
+                }
+                .react-resizable {
+                    background-clip: padding-box;
+                    position: absolute;
+                    left:0;
+                    top:0;
+                    bottom:0;
+                    border-right: solid 1px #ddd;
+                    .react-resizable-handle {
+                        position: absolute;
+                        width: 20px;
+                        height: 100%;
+                        bottom: 0;
+                        right: -10px;
+                        cursor: col-resize;
+                        z-index: 21;
+                        
+                    }
+                }
+            }
+            th:last-child{
+                overflow: hidden;
+            }
+            td{
+                word-break: no-break;
+                overflow: hidden;
+                white-space: nowrap;
+                box-sizing: border-box;
+                line-height: 36px;
+                text-overflow: ellipsis;
+                border-bottom:solid 1px #f0f0f0;
+                text-align: left;
+                color:#555;
+                padding:0 10px;
+                background:#fff;
+            }
+            th.sticky-left{
+                box-shadow: none;
+            }
+            .sticky-left , .sticky-right{
+                position: sticky;
+                z-index:3;
+                box-shadow:rgba(0, 21, 41, 0.1) 7px 8px 12px 0px
+            }
+            .sticky-right{
+                box-shadow:rgba(0, 21, 41, 0.1) -7px 8px 12px 0px
+            }
+        }
+    }
+    .pagination-panel{
+        height: 50px;
+        position: relative;
+        z-index: 100;
+        text-align: center;
+        background:#fff;
+        padding:10px;
+        border-top:solid 1px #E8E8E8;
+    }
+    .detail-panel{
+        height: 200px;
+        position: relative;
+        z-index:200;
+        .handle{
+            height: 1px;
+            cursor: row-resize;
+            padding:5px 0;
+            &:after{
+                content:'';
+                display: block;
+                background:#ccc;
+                height: 1px;
+            }
+        }
+        .close{
+            position: absolute;
+            right: 0;
+            top: 5px;
+            height: 50px;
+            line-height: 50px;
+            width: 50px;
+            text-align: center;
+            z-index: 10;
+            font-family: 'iconfont';
+            font-size: 30px;
+            cursor: pointer;
+            color:#666;
+            &:hover{
+                color:#333;
+            }
+        }
+        .detail-content{
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top:11px;
+            bottom:0;
+            overflow: scroll;
+        }
+    }
+
+}
+
+
+
+
+ 

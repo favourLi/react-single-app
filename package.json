@@ -1,0 +1,49 @@
+{
+  "name": "react-single-app",
+  "version": "0.9.0",
+  "main": "build/index.js",
+  "description": "",
+  "dependencies": {
+    "antd": "^4.5.1",
+    "axios": "^0.19.2",
+    "babel-plugin-import": "^1.13.0",
+    "lodash": "^4.17.11",
+    "md5": "^2.2.1",
+    "qs": "^6.9.4",
+    "react-cookies": "^0.1.1",
+    "react-datepicker": "^2.12.1",
+    "react-draggable": "^4.4.3",
+    "react-resizable": "^1.10.1",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.0.1",
+    "react-sortable-hoc": "^1.11.0",
+    "webpack": "^4.29.6"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "clean-webpack-plugin": "^2.0.1",
+    "css-loader": "^2.1.1",
+    "html-webpack-plugin": "^3.2.0",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "style-loader": "^0.23.1",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.2.1",
+    "webpack-merge": "^4.2.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --watch --config webpack.dev.js",
+    "build": "webpack --config webpack.product.js",
+    "start": "webpack-dev-server --open --config webpack.dev.js --host 0.0.0.0 --disableHostCheck=true",
+    "dev": "webpack-dev-server --config webpack.dev.js --host 0.0.0.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
