@@ -544,3 +544,65 @@ emit : function(name , entry , once)
 ## ConfigCenter
 ![](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0c164abe28e94911895e329d0cca2ad6~tplv-k3u1fbpfcp-zoom-1.image)
 
+### 配置中心字段解析
+1. 应用的所有config通过configList 参数传给App，每个配置页的配置，会通过该页的url中的config_id 在configList中查找。
+
+2. config配置的结构如下
+```
+	config={searchKeyList , request , other ,  tableFieldList , needBatchOperation}
+```
+
+3. `searchKeyList<Search>` 为搜索条件列表。Search属性如表所示
+
+| filed | type | description |
+| - | -| - |
+| label | 标签 | 用于展示 |
+| key | key | 用于搜索，传给服务端的key值 |
+| type | 展示给用户的组件类型 | 类型包含 文本、选择框 、 选择框-JSON数据来源 、 选择框-搜索 、 选择框-多选 、 选择框-级联 、日期 、 文本域 | 
+| extra | 补充字段 | 文本、文本域，该字段用于placeholder， 选择框、级联字段用于选择框、级联的接口地址 请参考[接口规范](https://juejin.im/post/6857440384878116872)|
+
+4. `request` 用于设置列表类页列，请求数据的接口，由于采用网关后，method统一为POST，后期考虑将request改为string类型
+
+5. `other` 用于配置导入、导出、同步等接口
+
+| key | filed | description | 
+| - | - | - | 
+| sync | 同步接口、取值true , false | 同步接口使用`request`请求接口一样的url 后面加上 /sync 请参考[接口规范](https://juejin.im/post/6857440384878116872)|
+| export | 导出接口、取值true , false | 导出接口使用 `request`请求接口一样的搜索条件，？？？翻页参数需要传吗。 url 后面加上/download 请参考[接口规范](https://juejin.im/post/6857440384878116872)|
+| import | 导入接口、取值true ，false | 导出接口使用 `request`请求url后面加上 /import ,参数为file=url。（由于网关不支持formdata请求，由前端先将文件上传到oss ，然后再给服务端地址）请参考[接口规范](https://juejin.im/post/6857440384878116872)|
+| importTemplate | 导入模板下载 | 模块只需要放到maria中的相册中。提供链接即可 |
+
+6. `tableFieldList<TableField>` 表格字段TableField属性如下
+
+| key | filed | description | 
+| - | - | - |
+| title | 列标题 | |
+| key | 列关键字，用于这一列数据的显示 | 根据type的不同，显示方式不同。type=text,这一列直接从dataList中取值。 type=js，从dataList中取值，并进行简单的脚本运算。type=function 。这一列的数据来源于代码。key表示继承后的function name。会被配置中心调用|
+| type | 列类型(text/js/function) | 配合key 渲染该列的数据 |
+| width | 列宽度 | 默认的列宽度，用户可自行设置|
+| display | 显示类弄 | auto:显示、hide:隐藏、sticky-left:固定左侧、sticky-right:固定右侧 ,用户可自行设置|
+
+7. `needBatchOperation` 是否支持仳量操作。如果支持批量操作，则dataList中，每一行数据有一个属性 checked=true表示选中。
+
+### 配置中心生命周期
+
+配置中心，abstruct方法
+1. renderModal:渲染自定义弹层。
+2. renderLeftOperation：渲染批量操作按钮
+3. renderRightOperation：渲染其它操作按钮，比如新建按钮
+4. renderDetail(data)：渲染底部浮层，注意，其中data，由业务生命周期 setDetailData(data)传入。在需要渲梁底部浮层的地方，调用setDetailData，传入data即可。
+5. 表格字段type=function，指定的key值的函数名。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
