@@ -1,8 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import ConfigCenter from '../config-center/config-center.js';
 import './test.less';
 import {  Button, Modal } from 'antd';
-
+import {lib , ConfigCenter} from  '../index'
 
 
 class Test extends ConfigCenter {

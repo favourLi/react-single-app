@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import '../util/lib.js';
 import { BrowserRouter as Router, useHistory } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
-import 'antd/dist/antd.css';
 import zhCN from 'antd/es/locale/zh_CN';
 import Menu from './menu';
 import {User , SystemSet} from './header';
 import {Navigation , NavigationBody} from './navigation';
 import './app.less';
+import {event} from '../index'
 /**
  * 
  * @param {menuList} props 菜单列表

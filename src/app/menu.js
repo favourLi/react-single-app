@@ -1,6 +1,7 @@
 import React, { useState, Fragment } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import {  Route } from 'react-router-dom';
 import './menu.less';
+import { lib } from '../index'
 
 function isChecked(url , location){
     let configId = lib.getParam('config_id' , location.search);

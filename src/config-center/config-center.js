@@ -1,14 +1,12 @@
 import React, { Fragment, useState } from 'react';
-import { Pagination, Select, DatePicker, Input, Button, Modal , Checkbox } from 'antd';
-const { Option } = Select;
-const { RangePicker } = DatePicker;
+import { Pagination , Checkbox } from 'antd';
 import { Resizable } from 'react-resizable';
 import './config-center.less';
 import SetUp from './set-up';
 import SearchConditionList from './search-condition-list';
 import md5 from 'md5';
 import Draggable from 'react-draggable'
-
+import { lib } from '../index'
 
 
 
@@ -213,14 +211,14 @@ class ConfigCenter extends React.Component{
         let list = tableFieldList.filter((item) => item.display == 'auto');
         let rightList = tableFieldList.filter((item) => item.display == 'sticky-right');
         
-        let [left, right] = [config.needBatchOperation == 'true' ? 50 : 0 , 0];
+        let [left, right] = [config.needBatchOperation  ? 50 : 0 , 0];
         leftList.map((item) => {item.left = left ; item.right = 'auto' ; left += item.width});
         rightList.reverse().map((item) => {item.right = right ; item.left='auto' ; right += item.width});
         rightList.reverse();
         tableFieldList = [...leftList , ...list , ...rightList];
         if(this.tablePanel){
             let width = this.tablePanel.offsetWidth - (navigator.platform.toLocaleLowerCase().indexOf('mac') > -1 ? 0 : 18);
-            if(config.needBatchOperation == 'true'){
+            if(config.needBatchOperation ){
                 width -= 50;
             }
             let tableWidth = 0;
@@ -235,7 +233,7 @@ class ConfigCenter extends React.Component{
                 tableStyle = 'sticky';
             }
         }
-        if (config.needBatchOperation == 'true') {
+        if (config.needBatchOperation ) {
             tableFieldList = [{
                 id: 1,
                 type: 'batch',
@@ -375,17 +373,17 @@ class ConfigCenter extends React.Component{
                 </div>
                 <div className='btn-group'>
                     {   
-                        other.import == 'true' && 
+                        other.import  && 
                         <Fragment>
                             <button className='btn'>导入模板下载 &#xe639;</button>
                             <button className='btn'>导入 &#xe639;</button>
                         </Fragment>
                     }
                     {
-                        other.export == 'true' && <button className='btn'>导出 &#xe638;</button>
+                        other.export  && <button className='btn'>导出 &#xe638;</button>
                     }
                     {
-                        other.sync == 'true' && <button className='btn'>同步 &#xe6de;</button>
+                        other.sync  && <button className='btn'>同步 &#xe6de;</button>
                     }
                 </div>
                 

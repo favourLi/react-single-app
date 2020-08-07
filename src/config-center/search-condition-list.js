@@ -3,6 +3,7 @@ import { Select, DatePicker, Button, Cascader } from 'antd';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 import './search-condition-list.less'
+import { lib } from '../index'
 
 function Text({item}){
     let [refresh, setRefresh] = useState(0);

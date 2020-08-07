@@ -1,9 +1,7 @@
 import React, { Fragment, useMemo } from 'react';
-import './app.js';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
-import 'antd/dist/antd.css';
+import { Route, Link } from 'react-router-dom';
 import './navigation.less';
-
+import {lib , event , App , ConfigCenter} from '../index'
 
 function Navigation({pageList , setPageList}){
     

@@ -3,7 +3,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports = {
     mode: 'production',
     entry: {
-        'index': './src/index/index',
+        'index': './src/index',
     },
     plugins: [
         new CleanWebpackPlugin()
@@ -45,6 +45,12 @@ module.exports = {
                 commonjs2: 'react-dom',
                 commonjs: 'react-dom',
                 amd: 'react-dom'
+            },
+            'antd' : {
+                root: 'antd',
+                commonjs2: 'antd',
+                commonjs: 'antd',
+                amd: 'antd'
             }
         }
     ]

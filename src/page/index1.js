@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {App , ConfigCenter} from '../index/index';
+import {App , ConfigCenter} from '../index';
 import Test from './test';
 import TestDetail from './test-detail'
+import 'antd/dist/antd.css';
 const pageMap = {
-    'test': Test,
-    'test-detail': TestDetail ,
+    'warehouse': Test,
+    'warehouse-detail': TestDetail ,
     'config-center' : ConfigCenter
 }
 

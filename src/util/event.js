@@ -1,4 +1,4 @@
-window.event = {
+var event = {
 	on : function(name , fn){
 		!this.map[name] && (this.map[name] = []);
 		this.map[name].push(fn);
@@ -26,3 +26,5 @@ window.event = {
 	map : {
 	}
 }
+
+export default event;
