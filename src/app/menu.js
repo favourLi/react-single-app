@@ -9,7 +9,7 @@ function isChecked(url , location){
         return url.indexOf(`config_id=${configId}`) > -1;
     }
     let pathname = location.pathname.split('/')[1];
-    return url.indexOf(`/${pathname}/`) > -1 || url.indexOf('/${pathname}?') > -1;
+    return url.indexOf(`/${pathname}/`) > -1 || url.indexOf(`/${pathname}?`) > -1;
 }
 
 function setChecked(item , location){

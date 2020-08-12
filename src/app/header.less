@@ -25,8 +25,14 @@
             cursor: pointer;
             min-width: 10px;
             height: 56px;
+            &.alone{
+                padding-right: 10px;
+                &:after{
+                    display: none;
+                }
+            }
             &:after{
-                font-family: 'iconfont';
+                font-family: 'react-single-app-iconfont';
                 content:'\e6c7';
                 font-size: 14px;
                 text-align: center;
@@ -51,7 +57,7 @@
                     display: none;
                     user-select:none;
                     &:before{
-                        font-family: 'iconfont';
+                        font-family: 'react-single-app-iconfont';
                         content: '\eb90';
                         color: #fff;
                         position: absolute;
@@ -70,7 +76,7 @@
                         padding-left: 16px;
                         span{
                             display: inline-block;
-                            font-family: 'iconfont';
+                            font-family: 'react-single-app-iconfont';
                             font-size: 16px;
                             margin-right: 16px;
                         }
@@ -166,7 +172,7 @@
                 bottom:7px;
                 text-align: center;
                 // background:rgba(0 , 0 , 0 , 0.1);
-                font-family: 'iconfont';
+                font-family: 'react-single-app-iconfont';
                 line-height: 45px;
                 font-weight: bold;
             }

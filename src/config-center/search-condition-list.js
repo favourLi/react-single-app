@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Select, DatePicker, Button, Cascader } from 'antd';
+import {Input, Select, DatePicker, Button, Cascader } from 'antd';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 import './search-condition-list.less'
@@ -10,7 +10,7 @@ function Text({item}){
     return (
         <div className='group' >
             <label>{item.label}</label>
-            <input className='form-control'
+            <Input 
                 value={item.value || ''}
                 style={{ width: 260 }}
                 onChange={ e => {
@@ -192,15 +192,9 @@ function SearchConditionList({ searchKeyList, other , onSearch , onReset}){
     function initSelect(node) {
         lib.request({
             url: node.extra,
-            method: 'GET',
             needMask: false,
-            useCache: true,
-            success: (json) => {
-                json.data.map((item) => {
-                    item.id = item.id || item.value || item.code;
-                    item.name = item.name || item.desc;
-                });
-                node.list = json.data;
+            success: (data) => {
+                node.list = data;
                 setRefresh(++refresh);
             }
         })
@@ -237,8 +231,8 @@ function SearchConditionList({ searchKeyList, other , onSearch , onReset}){
     } , [])
     var map = {
         'text' : Text , 
-        'select' : SelectControl , 
-        'json-select': SelectControl ,
+        'select': SearchSelect , 
+        'json-select': SearchSelect ,
         'search-select': SearchSelect ,
         'multi-select' : MultiSelect ,
         'date': DateControl ,

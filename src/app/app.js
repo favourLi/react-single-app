@@ -100,9 +100,13 @@ function App({ pageMap = {}, menuList = [], colStyleList=[] , topStyleList=[] , 
                             <SystemSet  mode={mode} setColMenu={setColMenu} />
                         </div>
                     </div>
-                    <div>
-                        <Navigation pageList={pageList} setPageList={setPageList} />
-                    </div>
+                    {
+                        pageList.length > 0 && 
+                        <div>
+                            <Navigation pageList={pageList} />
+                        </div>
+                    }
+                    
                     <div className='main'>
                         <NavigationBody pageList={pageList} pageMap={pageMap} configList={configList} />
                     </div>

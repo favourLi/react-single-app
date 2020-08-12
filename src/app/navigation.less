@@ -8,6 +8,8 @@
         border-bottom:solid 1px #D9D9D9;
         z-index:19;
         margin-bottom: 0;
+        display:flex;
+        flex-wrap: nowrap;
         li{
             display: inline-block;
             list-style: none;
@@ -19,12 +21,13 @@
             overflow: hidden;
             overflow: hidden;
             box-sizing:border-box;
+            flex-grow:1;
+            max-width: 200px;
             a{
                 color:#777;
                 line-height: 36px;
                 display: block;
-                word-break: keep-all;
-                margin:0 10px;
+                text-align: center;
             }
             a:hover{
                 color:#666;
@@ -33,12 +36,12 @@
                 background: #fff;
                 a{
                     color:#333;
-                    margin:0 22px 0 10px;
+                    margin-right: 22px;
                 }
             }
 
             .close{
-                font-family: 'iconfont';
+                font-family: 'react-single-app-iconfont';
                 position:absolute;
                 color:#999;
                 right: 0;

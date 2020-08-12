@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { Modal } from 'antd';
 import axios from 'axios';
 import qs from 'qs';
-import {event} from '../index'
-
+import {event} from '../index';
+import md5 from 'md5';
 
 /**
     yyyy-MM-dd : 年月日
@@ -29,6 +29,12 @@ Date.prototype.format = function (fmt) { //author: meizz
         }
     }
     return fmt;
+}
+
+let config = {
+    hostPrefixMap: {
+        '*': 'http://danding-gateway-test.yang800.com/'
+    }
 }
 
 
@@ -134,45 +140,49 @@ var lib = {
         字段名         类型       是否必填      说明
         url           string      是         访问的URL
         data          json        否         请求的数据
-        method        string      否         get post
         success       function    是         请求成功回调函数
-        isAplicationJSON request数据类型   否   true表示aplicationJSON false表示formdata
         fail          function    否         失败回调函数
         needMask      boolean     否         是否需要遮照，默认为true
-        timeout       int         否         超时时间，毫秒，默认为5000
     **/
-    async request({ url, method = 'GET', needMask = false, data = {}, isAplicationJSON = false, success = function () { }, fail = function () { } } = {}) {
-        // url = url.indexOf('http:') > -1 ? url : 'http://127.0.0.1:8080' + url;
-        url = url.indexOf('http:') > -1 ? url : 'http://npc.daily.yang800.com/backend/' + url;
+    request({ url, needMask = 'false', data = {}, success = function () { }, fail = function () { } }) {
+        let { clientId, clientSecret, hostPrefixMap } = config;
+        let prefixUrl = hostPrefixMap[window.location.hostname] || hostPrefixMap['*'];
+        if (!clientId || !clientSecret) {
+            return console.error('please set the clientId and clientSecret by use the function lib.setConfig(config)')
+        }
+        if (!prefixUrl) {
+            return console.error(`can not find the prefixUrl by the ${window.location.hostname} , please set the hostPrefixMap by use the function lib.setConfig(config)`)
+        }
+        var timestamp = new Date().getTime()
+        var md5Data = md5(JSON.stringify(data)).toUpperCase();
+        var sign = md5(`clientId${clientId}data${md5Data}path${url}timestamp${timestamp}version${'1.0.0'}${clientSecret}`).toUpperCase();
         needMask && lib.wait();
-        var start = new Date().getTime();
-
-        try {
-            var params = method.toLocaleLowerCase() == 'get' ? data : {};
-            let headers = {}
-            if (!isAplicationJSON) {
-                headers = { 'content-type': 'application/x-www-form-urlencoded' }
-                data = qs.stringify(data)
+        var maskTime = new Date().getTime();
+        axios.request({
+            url: `${prefixUrl}${url}`,
+            method: 'POST',
+            data: data,
+            headers: {
+                timestamp: timestamp,
+                clientId: clientId,
+                sign: sign
+            }, withCredentials: true,
+            crossDomain: true,
+        }).then(function ({ data: json }) {
+            let { code, data, message } = json;
+            if (code == 200) {
+                success(data);
+            } else if (code == -1001) {
+                alert('跳转登陆');
+            } else if (code == -1002) {
+                alert('跳转权限页');
+            } else if (code < 0) {
+                alert(message);
+            } else {
+                fail(code, message);
             }
-            let res = await axios.request({ url, method, headers, withCredentials: true, params, data, timeout: 30000 });
-            let json = res.data;
-            if (json.code == 0) {
-                json.data = json.data || json.result;
-                success(json);
-            }
-            else if (json.code == -1001) {
-                window.location = 'http://npc.daily.yang800.com/login'
-            }
-            else if (json.code < -1) {
-                Modal.error({ content: json.errorMessage });
-            }
-            else {
-
-            }
-        }
-        finally {
-            needMask && setTimeout(lib.waitEnd, 500 - new Date().getTime() + start);
-        }
+            needMask && setTimeout(lib.waitEnd, 500 - new Date().getTime() + maskTime);
+        });
     },
     wait(time) {
         var html = `
@@ -188,6 +198,10 @@ var lib = {
     },
     waitEnd() {
         $('#wait').remove();
+    },
+
+    setConfig(_config) {
+        Object.assign(config, _config);
     }
 }
 

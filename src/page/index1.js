@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {App , ConfigCenter} from '../index';
+import { App, ConfigCenter, Uploader , lib} from '../index';
 import Test from './test';
 import TestDetail from './test-detail'
 import 'antd/dist/antd.css';
+import Doc from './doc';
+import UserCenter from './user-center';
+
 const pageMap = {
     'warehouse': Test,
     'warehouse-detail': TestDetail ,
-    'config-center' : ConfigCenter
+    'config-center' : ConfigCenter ,
+    'doc' : Doc , 
+    'user-center' : UserCenter
 }
 
 const user = {
@@ -16,20 +21,19 @@ const user = {
     systemList : [{
         name : 'OMS 小二后台',
         url : ''
-    }, {
-        name: 'CCS 云仓平台',
-        url: ''
-    }, {
-        name: 'EIMS 物流平台',
-        url: ''
-    }, {
-        name: '供俏平台',
-        url: ''
     }],
     logout:() => {
         alert('退出系统方法')
     }
 }
+
+lib.setConfig({
+    clientId: '74EDE65E37AB4C549E79F1B0AC540AB8' , 
+    clientSecret: '038D453DCA1A467293058BBCC31169BC',
+    hostPrefixMap : {
+        '*': 'http://danding-gateway-test.yang800.com'
+    }
+})
 
 
 

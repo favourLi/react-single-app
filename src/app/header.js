@@ -80,18 +80,26 @@ function User({user}){
 
     return (
         <div className='user'>
-            <div className='system'>
-                {user.systemList[user.activeSystem].name}
-                <div className='header-tip'>
-                    <div className='list'>
-                        {
-                            user.systemList.map((system , index) => 
-                                user.activeSystem != index && <div key={index} onClick={() => window.location = system.url}>{system.name}</div>
-                            )
-                        }
-                    </div> 
+            {
+                user.systemList && user.systemList.length && 
+                <div className={`system ${user.systemList.length == 1 ? 'alone' : ''}`}>
+                    {user.systemList[user.activeSystem].name}
+                    {
+                        user.systemList.length > 1 && 
+                        <div className='header-tip'>
+                            <div className='list'>
+                                {
+                                    user.systemList.map((system, index) =>
+                                        user.activeSystem != index && <div key={index} onClick={() => window.location = system.url}>{system.name}</div>
+                                    )
+                                }
+                            </div>
+                        </div>
+                    }
+                    
                 </div>
-            </div>
+            }
+            
             <div className='name'>
                 {user.name}
                 <div className='header-tip'>

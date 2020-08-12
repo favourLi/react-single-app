@@ -167,14 +167,13 @@ class ConfigCenter extends React.Component{
         }
         Object.assign(data, pagination, searchConditions);
         lib.request({
-            url: this.state.config.request.url,
-            method: this.state.config.request.method,
+            url: this.state.config.requestUrl,
             data: data,
             needMask: needMask,
-            success: (json) => {
+            success: (data) => {
                 this.setState({
-                    pagination: json.data.page,
-                    dataList: json.data.dataList || []
+                    pagination: data.page,
+                    dataList: data.dataList || []
                 })
             }
         })
