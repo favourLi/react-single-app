@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git@code.aliyun.com:wenzhenghaha/react-single-app.git"
   },
-  "dependencies": {
+  "dependencies": { 
     "webpack": "^4.29.6"
   },
   "devDependencies": {
