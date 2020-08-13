@@ -12,7 +12,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: '首页',
             filename: 'index.htm',
-            template: './src/template.htm',
+            template: './test/template.htm',
             inject: false,
             hash: true,
         })

@@ -1,5 +1,5 @@
 ## 引子
-react-single-app 主要功能，分为四大块 `App` `ConfigCenter` `lib` `event`
+react-single-app 主要功能，分为五大块 `App` `ConfigCenter` `Uploader` `lib` `event` 
 
 ![](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/861dab6f026d46658dd68523c1ab5492~tplv-k3u1fbpfcp-zoom-1.image)
 
@@ -7,6 +7,8 @@ react-single-app 主要功能，分为四大块 `App` `ConfigCenter` `lib` `even
 ![](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ef48ab8b0d234ef28fafe01e70fc58f1~tplv-k3u1fbpfcp-zoom-1.image)
 
 * `ConfigCenter` 提供一个通过配置来快速搭建查询类页面。
+
+* `Uploader` 一个上传图片的控件
 
 * `lib` 通用函数。主要包括链接封装、对多标签的操作、request请求封装
 
@@ -240,8 +242,18 @@ emit : function(name , entry , once)
 4. renderDetail(data)：渲染底部浮层，注意，其中data，由业务生命周期 setDetailData(data)传入。在需要渲梁底部浮层的地方，调用setDetailData，传入data即可。
 5. 表格字段type=function，指定的key值的函数名。
 
+## Uploader
 
-
+```
+/**
+ * @param {style{width , height , ...}} 样式，一般指定width , height 
+ * @param {src} 默认图片URL
+ * @param {allowTypes[]} 允许的图片类型，数组。默认不限制
+ * @param {onUploadStart} 开始上传回调
+ * @param {onUploadEnd(src)} 结束上传回调
+ * @param {onRemove} 删除图片回调
+ */
+```
 
 
 
