@@ -325,7 +325,7 @@ class ConfigCenter extends React.Component{
                                                     try {
                                                         html = eval(item.key)
                                                     } catch (e) {
-                                                        console.error(e)
+                                                        console.error(new Error(`error expression ${item.key}`) );
                                                     }
                                                     return (
                                                         <td key={i} className={cls} style={style} dangerouslySetInnerHTML={{ __html: html }}>
@@ -335,7 +335,12 @@ class ConfigCenter extends React.Component{
                                                 else if (item.type == 'function') {
                                                     var html = '';
                                                     try {
-                                                        html = this[item.key](row)
+                                                        if (typeof this[item.key] != 'function'){
+                                                            console.error( new Error(`can not find the function ${item.key}`));
+                                                        }else{
+                                                            html = this[item.key](row)
+                                                        }
+
                                                     } catch (e) {
                                                         console.error(e)
                                                     }
@@ -370,7 +375,7 @@ class ConfigCenter extends React.Component{
                 <div style={{ marginLeft: '15px' }}>
                     {this.renderRightOperation && this.renderRightOperation()}
                 </div>
-                <div className='btn-group'>
+                {/* <div className='btn-group'>
                     {   
                         other.import  && 
                         <Fragment>
@@ -384,7 +389,7 @@ class ConfigCenter extends React.Component{
                     {
                         other.sync  && <button className='btn'>同步 &#xe6de;</button>
                     }
-                </div>
+                </div> */}
                 
                 <SetUp {...this.state.config} save={(tableFieldList) => {
                     let config = this.state.config;

@@ -6,6 +6,7 @@
     display: inline-block;
     position: relative;
     cursor: pointer;
+    overflow: hidden;
     &:after{
         font-family: 'react-single-app-iconfont';
         display: block;
@@ -26,11 +27,9 @@
         right: 0;
         top:0;
         bottom:0;
-        &.uploading{
-            &:before{
-
-            }
-        }
+        background: no-repeat center center #fff;
+        background-size: contain;
+        z-index: 5;
     }
     .loading{
         position: absolute;
@@ -46,5 +45,47 @@
             height: 100%;
         }
     }
-
+    .delete{
+        font-family: 'react-single-app-iconfont';
+        position: absolute;
+        right: 0;
+        top:0;
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+        text-align: center;
+        z-index: 21;
+        font-size: 16px;
+        color:#999;
+        display: none;
+        &:hover{
+            color:#333;
+        }
+    }
+    &.start{
+        .preview , .loading{
+            display: none;
+        }
+    }
+    &.end{
+        .loading{
+            display: none;
+        }
+    }
+    &.end:hover{
+        .delete{
+            display: block;
+        }
+    }
+    input[type='file']{
+        display: block;
+        position: absolute;
+        z-index:20;
+        left: 0;
+        right: 0;
+        top:0;
+        bottom:0;
+        opacity: 0;
+        cursor: pointer;
+    }
 }

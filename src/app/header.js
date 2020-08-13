@@ -7,8 +7,6 @@ import { createMenuStyle, createTopStyle } from './create-style';
 
 
 function SystemSet({mode , setColMenu}){
-
-
     let [visible , setVisible] = useState(false);
     let [refresh , setRefresh] = useState(0);
     let {col , top , type} = mode;
@@ -26,7 +24,7 @@ function SystemSet({mode , setColMenu}){
     }
     set();
     return (
-        <div className='system-set'>
+        <div className='system-set' >
             <div className='set' onClick={() => setVisible(true)}>&#xe91e;</div>
             <Drawer
                 placement="right"
@@ -35,11 +33,11 @@ function SystemSet({mode , setColMenu}){
                 visible={visible}
                 closable
                 className='system-set'
-                style={{top : 56}}
+                style={{top : 56 , width : 370}}
                 mask={false}
             >
-                <div className='system-set'>
-                    <h3>导航模式</h3>
+                <div className='system-set' style={{ marginTop: '-32px' }}>
+                    <h3>导航方式</h3>
                     <ul className='mode'>
                         <li className={type == 'col' ? 'checked' : ''} onClick={() => {
                             mode.type = 'col';
@@ -47,24 +45,28 @@ function SystemSet({mode , setColMenu}){
                             lib.wait(500);
                         }}>
                             <img src={mode.col.thumb} />
+                            侧边导航
                         </li>
                         <li className={type == 'top' ? 'checked' : ''} onClick={() => {
                             mode.type = 'top';
                             setColMenu(false);
                             lib.wait(500);
                         }}>
-                            <img src={mode.col.thumb} />
+                            <img src={mode.top.thumb} />
+                            顶部导航
                         </li>
                     </ul>
-                    <h3>风格设置</h3>
+                    <h3>皮肤设置</h3>
                     <ul className='style'>
                         {
                             currentMode.list.map((style , index) => 
-                                <li key={index} className={index == currentMode.active ? 'checked' : ''} style={style} onClick={() => {
+                                <li key={index} className={index == currentMode.active ? 'checked' : ''} style={{backgroundColor : style.backgroundColor}} onClick={() => {
                                     currentMode.active = index;
                                     setRefresh(++refresh);
                                     lib.wait(500);
-                                }}></li>
+                                }}>
+                                    <div>{style.name}</div>
+                                </li>
                             )
                         }
                     </ul>

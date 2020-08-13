@@ -45,6 +45,30 @@ function SelectControl({item}){
     )
 }
 
+function CommonSelect({item}){
+    let [refresh, setRefresh] = useState(0);
+    return (
+        <div className='group' >
+            <label>{item.label}</label>
+            <Select
+                allowClear
+                style={{ width: 260 }}
+                placeholder='请选择'
+                onChange={(value) => {
+                    item.value = value;
+                    setRefresh(++refresh);
+                }}
+                value={item.value}>
+                {
+                    (item.list || []).map((item, index) =>
+                        <Option key={index} value={item.id}>{item.name}</Option>
+                    )
+                }
+            </Select>
+        </div>
+    )
+}
+
 function SearchSelect({item}){
     let [refresh, setRefresh] = useState(0);
     return (
@@ -231,8 +255,8 @@ function SearchConditionList({ searchKeyList, other , onSearch , onReset}){
     } , [])
     var map = {
         'text' : Text , 
-        'select': SearchSelect , 
-        'json-select': SearchSelect ,
+        'select': CommonSelect , 
+        'json-select': CommonSelect ,
         'search-select': SearchSelect ,
         'multi-select' : MultiSelect ,
         'date': DateControl ,

@@ -23,6 +23,10 @@ function createMenuStyle(style){
         .sub-content .menu.smart .logo{
             background-image:url(${style.logoSmart});
         }
+        .config-center .table-panel {
+            margin:0 10px;
+            box-shadow: 0px 1px 4px 0px rgba(0, 21, 41, 0.12);
+        }
     `;
     document.getElementById('dynamic-css').innerHTML = css;
 }

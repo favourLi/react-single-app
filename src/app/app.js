@@ -27,12 +27,12 @@ function App({ pageMap = {}, menuList = [], colStyleList=[] , topStyleList=[] , 
             col: {
                 active: 0,
                 isFull: true,
-                thumb: 'https://gw.alipayobjects.com/zos/antfincdn/XwFOFbLkSM/LCkqqYNmvBEbokSDscrm.svg',
+                thumb: 'https://dante-img.oss-cn-hangzhou.aliyuncs.com/97402116582.png',
                 list: colStyleList
             },
             top: {
                 active: 0,
-                thumb: 'https://gw.alipayobjects.com/zos/antfincdn/URETY8%24STp/KDNDBbriJhLwuqMoxcAr.svg',
+                thumb: 'https://dante-img.oss-cn-hangzhou.aliyuncs.com/97402116525.png',
                 list: topStyleList
             },
             type: 'col'

@@ -1,11 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
-import { Modal } from 'antd';
 import axios from 'axios';
-import qs from 'qs';
 import {event} from '../index';
 import md5 from 'md5';
-
+import {message} from 'antd';
 /**
     yyyy-MM-dd : 年月日
     yyyy-MM-dd hh:mm:ss 年月日 时分秒
@@ -33,7 +31,7 @@ Date.prototype.format = function (fmt) { //author: meizz
 
 let config = {
     hostPrefixMap: {
-        '*': 'http://danding-gateway-test.yang800.com/'
+        '*': 'http://danding-gateway.yang800.cn/'
     }
 }
 
@@ -169,15 +167,17 @@ var lib = {
             }, withCredentials: true,
             crossDomain: true,
         }).then(function ({ data: json }) {
-            let { code, data, message } = json;
+            let { code, data, message : msg } = json;
             if (code == 200) {
                 success(data);
             } else if (code == -1001) {
-                alert('跳转登陆');
-            } else if (code == -1002) {
-                alert('跳转权限页');
-            } else if (code < 0) {
-                alert(message);
+                let host = 'http://login.yang800.cn';
+                if(window.location.host.indexOf('yang800.com') > -1){
+                    host = 'http://login.yang800.com';
+                }
+                window.location = `${host}?redirectUrl=${encodeURIComponent(window.location.href)}`
+            }  else if (code < 0) {
+                message.error(msg);
             } else {
                 fail(code, message);
             }
