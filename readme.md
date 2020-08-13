@@ -1,3 +1,8 @@
+## 项目说明
+* `npm run start` 启动测试
+* `npm run build` 打包
+
+
 ## 引子
 react-single-app 主要功能，分为五大块 `App` `ConfigCenter` `Uploader` `lib` `event` 
 
