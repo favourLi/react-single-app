@@ -4,12 +4,12 @@ import {Tooltip , message} from 'antd';
 import axios from 'axios';
 
 /**
- * @param {style{width , height , ...}} 样式，一般指定width , height 
- * @param {src} 默认图片URL
- * @param {allowTypes[]} 允许的图片类型，数组。默认不限制
- * @param {onUploadStart} 开始上传回调
- * @param {onUploadEnd(src)} 结束上传回调
- * @param {onRemove} 删除图片回调
+ * @param {style{width , height , ...}} 样式，一般指定width , height    可选   
+ * @param {src} 默认图片URL                                            可选
+ * @param {allowTypes[]} 允许的图片类型，数组。默认不限制                  可选
+ * @param {onUploadStart} 开始上传回调                                  可选
+ * @param {onUploadEnd(src)} 结束上传回调                               可选
+ * @param {onRemove} 删除图片回调                                       可选
  */
 function Uploader({style , src = '' , allowTypes=[] , onUploadStart = function(){} , onUploadEnd = function(){} , onRemove=function(){}}){
     var [src , setSrc] = useState(src);

@@ -270,7 +270,30 @@ http://admin.gongxiao.yang800.cn/item-center/1597742700177?config_id= 1597212444
 5. 表格字段type=function，指定的key值的函数名。
 
 
+## Uploader
 
+上传组件。一般用于上传图片，当然也可以用于上传任何文件，如excel等。支持拖动上传和选择文件上传。上传图片时，可还以支持查看缩略图，删除图片等等。
+```
+/**
+ * @param {style{width , height , ...}} 样式，一般指定width , height    可选   
+ * @param {src} 默认图片URL                                            可选
+ * @param {allowTypes[]} 允许的图片类型，数组。默认不限制                  可选
+ * @param {onUploadStart} 开始上传回调                                  可选
+ * @param {onUploadEnd(src)} 结束上传回调                               可选
+ * @param {onRemove} 删除图片回调                                       可选
+ */
+ <Uploader 
+    allowTypes={['png' , 'jpg']}
+    onUploaderStart={() => {console.log('开始上传 ')}}
+    onUploaderEnd={(src) => {
+        console.log(src);
+    }}
+    style={{width:'160px' , height:'160px'}}
+    src='https://dante-img.oss-cn-hangzhou.aliyuncs.com/28562010515.png'
+/>
+
+ 
+```
 
 
 
