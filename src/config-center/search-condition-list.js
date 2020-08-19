@@ -210,7 +210,7 @@ function CascaderControl({item}){
 }
 
 
-function SearchConditionList({ searchKeyList, other , onSearch , onReset}){
+function SearchConditionList({ searchKeyList , onSearch }){
     let [refresh , setRefresh] = useState(0);
     let [isMiniType , setType] = useState(true)
     function initSelect(node) {

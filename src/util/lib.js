@@ -40,35 +40,13 @@ let config = {
 var lib = {
 
     /**
-     * 
-     * @param url /test-detail?pageTitle=测试详情页 
-     * @param element 字符串或者任何html无素如div button等
-     * @param refreshFn 回调函数，作状态更新使用
-     */
-    getLink(url, element, refreshFn) {
-        if (!url) {
-            console.error('function getLink must have a url');
-            url = '';
-        }
-        url = url.replace('pageTitle', 'page_title')
-        if (url.indexOf("?") == -1 || url.indexOf('page_title') == -1) {
-            return console.error('function getLink url must have a page_title or pageTitle value')
-        }
-        url = url.replace(/\/\d{13}/, '');
-        url = url.replace('?', '/' + new Date().getTime() + '?');
-
-        if (refreshFn) {
-            var refreshEvent = new Date().getTime();
-            url += `&refresh_event=${refreshEvent}`;
-        }
-        return (
-            <Link onClick={() => {
-                event.emit('add-page', {
-                    url: url
-                });
-                refreshFn && event.on(refreshEvent, refreshFn)
-            }} to={url}>{element}</Link>
-        )
+    * 
+    * @param url /test-detail?pageTitle=测试详情页 
+    * @param element 字符串或者任何html无素如div button等
+    * @param refreshFn 回调函数，作状态更新使用
+    */
+    getLink() {
+        console.error(new Error('function lib.getLink has been delete please use lib.openPage for replace'))
     },
 
     /**
@@ -94,8 +72,6 @@ var lib = {
             url: url
         });
         refreshFn && event.on(refreshEvent, refreshFn);
-        // history.pushState(null , null , url);
-        window.indexProps.history.push(url);
     },
 
 
@@ -141,9 +117,14 @@ var lib = {
         success       function    是         请求成功回调函数
         fail          function    否         失败回调函数
         needMask      boolean     否         是否需要遮照，默认为true
+        client        json<{clientId , clientSecret}>        否
     **/
-    request({ url, needMask = 'false', data = {}, success = function () { }, fail = function () { } }) {
+    request({ url, needMask = 'false', data , success = function(){}, fail = function(){} , client}) {
         let { clientId, clientSecret, hostPrefixMap } = config;
+        if(client){
+            clientId = client.clientId;
+            clientSecret = client.clientSecret;
+        }
         let prefixUrl = hostPrefixMap[window.location.hostname] || hostPrefixMap['*'];
         if (!clientId || !clientSecret) {
             return console.error('please set the clientId and clientSecret by use the function lib.setConfig(config)')
@@ -152,7 +133,10 @@ var lib = {
             return console.error(`can not find the prefixUrl by the ${window.location.hostname} , please set the hostPrefixMap by use the function lib.setConfig(config)`)
         }
         var timestamp = new Date().getTime()
-        var md5Data = md5(JSON.stringify(data)).toUpperCase();
+        let md5Data = ''
+        if(data){
+            md5Data = md5(JSON.stringify(data)).toUpperCase();
+        }
         var sign = md5(`clientId${clientId}data${md5Data}path${url}timestamp${timestamp}version${'1.0.0'}${clientSecret}`).toUpperCase();
         needMask && lib.wait();
         var maskTime = new Date().getTime();

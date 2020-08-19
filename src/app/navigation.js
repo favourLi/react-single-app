@@ -1,7 +1,7 @@
 import React, { Fragment, useMemo } from 'react';
 import { Route, Link } from 'react-router-dom';
 import './navigation.less';
-import {lib , event , App , ConfigCenter} from '../index'
+import {lib , event } from '../index'
 
 function Navigation({pageList }){
     return (

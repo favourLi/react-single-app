@@ -6,7 +6,7 @@ import SetUp from './set-up';
 import SearchConditionList from './search-condition-list';
 import md5 from 'md5';
 import Draggable from 'react-draggable'
-import { lib } from '../index'
+import { lib , Uploader } from '../index'
 
 
 
@@ -175,6 +175,7 @@ class ConfigCenter extends React.Component{
                     pagination: data.page,
                     dataList: data.dataList || []
                 })
+                this.tablePanel.scrollTop = 0;
             }
         })
     }
@@ -360,13 +361,12 @@ class ConfigCenter extends React.Component{
                         </tbody>
                     </table>
                 </div>
-                
             </Fragment>
         )
     }
     renderOperation(){
         let {config} = this.state;
-        let other = config.other;
+        let excel = config.excel;
         return (
             <Fragment>
                 <div className='operation-left-panel'>
@@ -375,21 +375,31 @@ class ConfigCenter extends React.Component{
                 <div style={{ marginLeft: '15px' }}>
                     {this.renderRightOperation && this.renderRightOperation()}
                 </div>
-                {/* <div className='btn-group'>
+                <div className='btn-group'>
                     {   
-                        other.import  && 
+                        excel.import  && 
                         <Fragment>
-                            <button className='btn'>导入模板下载 &#xe639;</button>
-                            <button className='btn'>导入 &#xe639;</button>
+                            <button className='btn' onClick={() => window.location = excel.importTemplate}>导入模板下载 &#xe639;</button>
+                            <button className='btn import' >
+                                导入 &#xe639;
+                                <Uploader 
+                                    style={{height : '36px'}} 
+                                    allowTypes={['xls' , 'xlsx']}
+                                    onUploadStart={() => lib.wait}
+                                    onUploadEnd={() => {
+                                        lib.waitEnd();
+                                    }}
+                                />
+                            </button>
                         </Fragment>
                     }
                     {
-                        other.export  && <button className='btn'>导出 &#xe638;</button>
+                        excel.export  && <button className='btn'>
+                            导出 &#xe638;
+
+                        </button>
                     }
-                    {
-                        other.sync  && <button className='btn'>同步 &#xe6de;</button>
-                    }
-                </div> */}
+                </div>
                 
                 <SetUp {...this.state.config} save={(tableFieldList) => {
                     let config = this.state.config;
@@ -407,11 +417,10 @@ class ConfigCenter extends React.Component{
                 {this.renderModal && this.renderModal()}
                 <div >
                     <div className='search-condition-panel'>
-                        <SearchConditionList searchKeyList={config.searchKeyList} other={config.other} onSearch={(searchConditions) => {
+                        <SearchConditionList searchKeyList={config.searchKeyList} onSearch={(searchConditions) => {
                             this.state.searchConditions = searchConditions;
+                            this.state.pagination.currentPage = 1;
                             this.load(true);
-                        }} onReset={() => {
-                            
                         }} />
                     </div>
                 </div>

@@ -1,0 +1,171 @@
+.purchase-detail{
+	padding: 16px;
+	overflow-y: auto;
+    height: 100%;
+    .btn-primary{
+    	border: none !important;
+    }
+	.status-box{
+		position: relative;
+		border:1px solid rgba(0,0,0,0.06);
+		padding: 26px 24px;
+		// margin-top: 16px;
+		.btn{
+			width: 88px;
+			height: 32px;
+		}
+		.left{
+			display: inline-block;
+			.top .error-msg{
+				margin-left: 30px;
+				color:rgba(0,0,0,0.65);
+				margin-top: 6px;
+				// height: 50px; //暂时拿掉了交易状态一栏
+				// height: 35px;
+			}
+			span{
+				display: block;
+			}
+			.desc{
+				font-size: 16px;
+				font-weight: 500;
+				color: rgba(0, 0, 0, 0.85);
+				line-height: 24px;
+				height: 24px;
+				.anticon{
+					width: 24px;
+					height: 24px;
+					display: inline-block;
+					margin-right: 8px;
+				}
+			}
+			.message{
+				margin-left: 33px;
+				height: 22px;
+				margin-top: 4px;
+				font-size: 14px;
+				color: rgba(0, 0, 0, 0.65);
+			}
+			.operate-box{
+				height: 40px;
+				padding-top: 8px;
+				padding-left: 32px;
+				.btn-primary{
+					margin-right: 8px;
+				}
+			}
+		}
+		.right{
+			height: 100%;
+			float: right;
+			.btn{
+			    position: absolute;
+				right: 24px;
+			    top: 50%;
+			    transform: translate(0, -50%);
+			}
+		}
+	}
+	.title-box{
+		padding-top: 24px;
+		padding-bottom: 16px;
+		font-size: 16px;
+		font-weight: 500;
+		color: rgba(0, 0, 0, 0.85);
+		line-height: 24px;
+	}
+	.grid-row{
+		position: relative;
+		width: 100%;
+	}
+	table{
+		.amount-tr{
+			height: 146px;
+			text-align: right;
+			color: rgba(0,0,0,0.85);
+			span{
+				display: block;
+			}
+			.left, .right{
+				display: inline-block;;
+			}
+			.h-22{
+				height: 22px;
+				line-height: 22px;
+			}
+			.h-28{
+				height: 28px;
+				line-height: 28px;
+			}
+			.left{
+				margin-right: 14px;
+			}
+			.right{
+				float: right;
+				clear: both;
+			}
+			.right span{
+				text-align: right;
+				font-weight:500;
+				font-family:PingFangSC-Medium;
+				font-size: 14px;
+				&.red{
+					color: #F51214;
+					font-size: 18px;
+				}
+			}
+		}
+	}
+	.order-table{
+		thead{
+			tr{
+				border-top: solid 1px rgba(0, 0, 0, 0.06);
+				border-left: solid 1px rgba(0, 0, 0, 0.06);
+				border-right: solid 1px rgba(0, 0, 0, 0.06);
+			}
+		}
+	}
+
+}
+
+.purchase-detail .step-h{
+	height: 300px;
+	overflow-y: auto;
+    border: solid 1px #E8E8E8;
+    padding: 16px;
+	.node{
+		position:relative;
+		padding-left:168px;
+		padding-bottom:18px;
+		line-height: 21px;
+		color:#666;
+		&:before{
+			content:'';
+            width: 8px;
+            height: 8px;
+            background:#f0f0f0;  
+            border-radius: 20px;
+            display: block;  
+            position:absolute;
+            top: 7px;
+            left: 0px;
+		}
+		&:after{
+			content:'';
+			width: 2px;
+            background:#f0f0f0; 
+            left: 3px;
+            top: 18px;
+            bottom: -4px;
+            position:absolute;
+		}
+	}
+	.node-first:before{
+		background:#1890FF;
+	}
+	.date{
+		position:absolute;
+		left: 25px;
+	}
+	
+}

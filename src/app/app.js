@@ -63,6 +63,7 @@ function App({ pageMap = {}, menuList = [], colStyleList=[] , topStyleList=[] , 
         event.on('add-page', (page) => {
             pageList.push(page);
             setPageList([...pageList]);
+            history.push(page.url);
         });
         event.on('delete-page' , () => {
             var key = window.location.pathname.split('/').pop();

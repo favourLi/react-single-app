@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import './header.less';
 import { Drawer } from 'antd';
 import { createMenuStyle, createTopStyle } from './create-style';
-
+import {lib} from '../index'
 
 
 
@@ -33,10 +33,10 @@ function SystemSet({mode , setColMenu}){
                 visible={visible}
                 closable
                 className='system-set'
-                style={{top : 56 , width : 370}}
+                style={{top : 56 }}
                 mask={false}
             >
-                <div className='system-set' style={{ marginTop: '-32px' }}>
+                <div className='system-set' style={{ marginTop: '-32px' , marginLeft:'-12px' , marginRight:'-12px' }}>
                     <h3>导航方式</h3>
                     <ul className='mode'>
                         <li className={type == 'col' ? 'checked' : ''} onClick={() => {
