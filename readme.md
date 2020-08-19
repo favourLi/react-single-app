@@ -5,6 +5,9 @@
 * npm:		https://www.npmjs.com/package/react-single-app
 * Document:	https://juejin.im/post/6857495360580173832
 
+> 注意：启动测试，<span style='color:red;font-weight:bold;font-size:16px;'>不停的跳登陆</span>，可能是由于浏览器禁用第三方cookie导致的。[本地调试解决方案](https://www.cnblogs.com/Summer6/p/11671204.html)。禁用第三方cookie，只要接口的主域相同，依然可以跨子域。因此，线上部署的话，可以是 前端: web.yang800.com 统一登陆: login.yang800.com 接口： api.yang800.com
+
+
 ## 简介
 `react-single-app`是一个TOB类型的后台应用的前端框架。它基于`react`、`react-router`、`antd`来提供的单页多标签（类似于浏览器的多标签）应用框架。
 ![](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/39caaac6aa9b46ba8e3d2ca6103a328c~tplv-k3u1fbpfcp-zoom-1.image)
