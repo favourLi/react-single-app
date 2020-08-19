@@ -1,6 +1,10 @@
 ## 项目说明
 * `npm run start` 启动测试
 * `npm run build` 打包
+* github: 	https://github.com/wenzheng1/react-single-app
+* npm:		https://www.npmjs.com/package/react-single-app
+* Document:	https://juejin.im/post/6857495360580173832
+
 ## 简介
 `react-single-app`是一个TOB类型的后台应用的前端框架。它基于`react`、`react-router`、`antd`来提供的单页多标签（类似于浏览器的多标签）应用框架。
 ![](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/39caaac6aa9b46ba8e3d2ca6103a328c~tplv-k3u1fbpfcp-zoom-1.image)
