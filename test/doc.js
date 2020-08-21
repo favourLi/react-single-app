@@ -9,6 +9,8 @@ function Doc(){
             onUploaderEnd={(src) => {
                 console.log(src);
             }}
+            style={{width:'160px' , height:'160px'}}
+            src='https://dante-img.oss-cn-hangzhou.aliyuncs.com/28562010515.png'
         />
     </div>
 }

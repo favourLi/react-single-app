@@ -29,11 +29,6 @@ Date.prototype.format = function (fmt) { //author: meizz
     return fmt;
 }
 
-let config = {
-    hostPrefixMap: {
-        '*': 'http://danding-gateway.yang800.cn/'
-    }
-}
 
 
 
@@ -120,17 +115,19 @@ var lib = {
         client        json<{clientId , clientSecret}>        否
     **/
     request({ url, needMask = 'false', data , success = function(){}, fail = function(){} , client}) {
-        let { clientId, clientSecret, hostPrefixMap } = config;
-        if(client){
-            clientId = client.clientId;
-            clientSecret = client.clientSecret;
+        if(window.location.hostname.indexOf('yang800.com') > -1){
+            var [clientId, clientSecret, prefixUrl] = [
+                '9E514E70AD7D485986D687F64616C662',
+                '33F14542BB274284B63147E6C8F3DF9E' , 
+                'http://danding-gateway.yang800.com'
+            ]
         }
-        let prefixUrl = hostPrefixMap[window.location.hostname] || hostPrefixMap['*'];
-        if (!clientId || !clientSecret) {
-            return console.error('please set the clientId and clientSecret by use the function lib.setConfig(config)')
-        }
-        if (!prefixUrl) {
-            return console.error(`can not find the prefixUrl by the ${window.location.hostname} , please set the hostPrefixMap by use the function lib.setConfig(config)`)
+        else{
+            var [clientId, clientSecret, prefixUrl] = [
+                '96A63530DA0C49BB9FABB66ED40FB3C7',
+                'F6A99B36E4D24817AB037237454893D9',
+                'http://danding-gateway.yang800.cn'
+            ]
         }
         var timestamp = new Date().getTime()
         let md5Data = ''
@@ -184,9 +181,6 @@ var lib = {
         $('#wait').remove();
     },
 
-    setConfig(_config) {
-        Object.assign(config, _config);
-    }
 }
 
 export default lib;
