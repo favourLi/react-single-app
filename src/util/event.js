@@ -12,7 +12,9 @@ var event = {
 	 * @param {*} fn 取肖监听的事件方法，省略此参数，表示取消所有为name的事件监听
 	 */
 	off : function(name , fn){
-		!fn && delete this.map[name];
+		if(!fn){
+			return delete this.map[name];
+		}
 		var list = this.map[name];
 		for(var i=0; i<list.length; i++){
 			if(list[i] === fn){
