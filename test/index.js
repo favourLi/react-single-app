@@ -48,14 +48,6 @@ const user = {
     }
 }
 
-lib.setConfig({
-    clientId: '74EDE65E37AB4C549E79F1B0AC540AB8' , 
-    clientSecret: '038D453DCA1A467293058BBCC31169BC',
-    hostPrefixMap : {
-        '*': 'http://danding-gateway.yang800.cn',
-        'admin.gongxiao.yang800.com': 'http://danding-gateway.yang800.com'
-    }
-})
 
 
 

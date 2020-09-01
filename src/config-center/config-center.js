@@ -7,7 +7,7 @@ import SearchConditionList from './search-condition-list';
 import md5 from 'md5';
 import Draggable from 'react-draggable'
 import { lib , Uploader } from '../index'
-
+import { Tooltip} from 'antd';
 
 
 function ResizeableTh(props){
@@ -49,7 +49,15 @@ function ResizeableTh(props){
             {
                 item.type != 'batch' && 
                 <Fragment >
-                    <div className='content' >{item.title}</div>
+                    {
+                        item.tooltip ? 
+                            <Tooltip placement="topLeft" title={item.tooltip} >
+                                <div className='content' >{item.title}<span>&#xe66d;</span></div>
+                            </Tooltip>
+                            :
+                            <div className='content' >{item.title}</div>
+                    }
+                    
                     <Resizable width={width} height={36} minConstraints={[80, 50]}
                         onResize={(event, { element, size, handle }) => {
                             console.log('onResize', size.width);

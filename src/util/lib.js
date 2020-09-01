@@ -112,9 +112,8 @@ var lib = {
         success       function    是         请求成功回调函数
         fail          function    否         失败回调函数
         needMask      boolean     否         是否需要遮照，默认为true
-        client        json<{clientId , clientSecret}>        否
     **/
-    request({ url, needMask = 'false', data , success = function(){}, fail = function(){} , client}) {
+    request({ url, needMask = 'false', data , success = function(){}, fail = function(){} }) {
         if(window.location.hostname.indexOf('yang800.com') > -1){
             var [clientId, clientSecret, prefixUrl] = [
                 '9E514E70AD7D485986D687F64616C662',
@@ -137,8 +136,11 @@ var lib = {
         var sign = md5(`clientId${clientId}data${md5Data}path${url}timestamp${timestamp}version${'1.0.0'}${clientSecret}`).toUpperCase();
         needMask && lib.wait();
         var maskTime = new Date().getTime();
+        if(url.indexOf('http://') == -1 && url.indexOf('https://') == -1){
+            url = `${prefixUrl}${url}`;
+        }
         axios.request({
-            url: `${prefixUrl}${url}`,
+            url: url,
             method: 'POST',
             data: data,
             headers: {
