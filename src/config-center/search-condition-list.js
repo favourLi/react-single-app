@@ -1,9 +1,11 @@
 import React, { Fragment, useState, useEffect } from 'react';
+import { useHistory} from 'react-router-dom';
 import {Input, Select, DatePicker, Button, Cascader } from 'antd';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 import './search-condition-list.less'
 import { lib } from '../index'
+import moment from 'moment'
 
 function Text({item}){
     let [refresh, setRefresh] = useState(0);
@@ -128,6 +130,11 @@ function DateControl({item}){
             <label>{item.label}</label>
             <RangePicker
                 style={{ width: 260 }}
+                value={
+                    (new Date(item.startValue).getTime() && new Date(item.endValue).getTime()) ?
+                    [moment(new Date(item.startValue).getTime()), moment(new Date(item.endValue).getTime())]:
+                    []
+                }
                 onChange={(e, dates) => {
                     if (!dates[0]) {
                         item.startValue = '';
@@ -212,7 +219,64 @@ function CascaderControl({item}){
 
 function SearchConditionList({ searchKeyList , onSearch }){
     let [refresh , setRefresh] = useState(0);
-    let [isMiniType , setType] = useState(true)
+    let [isMiniType , setType] = useState(true);
+    let history = useHistory();
+    
+    function search() {
+        let searchCondition = {};
+        var map = new Map();
+        window.location.search.substring(1).split('&').map((kv) => {
+            let [key, value] = kv.split('=');
+            value = decodeURIComponent(value);
+            map.set(key, value);
+        })
+
+        searchKeyList.map((item) => {
+            if (item.type == 'date') {
+                if (item.startValue) {
+                    searchCondition[item.startKey] = item.startValue;
+                    searchCondition[item.endKey] = item.endValue;
+                }
+                map.set(item.startKey, item.startValue);
+                map.set(item.endKey, item.endValue);
+            } else if (item.type == 'multi-select') {
+                if (item.value.length) {
+                    searchCondition[item.key] = item.value;
+                }
+            } else {
+                if (item.value != '') {
+                    searchCondition[item.key] = item.value;
+                }
+                map.set(item.key , item.value);
+            }
+        })
+        var searchUrl = [];
+        for(var [key , value] of map){
+            if(value){
+                searchUrl.push(`${key}=${value}`);
+            }
+            
+        }
+        // console.log(`${window.location.pathname}?${searchUrl.join('&')}`);
+        // history.push(`${window.location.pathname}?${searchUrl.join('&')}`);
+        onSearch(searchCondition)
+    }
+    function reset(){
+        searchKeyList.map((item) => {
+            if (item.type == 'date') {
+                if (item.startValue) {
+                    item.startValue = item.endValue = '';
+                }
+            } else if (item.type == 'multi-select') {
+                item.value = [];
+            } else {
+                item.value = '';
+            }
+        })
+        search();
+        setRefresh(++refresh);
+    }
+
     function initSelect(node) {
         lib.request({
             url: node.extra,
@@ -225,13 +289,25 @@ function SearchConditionList({ searchKeyList , onSearch }){
     }
     function init() {
         $('.ant-picker input').val('');
+        var map = new Map();
+        window.location.search.substring(1).split('&').map((kv) => {
+            let [key , value] = kv.split('=');
+            if(key == 'page_title' || key == 'config_id' || key == 'refresh_event'){
+                return;
+            }
+            value = decodeURIComponent(value);
+            map.set(key , value);
+        })
+
         searchKeyList.map((item) => {
             item.value = '';
             if (item.type == 'date') {
                 item.startKey = item.key.split(',')[0];
                 item.endKey = item.key.split(',')[1];
-                item.startValue = '';
-                item.endValue = '';
+                if (!item.startValue && map.get(item.startKey)){
+                    item.startValue = parseInt(map.get(item.startKey));
+                    item.endValue = parseInt(map.get(item.endKey));
+                }
             }
             if (item.type == 'multi-select') {
                 item.value = [];
@@ -240,15 +316,22 @@ function SearchConditionList({ searchKeyList , onSearch }){
                 if (!item.list) {
                     initSelect(item);
                 }
-
             }
             if (item.type == 'json-select') {
                 if (!item.list) {
                     item.list = JSON.parse(item.extra) || [];
                 }
             }
+            if(!item.value){
+                var value = map.get(item.key);
+                if(item.type != 'text' && item.type != 'textarea'){
+                    value = /^\d+$/.test(value) ? parseInt(value) : value || '';
+                }
+                item.value = value;
+            }
         })
         setRefresh(++refresh);
+        search();
     }
     useEffect(() => {
         init()
@@ -263,6 +346,8 @@ function SearchConditionList({ searchKeyList , onSearch }){
         'textarea' : Textarea ,
         'cascader': CascaderControl
     }
+    
+
     return (
         <div className={isMiniType ? 'mini-search-controls' : 'full-search-controls'}>
             <div className='search-controls'>
@@ -272,30 +357,8 @@ function SearchConditionList({ searchKeyList , onSearch }){
                 })}
             </div>
             <div className='group group-btns' >
-                <Button type="primary" onClick={() => {
-                    let searchCondition = {};
-                    searchKeyList.map((item) => {
-                        if(item.type == 'date'){
-                            if(item.startValue) {
-                                searchCondition[item.startKey] = item.startValue;
-                                searchCondition[item.endKey] = item.endValue;
-                            }
-                        } else if (item.type == 'multi-select'){
-                            if(item.value.length){
-                                searchCondition[item.key] = item.value;
-                            } 
-                        }else{
-                            if(item.value != ''){
-                                searchCondition[item.key] = item.value;
-                            }   
-                        }
-                    })
-                    onSearch(searchCondition)
-                }}>查询</Button>
-                <Button onClick={() => {
-                    init();
-                    onSearch({});
-                }}>重置</Button>
+                <Button type="primary" onClick={search}>查询</Button>
+                <Button onClick={reset}>重置</Button>
                 
             </div>
             

@@ -1,13 +1,14 @@
 {
   "name": "react-single-app",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "main": "lib/index.js",
   "description": "fixed the event bug",
   "repository": {
     "type": "git",
     "url": "git@code.aliyun.com:wenzhenghaha/react-single-app.git"
   },
-  "dependencies": { 
+  "dependencies": {
+    "moment": "^2.27.0",
     "webpack": "^4.29.6"
   },
   "devDependencies": {

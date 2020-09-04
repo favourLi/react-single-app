@@ -113,7 +113,6 @@ class ConfigCenter extends React.Component{
                 show: false
             }
         };
-        this.load(true);
     }
 
     setDetailData(data){
@@ -164,15 +163,7 @@ class ConfigCenter extends React.Component{
 
     load(needMask) {
         let { pagination, searchConditions } = this.state;
-        var strs = window.location.search.substring(1);
         var data = {};
-        var b = strs.split('&');
-        for (var i = 0; i < b.length; i++) {
-            var [key, value] = b[i].split('=');
-            if (['config_id', 'title', 'page_title', 'refresh_event'].indexOf(key) == -1) {
-                data[key] = value;
-            }
-        }
         Object.assign(data, pagination, searchConditions);
         lib.request({
             url: this.state.config.requestUrl,
