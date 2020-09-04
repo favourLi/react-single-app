@@ -258,7 +258,7 @@ function SearchConditionList({ searchKeyList , onSearch }){
             
         }
         // console.log(`${window.location.pathname}?${searchUrl.join('&')}`);
-        // history.push(`${window.location.pathname}?${searchUrl.join('&')}`);
+        history.replace(`${window.location.pathname}?${searchUrl.join('&')}`);
         onSearch(searchCondition)
     }
     function reset(){
