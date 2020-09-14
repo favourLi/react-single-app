@@ -229,6 +229,9 @@ function SearchConditionList({ searchKeyList , onSearch }){
             let [key, value] = kv.split('=');
             value = decodeURIComponent(value);
             map.set(key, value);
+            if(key != 'config_id' && key != 'page_title'){
+                searchCondition[key] = value;
+            }
         })
 
         searchKeyList.map((item) => {
@@ -257,7 +260,6 @@ function SearchConditionList({ searchKeyList , onSearch }){
             }
             
         }
-        // console.log(`${window.location.pathname}?${searchUrl.join('&')}`);
         history.replace(`${window.location.pathname}?${searchUrl.join('&')}`);
         onSearch(searchCondition)
     }

@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Pagination , Checkbox } from 'antd';
+import { Pagination, Checkbox, Empty} from 'antd';
 import { Resizable } from 'react-resizable';
 import './config-center.less';
 import SetUp from './set-up';
@@ -278,6 +278,10 @@ class ConfigCenter extends React.Component{
                         </thead>
                     </table>
                 </div>
+                {
+                    !dataList.length && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                }
+
                 <div className='tbody'>
                     <table className='table table-hover '  >
                         <colgroup>
