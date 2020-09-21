@@ -35,10 +35,6 @@ function Uploader({style , src = '' , allowTypes=[] , onUploadStart = function()
         var key = `${new Date().getTime() % 100000000}${parseInt(Math.random() * 1000)}.${suffix}`;
         data.append('name', 'dev/' + key);
         data.append('key', key);
-        data.append('policy', 'eyJleHBpcmF0aW9uIjoiMjAyMS0wMS0wMVQxMjowMDowMC4wMDBaIiwiY29uZGl0aW9ucyI6W1siY29udGVudC1sZW5ndGgtcmFuZ2UiLDAsMTA0ODU3NjAwMF1dfQ==');
-        data.append('OSSAccessKeyId', 'LTAIzH2kt3oukSR9');
-        data.append('success_action_status', '200');
-        data.append('signature', 'VjVz6BCC3ZLqW/fgcpOPOc8hbfs=');
         data.append('file', file);
         axios.request({
             url: 'https://dante-img.oss-cn-hangzhou.aliyuncs.com',
