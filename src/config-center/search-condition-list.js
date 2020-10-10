@@ -221,6 +221,10 @@ function SelectTextArea({item}) {
     if (!item.select) {
         item.select = JSON.parse(item.extra)[0].id
     }
+    let str = "";
+    JSON.parse(item.extra).map(item => {
+        str += item.name + ','
+    })
     return (
         <div className='group' >
             <label>
@@ -238,12 +242,12 @@ function SelectTextArea({item}) {
             </label>
             <textarea className='form-control'
                 value={item.value || ''}
-                style={{ width: 260 }}
+                style={{ width: 260, height: 69}}
                 onChange={e => {
                     item.value = e.target.value;
                     setRefresh(++refresh);
                 }}
-                placeholder='请输入'
+                placeholder={`请输入${str}多条用换行隔开（不超过5000条）`}
             />
         </div>
     )
@@ -283,7 +287,7 @@ function SearchConditionList({ searchKeyList , onSearch }){
                 if (item.value.length) {
                     let [select, queryNo] = item.key.split(",");
                     searchCondition[select] = item.select;
-                    searchCondition[queryNo] = item.value;
+                    searchCondition[queryNo] = item.value.split('\n').map(item => item.trim()).join(',')
                 }
             } else {
                 if (item.value != '') {
