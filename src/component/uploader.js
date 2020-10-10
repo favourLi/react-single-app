@@ -33,9 +33,6 @@ function Uploader({style , src = '' , allowTypes=[] , onUploadStart = function()
         onUploadStart();
         var data = new FormData();
         var key = `${new Date().getTime() % 100000000}${parseInt(Math.random() * 1000)}.${suffix}`;
-        data.append('name', 'dev/' + key);
-        data.append('key', key);
-        data.append('file', file);
         axios.request({
             url: 'https://dante-img.oss-cn-hangzhou.aliyuncs.com',
             method : 'POST' ,

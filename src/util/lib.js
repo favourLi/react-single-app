@@ -34,6 +34,10 @@ Date.prototype.format = function (fmt) { //author: meizz
 
 var lib = {
 
+    config : {
+        login : window.location.host.indexOf('yang800.com') > -1 ? 'http://login.yang800.com' : 'http://login.yang800.cn'
+    } ,
+
     /**
     * 
     * @param url /test-detail?pageTitle=测试详情页 
@@ -154,11 +158,7 @@ var lib = {
             if (code == 200) {
                 success(data);
             } else if (code == -1001) {
-                let host = 'http://login.yang800.cn';
-                if(window.location.host.indexOf('yang800.com') > -1){
-                    host = 'http://login.yang800.com';
-                }
-                window.location = `${host}?redirectUrl=${encodeURIComponent(window.location.href)}`
+                window.location = `${this.config.login}?redirectUrl=${encodeURIComponent(window.location.href)}`
             }  else if (code < 0) {
                 message.error(msg);
             } else {
@@ -182,6 +182,12 @@ var lib = {
     waitEnd() {
         $('#wait').remove();
     },
+
+    setConfig(config){
+        Object.assign(this.config , config);
+    }
+
+
 
 }
 
