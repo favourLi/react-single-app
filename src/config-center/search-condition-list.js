@@ -216,6 +216,39 @@ function CascaderControl({item}){
     )
 }
 
+function SelectTextArea({item}) {
+    let [refresh, setRefresh] = useState(0);
+    if (!item.select) {
+        item.select = JSON.parse(item.extra)[0].id
+    }
+    return (
+        <div className='group' >
+            <label>
+                <Select
+                    dropdownClassName="dropMenu"
+                    value={item.select}
+                    onChange={(e) => {
+                        item.select = e;
+                        setRefresh(++refresh);
+                    }}>
+                    {JSON.parse(item.extra).map(ite => {
+                        return <Option value={ite.id} key={ite.id}>{ite.name}</Option>
+                    })}
+                </Select>
+            </label>
+            <textarea className='form-control'
+                value={item.value || ''}
+                style={{ width: 260 }}
+                onChange={e => {
+                    item.value = e.target.value;
+                    setRefresh(++refresh);
+                }}
+                placeholder='请输入'
+            />
+        </div>
+    )
+}
+
 
 function SearchConditionList({ searchKeyList , onSearch }){
     let [refresh , setRefresh] = useState(0);
@@ -245,6 +278,12 @@ function SearchConditionList({ searchKeyList , onSearch }){
             } else if (item.type == 'multi-select') {
                 if (item.value.length) {
                     searchCondition[item.key] = item.value;
+                }
+            } else if (item.type == 'select-textarea') {
+                if (item.value.length) {
+                    let [select, queryNo] = item.key.split(",");
+                    searchCondition[select] = item.select;
+                    searchCondition[queryNo] = item.value;
                 }
             } else {
                 if (item.value != '') {
@@ -346,7 +385,8 @@ function SearchConditionList({ searchKeyList , onSearch }){
         'multi-select' : MultiSelect ,
         'date': DateControl ,
         'textarea' : Textarea ,
-        'cascader': CascaderControl
+        'cascader': CascaderControl,
+        'select-textarea': SelectTextArea,
     }
     
 
