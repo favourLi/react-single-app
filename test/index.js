@@ -60,7 +60,7 @@ class Index extends Component{
         return (
             <App
                 pageMap={pageMap}
-                menuList={menu_data.concat(menu_data)}
+                menuList={menu_data}
                 colStyleList={mode_list.col}
                 topStyleList={mode_list.top}
                 configList={json_data}
