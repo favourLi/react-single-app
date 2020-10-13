@@ -153,12 +153,13 @@ var lib = {
                 sign: sign
             }, withCredentials: true,
             crossDomain: true,
-        }).then(function ({ data: json }) {
+        }).then( ({ data: json }) => {
             let { code, data, message : msg } = json;
             if (code == 200) {
                 success(data);
             } else if (code == -1001) {
-                window.location = `${this.config.login}?redirectUrl=${encodeURIComponent(window.location.href)}`
+
+                window.location = `${this.config.login}?redirectUrl=${encodeURIComponent(window.location.href)}`;
             }  else if (code < 0) {
                 message.error(msg);
             } else {
@@ -186,12 +187,13 @@ var lib = {
     setConfig(config){
         Object.assign(this.config , config);
     }
-
-
-
 }
 
-export default lib;
+if(!window.__lib__){
+    window.__lib__ = lib;
+}
+
+export default window.__lib__;
 
 
 

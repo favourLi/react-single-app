@@ -42,4 +42,7 @@ var event = {
 	}
 }
 
-export default event;
+if(!window.__event__){
+	window.__event__ = event;
+}
+export default window.__event__;

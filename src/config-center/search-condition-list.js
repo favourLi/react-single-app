@@ -303,7 +303,9 @@ function SearchConditionList({ searchKeyList , onSearch }){
             }
             
         }
-        history.replace(`${window.location.pathname}?${searchUrl.join('&')}`);
+        if(history){
+            history.replace(`${window.location.pathname}?${searchUrl.join('&')}`);
+        }
         onSearch(searchCondition)
     }
     function reset(){

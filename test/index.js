@@ -29,13 +29,12 @@ const user = {
         name : 'OMS 小二后台',
         url : ''
     }],
+    goUserCenter: () => {
+        lib.openPage('/abc?page_title=123')
+    },
     logout:() => {
         lib.request({
             url: '/ucenter-admin/logout' ,
-            client: {
-                clientId: '9E514E70AD7D485986D687F64616C662',
-                clientSecret: '33F14542BB274284B63147E6C8F3DF9E'
-            },
             success:() => {
                 if(window.location.host.indexOf('yang800.com') > -1){
                     window.location = '//login.yang800.com';
@@ -49,11 +48,19 @@ const user = {
 }
 
 
-
+lib.setConfig({
+    login : window.location.host.indexOf('yang800.com') > -1 ? 'http://admin.account.yang800.com/login.htm' : 'http://admin.account.yang800.cn/login.htm'
+})
 
 class Index extends Component{
     constructor(props){
         super(props)
+        lib.request({
+            url: '/ucenter-admin/current/userInfo',
+            success: (data) => {
+                console.log(data);
+            }
+        })
     }
 
     render(){
@@ -75,3 +82,4 @@ class Index extends Component{
 
 
 ReactDOM.render(<Index /> , document.getElementById('root'));
+// ReactDOM.render(<ConfigCenter configList={json_data} /> , document.getElementById('root'));

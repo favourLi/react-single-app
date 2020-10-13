@@ -106,8 +106,8 @@ function User({user}){
                 {user.name}
                 <div className='header-tip'>
                     <div className='list'>
-                        <div onClick={user.logout}><span>&#xe635;</span>退出登录
-                        </div>
+                        <div onClick={user.goUserCenter}><span>&#xe631;</span>用户中心</div>
+                        <div onClick={user.logout}><span>&#xe635;</span>退出登录</div>
                     </div>
                 </div>
             </div>
