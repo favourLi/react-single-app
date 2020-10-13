@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { App, ConfigCenter, Uploader , lib} from '../src/index';
+import { App, ConfigCenter , lib} from '../src/index';
 import Test from './test';
 import TestDetail from './test-detail'
 import 'antd/dist/antd.css';
