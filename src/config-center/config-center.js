@@ -315,7 +315,7 @@ class ConfigCenter extends React.Component{
                             {
                                 dataList.map((row, index) =>
                                     <Fragment key={index}>
-                                        <tr  className={`${row === detail.data ? 'active' : ''} ${index % 2 == 0 ? 'odd' : 'even'}`}>
+                                        <tr  className={`${row === detail.data ? 'active' : ''} ${index % 2 == 0 ? 'odd' : 'even'} ${row.__expand__ ? 'no-border' : ''}`}>
                                             {
                                                 tableFieldList.map((item, i) => {
                                                     let cls = '';
@@ -394,7 +394,7 @@ class ConfigCenter extends React.Component{
                                         </tr>
                                         {
                                             row.__expand__ && <tr  className={`${index % 2 == 0 ? 'odd' : 'even'}`}>
-                                                <td className='sticky-left' style={{left : 0}} colSpan={tableFieldList[0].type == 'batch' ? 2 : 1}></td>
+                                                <td className={tableStyle == 'sticky' ? 'sticky-left' : ''} style={{left : 0}} colSpan={tableFieldList[0].type == 'batch' ? 2 : 1}></td>
                                                 <td class='expand-content' colSpan={tableFieldList.length - (tableFieldList[0].type == 'batch' ? 2 : 1)} >
                                                     {
                                                         this.renderRowExpand && this.renderRowExpand(row)
