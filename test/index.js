@@ -57,7 +57,6 @@ dealData(json_data , 1597199079828173 , (config) => {
         field.type = 'function';
         field.key = 'getUserId';
     })
-    config.needExpandSub = true;
     console.log(config);
 })
 

@@ -216,7 +216,7 @@ class ConfigCenter extends React.Component{
         let rightList = tableFieldList.filter((item) => item.display == 'sticky-right');
         
         let [left, right] = [config.needBatchOperation  ? 50 : 0 , 0];
-        left += config.needExpandSub ? 50 : 0;
+        left += this.renderRowExpand ? 50 : 0;
 
         leftList.map((item) => {item.left = left ; item.right = 'auto' ; left += item.width});
         rightList.reverse().map((item) => {item.right = right ; item.left='auto' ; right += item.width});
@@ -227,7 +227,7 @@ class ConfigCenter extends React.Component{
             if(config.needBatchOperation ){
                 width -= 50;
             }
-            if(config.needExpandSub){
+            if(this.renderRowExpand){
                 width -= 50;
             }
             let tableWidth = 0;
@@ -252,7 +252,7 @@ class ConfigCenter extends React.Component{
                 width: 50
             });
         }
-        if(config.needExpandSub){
+        if(this.renderRowExpand){
             extraList.push({
                 id: 2,
                 type: 'expand',
