@@ -337,7 +337,7 @@ function SearchConditionList({ searchKeyList , onSearch }){
                 item.value = '';
             }
         })
-        search();
+        onSearch({});
         setRefresh(++refresh);
     }
 
