@@ -150,6 +150,24 @@ function DateControl({item}){
     )
 }
 
+function Range({item}){
+    let [refresh, setRefresh] = useState(0);
+    return (
+        <div className='group range' >
+            <label>{item.label}</label>
+            <Input value={item.startValue || ''} onChange={(e) => {
+                item.startValue = e.target.value;
+                setRefresh(++refresh);
+            }}></Input>
+            <span>&#xe633;</span>
+            <Input value={item.endValue || ''} onChange={(e) => {
+                item.endValue = e.target.value;
+                setRefresh(++refresh);
+            }}></Input>
+        </div>
+    )
+}
+
 function Textarea({item}){
     let [refresh, setRefresh] = useState(0);
     return (
@@ -205,7 +223,6 @@ function CascaderControl({item}){
         },
     ];
     function onChange(value) {
-        console.log(value);
     }
 
     return (
@@ -256,7 +273,7 @@ function SelectTextArea({item}) {
 
 function SearchConditionList({ searchKeyList , onSearch }){
     let [refresh , setRefresh] = useState(0);
-    let [isMiniType , setType] = useState(true);
+    let [isMiniType , setType] = useState(false);
     let history = useHistory();
     
     function search() {
@@ -272,7 +289,7 @@ function SearchConditionList({ searchKeyList , onSearch }){
         })
 
         searchKeyList.map((item) => {
-            if (item.type == 'date') {
+            if (item.type == 'date' || item.type == 'range') {
                 if (item.startValue) {
                     searchCondition[item.startKey] = item.startValue;
                     searchCondition[item.endKey] = item.endValue;
@@ -310,7 +327,7 @@ function SearchConditionList({ searchKeyList , onSearch }){
     }
     function reset(){
         searchKeyList.map((item) => {
-            if (item.type == 'date') {
+            if (item.type == 'date' || item.type == 'range') {
                 if (item.startValue) {
                     item.startValue = item.endValue = '';
                 }
@@ -348,7 +365,7 @@ function SearchConditionList({ searchKeyList , onSearch }){
 
         searchKeyList.map((item) => {
             item.value = '';
-            if (item.type == 'date') {
+            if (item.type == 'date' || item.type == 'range') {
                 item.startKey = item.key.split(',')[0];
                 item.endKey = item.key.split(',')[1];
                 if (!item.startValue && map.get(item.startKey)){
@@ -393,6 +410,7 @@ function SearchConditionList({ searchKeyList , onSearch }){
         'textarea' : Textarea ,
         'cascader': CascaderControl,
         'select-textarea': SelectTextArea,
+        'range' : Range
     }
     
 

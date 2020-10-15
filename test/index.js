@@ -53,6 +53,12 @@ function dealData(list , id , fn){
 }
 
 dealData(json_data , 1597199079828173 , (config) => {
+    config.searchKeyList.push({
+        key : 'smallPrice,bigPrice',
+        type : 'range',
+        label:'价格'
+    });
+
     dealData(config.tableFieldList , 1597200158410388 , (field) => {
         field.type = 'function';
         field.key = 'getUserId';
