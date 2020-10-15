@@ -44,7 +44,7 @@
   },
   "scripts": {
     "build": "webpack --config webpack.product.js",
-    "start": "webpack-dev-server --open --config webpack.dev.js --host 127.0.0.1 --disableHostCheck=true"
+    "start": "webpack-dev-server --open --config webpack.dev.js --host 0.0.0.0 --disableHostCheck=true"
   },
   "keywords": [],
   "author": "",
