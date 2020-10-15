@@ -39,6 +39,21 @@ module.exports = {
 
         }]
     },
+    optimization : {
+        splitChunks : {
+            chunks : 'all',
+            cacheGroups:{
+                vendors: { 
+                    test: /node_modules\//,
+                    name: 'vendor',
+                    priority: 10,
+                    enforce: true,
+                },
+            }
+        },
+    },
+
+
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',

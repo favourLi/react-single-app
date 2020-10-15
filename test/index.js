@@ -47,6 +47,22 @@ const user = {
     }
 }
 
+function dealData(list , id , fn){
+    var config = list.find((item) => item.id == id);
+    config ? fn(config) : console.error(`找不到id:${id}的配置`);
+}
+
+dealData(json_data , 1597199079828173 , (config) => {
+    dealData(config.tableFieldList , 1597200158410388 , (field) => {
+        field.type = 'function';
+        field.key = 'getUserId';
+    })
+    config.needExpandSub = true;
+    console.log(config);
+})
+
+
+
 
 lib.setConfig({
     login : window.location.host.indexOf('yang800.com') > -1 ? 'http://admin.account.yang800.com/login.htm' : 'http://admin.account.yang800.cn/login.htm'

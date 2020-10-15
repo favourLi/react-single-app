@@ -39,7 +39,7 @@ function ResizeableTh(props){
         <th style={style} className={cls}>
             {
                 item.type == 'batch' && 
-                <div className='content ' style={{paddingLeft:'6px' , borderRight:'solid 1px #ddd' , marginRight : '-11px' }}>
+                <div className='content ' style={{marginLeft:'-4px'  , marginRight : '-11px' }}>
                     <Checkbox checked={checked} indeterminate={indeterminate} onChange={(e) => {
                         dataList.map((item) => item.checked = e.target.checked);
                         props.refresh();
@@ -47,7 +47,12 @@ function ResizeableTh(props){
                 </div>
             }
             {
-                item.type != 'batch' && 
+                item.type == 'expand' && 
+                <div className='content ' style={{marginLeft:'-4px' , borderRight:'solid 1px #ddd' , marginRight : '-11px' }}>
+                </div>
+            }
+            {
+                item.type != 'batch' && item.type !='expand' && 
                 <Fragment >
                     {
                         item.tooltip ? 
@@ -211,6 +216,8 @@ class ConfigCenter extends React.Component{
         let rightList = tableFieldList.filter((item) => item.display == 'sticky-right');
         
         let [left, right] = [config.needBatchOperation  ? 50 : 0 , 0];
+        left += config.needExpandSub ? 50 : 0;
+
         leftList.map((item) => {item.left = left ; item.right = 'auto' ; left += item.width});
         rightList.reverse().map((item) => {item.right = right ; item.left='auto' ; right += item.width});
         rightList.reverse();
@@ -218,6 +225,9 @@ class ConfigCenter extends React.Component{
         if(this.tablePanel){
             let width = this.tablePanel.offsetWidth - (navigator.platform.toLocaleLowerCase().indexOf('mac') > -1 ? 0 : 18);
             if(config.needBatchOperation ){
+                width -= 50;
+            }
+            if(config.needExpandSub){
                 width -= 50;
             }
             let tableWidth = 0;
@@ -232,15 +242,26 @@ class ConfigCenter extends React.Component{
                 tableStyle = 'sticky';
             }
         }
+        let extraList = [];
         if (config.needBatchOperation ) {
-            tableFieldList = [{
+            extraList.push({
                 id: 1,
                 type: 'batch',
                 display: 'sticky-left',
                 left : 0,
                 width: 50
-            }, ...tableFieldList]
+            });
         }
+        if(config.needExpandSub){
+            extraList.push({
+                id: 2,
+                type: 'expand',
+                display: 'sticky-left',
+                left : config.needBatchOperation ? 50 : 0,
+                width: 50
+            });
+        }
+        tableFieldList = [...extraList , ...tableFieldList];
         return {tableFieldList , tableStyle};
     }
 
@@ -249,7 +270,7 @@ class ConfigCenter extends React.Component{
             return;
         }
         let tableWidth = 0;
-        let {dataList} = this.state;
+        let {dataList , __detail__:detail} = this.state;
         let {tableFieldList , tableStyle} = this.getTableStyle();
         
         tableWidth = tableFieldList.reduce((tableWidth, item) => tableWidth + item.width);
@@ -293,72 +314,95 @@ class ConfigCenter extends React.Component{
 
                             {
                                 dataList.map((row, index) =>
-                                    <tr key={index}>
-                                        {
-                                            tableFieldList.map((item, i) => {
-                                                let cls = '';
-                                                let style = {};
-                                                if(tableStyle == 'sticky'){
-                                                    cls = item.display;
-                                                    if(cls == 'sticky-left'){
-                                                        style = {left : item.left};
-                                                    }
-                                                    if(cls == 'sticky-right'){
-                                                        style={right : item.right};
-                                                    }
-                                                } 
-                                                if(item.type == 'batch'){
-                                                    return (
-                                                        <td key={i} className={cls + ' batch'} style={style}>
-                                                            <Checkbox checked={row.checked} onChange={(e) => {
-                                                                row.checked = e.target.checked
-                                                                this.setState({dataList});
-                                                            }} />
-                                                        </td>
-                                                    )
-                                                }
-                                                if (item.type == 'text') {
-                                                    return (
-                                                        <td key={i} className={cls} style={style}>
-                                                            {row[item.key]}
-                                                        </td>
-                                                    )
-                                                }
-                                                else if (item.type == 'js') {
-                                                    var html = '';
-                                                    try {
-                                                        html = eval(item.key)
-                                                    } catch (e) {
-                                                        console.error(new Error(`error expression ${item.key}`) );
-                                                    }
-                                                    return (
-                                                        <td key={i} className={cls} style={style} dangerouslySetInnerHTML={{ __html: html }}>
-                                                        </td>
-                                                    )
-                                                }
-                                                else if (item.type == 'function') {
-                                                    var html = '';
-                                                    try {
-                                                        if (typeof this[item.key] != 'function'){
-                                                            console.error( new Error(`can not find the function ${item.key}`));
-                                                        }else{
-                                                            html = this[item.key](row)
+                                    <Fragment key={index}>
+                                        <tr  className={`${row === detail.data ? 'active' : ''} ${index % 2 == 0 ? 'odd' : 'even'}`}>
+                                            {
+                                                tableFieldList.map((item, i) => {
+                                                    let cls = '';
+                                                    let style = {};
+                                                    if(tableStyle == 'sticky'){
+                                                        cls = item.display;
+                                                        if(cls == 'sticky-left'){
+                                                            style = {left : item.left};
                                                         }
-
-                                                    } catch (e) {
-                                                        console.error(e)
+                                                        if(cls == 'sticky-right'){
+                                                            style={right : item.right};
+                                                        }
+                                                    } 
+                                                    if(item.type == 'batch'){
+                                                        return (
+                                                            <td key={i} className={cls + ' batch'} style={style}>
+                                                                <Checkbox checked={row.checked} onChange={(e) => {
+                                                                    row.checked = e.target.checked
+                                                                    this.setState({dataList});
+                                                                }} />
+                                                            </td>
+                                                        )
                                                     }
-                                                    return (
-                                                        <td key={i} className={cls} style={style} >
-                                                            {html}
-                                                        </td>
+                                                    if(item.type == 'expand'){
+                                                        return (
+                                                            this.renderRowExpand && this.renderRowExpand(row) ?
+                                                            <td key={i} className={cls + ' expand'} style={style} onClick={() => {
+                                                                row.__expand__ = !row.__expand__;
+                                                                this.setState(this.state);
+                                                            }} dangerouslySetInnerHTML={{__html : row.__expand__ ? '&#xe71e;' : '&#xe60f;'}}>
+                                                            </td>
+                                                            : <td key={i} className={cls + ' expand'} style={style}/>
+                                                        )
+                                                    }
+                                                    if (item.type == 'text') {
+                                                        return (
+                                                            <td key={i} className={cls} style={style}>
+                                                                {row[item.key]}
+                                                            </td>
+                                                        )
+                                                    }
+                                                    else if (item.type == 'js') {
+                                                        var html = '';
+                                                        try {
+                                                            html = eval(item.key)
+                                                        } catch (e) {
+                                                            console.error(new Error(`error expression ${item.key}`) );
+                                                        }
+                                                        return (
+                                                            <td key={i} className={cls} style={style} dangerouslySetInnerHTML={{ __html: html }}>
+                                                            </td>
+                                                        )
+                                                    }
+                                                    else if (item.type == 'function') {
+                                                        var html = '';
+                                                        try {
+                                                            if (typeof this[item.key] != 'function'){
+                                                                console.error( new Error(`can not find the function ${item.key}`));
+                                                            }else{
+                                                                html = this[item.key](row)
+                                                            }
 
-                                                    )
-                                                }
+                                                        } catch (e) {
+                                                            console.error(e)
+                                                        }
+                                                        return (
+                                                            <td key={i} className={cls} style={style} >
+                                                                {html}
+                                                            </td>
 
-                                            })
+                                                        )
+                                                    }
+
+                                                })
+                                            }
+                                        </tr>
+                                        {
+                                            row.__expand__ && <tr  className={`${index % 2 == 0 ? 'odd' : 'even'}`}>
+                                                <td className='sticky-left' style={{left : 0}} colSpan={tableFieldList[0].type == 'batch' ? 2 : 1}></td>
+                                                <td class='expand-content' colSpan={tableFieldList.length - (tableFieldList[0].type == 'batch' ? 2 : 1)} >
+                                                    {
+                                                        this.renderRowExpand && this.renderRowExpand(row)
+                                                    }
+                                                </td>
+                                            </tr>
                                         }
-                                    </tr>
+                                    </Fragment>
                                 )
                             }
                         </tbody>
@@ -456,6 +500,7 @@ class ConfigCenter extends React.Component{
                             }} />
                             <div className='close' onClick={() => {
                                 detail.show = false;
+                                detail.data = null;
                                 this.setState({ __detail__: detail });
                             }}>&#xe60c;</div>
                             <div className='detail-content' >
