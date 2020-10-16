@@ -35,7 +35,8 @@ Date.prototype.format = function (fmt) { //author: meizz
 var lib = {
 
     config : {
-        login : window.location.host.indexOf('yang800.com') > -1 ? 'http://login.yang800.com' : 'http://login.yang800.cn'
+        login : window.location.host.indexOf('yang800.com') > -1 ? 'http://account.admin.yang800.com' : 'http://account.admin.yang800.cn',
+        webToken : 'admin'
     } ,
 
     /**
@@ -117,7 +118,7 @@ var lib = {
         fail          function    否         失败回调函数
         needMask      boolean     否         是否需要遮照，默认为true
     **/
-    request({ url, needMask = 'false', data , success = function(){}, fail = function(){} }) {
+    request({ url, needMask = false, data , success = function(){}, fail = function(){} }) {
         if(window.location.hostname.indexOf('yang800.com') > -1){
             var [clientId, clientSecret, prefixUrl] = [
                 '9E514E70AD7D485986D687F64616C662',
@@ -150,7 +151,8 @@ var lib = {
             headers: {
                 timestamp: timestamp,
                 clientId: clientId,
-                sign: sign
+                sign: sign,
+                webToken: this.config.webToken
             }, withCredentials: true,
             crossDomain: true,
         }).then( ({ data: json }) => {
@@ -185,6 +187,10 @@ var lib = {
     },
 
     setConfig(config){
+        if(config.webToken == 'user'){
+            this.config.login = window.location.host.indexOf('yang800.com') > -1 ? 'http://account.yang800.com' : 'http://account.yang800.cn';
+        }
+
         Object.assign(this.config , config);
     }
 }

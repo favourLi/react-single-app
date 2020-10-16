@@ -73,6 +73,10 @@ lib.setConfig({
     login : window.location.host.indexOf('yang800.com') > -1 ? 'http://admin.account.yang800.com/login.htm' : 'http://admin.account.yang800.cn/login.htm'
 })
 
+
+
+
+
 class Index extends Component{
     constructor(props){
         super(props)
