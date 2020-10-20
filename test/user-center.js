@@ -19,8 +19,9 @@ class UserCenter extends ConfigCenter{
     renderRowExpand(row){
         if(row.id % 2 == 0){
             return <table>
-                <tr><th>ID</th></tr>
-                <tr><td>{row.id}</td></tr>
+                <tr><th>ID</th><th>名字</th></tr>
+                <tr><td>{row.id}</td><td>哈哈</td></tr>
+                <tr><td>{row.id}</td><td>嘻嘻</td></tr>
             </table>
         }
     }

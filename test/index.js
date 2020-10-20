@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { App, ConfigCenter , lib} from '../src/index';
+import { App, ConfigCenter , Outlet, lib} from '../src/index';
 import Test from './test';
 import TestDetail from './test-detail'
 import 'antd/dist/antd.css';
@@ -19,7 +19,8 @@ const pageMap = {
     'item-center' : ItemCenter,
     'brand-center' : BrandCenter,
     'order': OrderList,
-    'order-detail': OrderDetail
+    'order-detail': OrderDetail,
+    'admin-user-center' : Outlet
 }
 
 const user = {
@@ -70,11 +71,15 @@ dealData(json_data , 1597199079828173 , (config) => {
 
 
 lib.setConfig({
-    login : window.location.host.indexOf('yang800.com') > -1 ? 'http://admin.account.yang800.com/login.htm' : 'http://admin.account.yang800.cn/login.htm'
+    webToken : 'admin'
 })
 
 
-
+menu_data.push({
+    title : '账号管理 - 小二' , 
+    url: '/admin-user-center/1603173834935?config_id=1602392556225207&page_title=账号管理-小二&systemCode=CCS_ADMIN',
+    list : []
+})
 
 
 class Index extends Component{

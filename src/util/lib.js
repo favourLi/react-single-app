@@ -119,7 +119,15 @@ var lib = {
         needMask      boolean     否         是否需要遮照，默认为true
     **/
     request({ url, needMask = false, data , success = function(){}, fail = function(){} }) {
-        if(window.location.hostname.indexOf('yang800.com') > -1){
+        if(window.location.hostname.indexOf('yang800.com.cn') > -1){
+            //预发环境，做压测用，放开网关验证
+            var [clientId, clientSecret, prefixUrl] = [
+                '96A63530DA0C49BB9FABB66ED40FB3C7',
+                'F6A99B36E4D24817AB037237454893D9',
+                'http://danding-gateway.yang800.com.cn'
+            ]
+        }
+        else if(window.location.hostname.indexOf('yang800.com') > -1){
             var [clientId, clientSecret, prefixUrl] = [
                 '9E514E70AD7D485986D687F64616C662',
                 '33F14542BB274284B63147E6C8F3DF9E' , 
@@ -133,6 +141,7 @@ var lib = {
                 'http://danding-gateway.yang800.cn'
             ]
         }
+        
         var timestamp = new Date().getTime()
         let md5Data = ''
         if(data){
