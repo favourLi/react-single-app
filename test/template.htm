@@ -17,7 +17,6 @@
     
     <script type='text/javascript' src='http://maria.yang800.com/api/data/62?type=js&name=user_center_data'></script>
 
-    <script type='text/javascript' src='http://uc.yang800.com/admin.js?<%= new Date().getTime() %>' ></script>
     <% name=htmlWebpackPlugin.options.filename.split(".")[0]  %>
     <script type="text/javascript" src="/<%=htmlWebpackPlugin.files.chunks['vendor'].entry %>"></script>
     <script type="text/javascript" src="/<%=htmlWebpackPlugin.files.chunks[name].entry %>"></script>

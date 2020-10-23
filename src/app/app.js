@@ -54,18 +54,7 @@ function App({ pageMap = {}, menuList = [], colStyleList=[] , topStyleList=[] , 
         } 
     } , [])
     useEffect(() => {
-        if(window.location.pathname != '/'){
-            pageList.push({
-                url: window.location.pathname + window.location.search
-            });
-            setPageList([...pageList]);
-        }
-        event.on('add-page', (page) => {
-            pageList.push(page);
-            setPageList([...pageList]);
-            history.push(page.url);
-        });
-        event.on('delete-page' , () => {
+        function closePage(){
             var key = window.location.pathname.split('/').pop();
             var active = -1;
             pageList.map((item , index) => {
@@ -83,6 +72,27 @@ function App({ pageMap = {}, menuList = [], colStyleList=[] , topStyleList=[] , 
                 history.push('/');
             }
             setPageList([...pageList]);
+        }
+
+        if(window.location.pathname != '/'){
+            pageList.push({
+                url: window.location.pathname + window.location.search
+            });
+            setPageList([...pageList]);
+        }
+        event.on('add-page', (page) => {
+            pageList.push(page);
+            setPageList([...pageList]);
+            history.push(page.url);
+        });
+        event.on('delete-page' , closePage);
+        event.on('close-page' , closePage);
+        event.on('close-other-page' , () => {
+            var key = window.location.pathname.split('/').pop();
+            var activeItem = pageList.find(item => item.url.indexOf(key) > -1);
+            pageList.splice(0);
+            pageList.push(activeItem);
+            setPageList([...pageList]);
         })
     } , [])
     return (
@@ -90,13 +100,13 @@ function App({ pageMap = {}, menuList = [], colStyleList=[] , topStyleList=[] , 
                 {
                     isColMenu && 
                     <div className='sub-content'>
-                        <Menu menuList={menuList} />
+                        <Menu menuList={menuList} type='col' />
                     </div>
                 }
                 <div className='main-content'>
                     <div>
                         <div className='header'  >
-                            {!isColMenu && <Menu menuList={menuList} />}
+                            {!isColMenu && <Menu menuList={menuList} type='top' />}
                             <User user={user} />
                             <SystemSet  mode={mode} setColMenu={setColMenu} />
                         </div>

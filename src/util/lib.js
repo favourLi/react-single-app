@@ -1,5 +1,3 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import axios from 'axios';
 import {event} from '../index';
 import md5 from 'md5';
@@ -31,9 +29,7 @@ Date.prototype.format = function (fmt) { //author: meizz
 
 
 
-
 var lib = {
-
     config : {
         webToken : 'admin'
     } ,
@@ -164,15 +160,12 @@ var lib = {
             }, withCredentials: true,
             crossDomain: true,
         }).then( ({ data: json }) => {
-            
             let { code, data, message : msg } = json;
-            console.log(`------ ${url} ------`);
-            console.log(code , data , msg);
-
+            // console.log(`------ ${url} ------`);
+            // console.log(code , data , msg);
             if (code == 200) {
                 success(data);
             } else if (code == -1001) {
-
                 window.location = `${this.config.login}?redirectUrl=${encodeURIComponent(window.location.href)}`;
             }  else if (code < 0) {
                 message.error(msg);
