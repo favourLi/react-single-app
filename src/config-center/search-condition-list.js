@@ -290,9 +290,9 @@ function SelectInput({item}) {
                     })}
                 </Select>
             </label>
-            <Input className='form-control'
+            <Input
                 value={item.value || ''}
-                style={{ width: 260, height: 69}}
+                style={{ width: 260 }}
                 onChange={e => {
                     item.value = e.target.value;
                     setRefresh(++refresh);
