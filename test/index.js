@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { App, ConfigCenter , Outlet, lib} from '../src/index';
 import Test from './test';
 import TestDetail from './test-detail'
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 import Doc from './doc';
 import UserCenter from './user-center';
 import ItemCenter from './item-center';
