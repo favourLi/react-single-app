@@ -166,7 +166,13 @@ var lib = {
             if (code == 200) {
                 success(data);
             } else if (code == -1001) {
-                window.location = `${this.config.login}?redirectUrl=${encodeURIComponent(window.location.href)}`;
+                if(!this.config.login){
+                    console.error('no login url;please set the webToken')
+                }
+                else{
+                    window.location = `${this.config.login}?redirectUrl=${encodeURIComponent(window.location.href)}`;
+                }
+                
             }  else if (code < 0) {
                 message.error(msg);
             } else {

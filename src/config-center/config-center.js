@@ -65,7 +65,6 @@ function ResizeableTh(props){
                     
                     <Resizable width={width} height={36} minConstraints={[80, 50]}
                         onResize={(event, { element, size, handle }) => {
-                            console.log('onResize', size.width);
                             setWidth(size.width);
                         }}
                         onResizeStop={(e, { size }) => {
