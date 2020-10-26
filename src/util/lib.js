@@ -1,5 +1,3 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import axios from 'axios';
 import {event} from '../index';
 import md5 from 'md5';
@@ -31,11 +29,8 @@ Date.prototype.format = function (fmt) { //author: meizz
 
 
 
-
 var lib = {
-
     config : {
-        login : window.location.host.indexOf('yang800.com') > -1 ? 'http://account.admin.yang800.com' : 'http://account.admin.yang800.cn',
         webToken : 'admin'
     } ,
 
@@ -119,7 +114,15 @@ var lib = {
         needMask      boolean     否         是否需要遮照，默认为true
     **/
     request({ url, needMask = false, data , success = function(){}, fail = function(){} }) {
-        if(window.location.hostname.indexOf('yang800.com') > -1){
+
+        if(/yang800.com.cn$/.test(window.location.host)){
+            var [clientId, clientSecret, prefixUrl] = [
+                '96A63530DA0C49BB9FABB66ED40FB3C7',
+                'F6A99B36E4D24817AB037237454893D9',
+                'http://danding-gateway.yang800.com.cn'
+            ]
+        }
+        else if(/yang800.com$/.test(window.location.host)){
             var [clientId, clientSecret, prefixUrl] = [
                 '9E514E70AD7D485986D687F64616C662',
                 '33F14542BB274284B63147E6C8F3DF9E' , 
@@ -133,6 +136,7 @@ var lib = {
                 'http://danding-gateway.yang800.cn'
             ]
         }
+        
         var timestamp = new Date().getTime()
         let md5Data = ''
         if(data){
@@ -157,11 +161,18 @@ var lib = {
             crossDomain: true,
         }).then( ({ data: json }) => {
             let { code, data, message : msg } = json;
+            // console.log(`------ ${url} ------`);
+            // console.log(code , data , msg);
             if (code == 200) {
                 success(data);
             } else if (code == -1001) {
-
-                window.location = `${this.config.login}?redirectUrl=${encodeURIComponent(window.location.href)}`;
+                if(!this.config.login){
+                    console.error('no login url;please set the webToken')
+                }
+                else{
+                    window.location = `${this.config.login}?redirectUrl=${encodeURIComponent(window.location.href)}`;
+                }
+                
             }  else if (code < 0) {
                 message.error(msg);
             } else {
@@ -187,11 +198,14 @@ var lib = {
     },
 
     setConfig(config){
-        if(config.webToken == 'user'){
-            this.config.login = window.location.host.indexOf('yang800.com') > -1 ? 'http://account.yang800.com' : 'http://account.yang800.cn';
-        }
-
         Object.assign(this.config , config);
+        if(config.webToken == 'user'){
+            this.config.login = /yang800.com$/.test(window.location.host) ? 'http://account.yang800.com' : 'http://account.yang800.cn';
+        }
+        if(config.webToken == 'admin'){
+            this.config.login = /yang800.com$/.test(window.location.host) ? 'http://account.admin.yang800.com' : 'http://account.admin.yang800.cn'
+        }
+        
     }
 }
 

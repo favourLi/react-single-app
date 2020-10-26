@@ -25,6 +25,7 @@ function Navigation({pageList }){
 
                 )
             }
+            <li className='close-all' title='关闭其它页面' onClick={() => event.emit('close-other-page')}>&#xe659;</li>
         </ul>
     )
 }
