@@ -270,6 +270,38 @@ function SelectTextArea({item}) {
     )
 }
 
+function SelectInput({item}) {
+    let [refresh, setRefresh] = useState(0);
+    if (!item.select) {
+        item.select = JSON.parse(item.extra)[0].id
+    }
+    return (
+        <div className='group' >
+            <label>
+                <Select
+                    dropdownClassName="dropMenu"
+                    value={item.select}
+                    onChange={(e) => {
+                        item.select = e;
+                        setRefresh(++refresh);
+                    }}>
+                    {JSON.parse(item.extra).map(ite => {
+                        return <Option value={ite.id} key={ite.id}>{ite.name}</Option>
+                    })}
+                </Select>
+            </label>
+            <Input className='form-control'
+                value={item.value || ''}
+                style={{ width: 260, height: 69}}
+                onChange={e => {
+                    item.value = e.target.value;
+                    setRefresh(++refresh);
+                }}
+            />
+        </div>
+    )
+}
+
 
 function SearchConditionList({ searchKeyList , onSearch }){
     let [refresh , setRefresh] = useState(0);
@@ -305,6 +337,12 @@ function SearchConditionList({ searchKeyList , onSearch }){
                     let [select, queryNo] = item.key.split(",");
                     searchCondition[select] = item.select;
                     searchCondition[queryNo] = item.value.split('\n').map(item => item.trim()).join(',')
+                }
+            } else if (item.type == 'select-input') {
+                if (item.value.length) {
+                    let [select, queryNo] = item.key.split(",");
+                    searchCondition[select] = item.select;
+                    searchCondition[queryNo] = item.value;
                 }
             } else {
                 if (item.value != '') {
@@ -410,7 +448,8 @@ function SearchConditionList({ searchKeyList , onSearch }){
         'textarea' : Textarea ,
         'cascader': CascaderControl,
         'select-textarea': SelectTextArea,
-        'range' : Range
+        'range' : Range,
+        'select-input': SelectInput
     }
     
 
