@@ -12,7 +12,7 @@ module.exports = {
         'index': './src/index'
     },
     plugins: [
-        new CleanWebpackPlugin(),
+        // new CleanWebpackPlugin(),
         new ProgressBarPlugin(),
         new HappyPack({
             id: 'babel',
@@ -73,31 +73,16 @@ module.exports = {
     externals: [
         // nodeExternals(),
         {
-            react: {
-                root: 'React',
-                commonjs2: 'react',
-                commonjs: 'react',
-                amd: 'react'
-            },
-            'react-dom': {
-                root: 'ReactDOM',
-                commonjs2: 'react-dom',
-                commonjs: 'react-dom',
-                amd: 'react-dom'
-            },
-            'react-router': {
-                root: 'ReactRouter',
-                commonjs2: 'react-router',
-                commonjs: 'react-router',
-                amd: 'react-router'
-            },
-            'antd' : {
-                root: 'antd',
-                commonjs2: 'antd',
-                commonjs: 'antd',
-                amd: 'antd'
-            }
-            
+            react: 'react',
+            'react-dom': 'react-dom',
+            'react-router': 'react-router',
+            'antd' : 'antd',
+            'axios' : 'axios' ,
+            'react-draggable' : 'react-draggable' ,
+            'react-resizable' : 'react-resizable' , 
+            'react-sortable-hoc' : 'react-sortable-hoc' ,
+            'md5' : 'md5' , 
+            'moment' : 'moment'
         }
     ]
 };

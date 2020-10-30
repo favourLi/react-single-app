@@ -17,7 +17,7 @@ function setChecked(item , location){
         item.checked = isChecked(item.url , location);
     }
     else{
-        item.list && item.list.map((node) => {
+        item.list?.map((node) => {
             node.checked = isChecked(node.url , location);
             if(node.checked){
                 item.subChecked = true;
@@ -39,24 +39,24 @@ function Menu({menuList:list , type}){
                     list.map((item, index) => {
                         setChecked(item , props.location);
                         return (
-                            <div className='menu-group' style={{ height: item.open && isFull ? `${48 + item.list.length * 40}px` : '48px' }} key={index} onClick={() => {
+                            <div className='menu-group' style={{ height: item.open && isFull ? `${48 + item.list?.length * 40}px` : '48px' }} key={index} onClick={() => {
                                 item.open = !item.open;
                                 setRefresh(++refresh);
                             }}>
 
                                 <div className={`main-title ${item.checked || (item.subChecked && !isFull) ? 'checked' : ''}`} onClick={() => {
-                                    if (!(item.list && item.list.length > 0)){
+                                    if (!(item.list?.length > 0)){
                                         lib.openPage(item.url);
                                     }
                                 }}>
                                     <span className='icon' dangerouslySetInnerHTML={{ __html: item.icon }}></span>
                                     {item.title}
-                                    {item.list.length > 0 && <div className={`icon-down ${item.open ? 'open' : ''}`} >&#xe6c7;</div>}
+                                    {item.list?.length > 0 && <div className={`icon-down ${item.open ? 'open' : ''}`} >&#xe6c7;</div>}
                                 </div>
 
                                 <div className='sub-box' onClick={(e) => { e.stopPropagation()}}>
                                     <div className='sub-list'>
-                                        {item.list && item.list.length > 0 ? 
+                                        {item.list?.length > 0 ? 
                                             item.list.map((sub, key) =>
                                                 <Fragment key={key}>
                                                     <div className={sub.checked && isFull ? 'sub-title checked' : 'sub-title'} 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { App, ConfigCenter , Outlet, lib} from '../src/index';
+import { App, ConfigCenter , Outlet, lib , ImportExcel} from '../src/index';
 import Test from './test';
 import TestDetail from './test-detail'
 // import 'antd/dist/antd.css';
@@ -20,7 +20,8 @@ const pageMap = {
     'brand-center' : BrandCenter,
     'order': OrderList,
     'order-detail': OrderDetail,
-    'admin-user-center' : Outlet
+    'admin-user-center' : Outlet , 
+    'import-excel' : ImportExcel
 }
 
 const user = {
@@ -64,7 +65,6 @@ dealData(json_data , 1597199079828173 , (config) => {
         field.type = 'function';
         field.key = 'getUserId';
     })
-    console.log(config);
 })
 
 
@@ -78,7 +78,9 @@ lib.setConfig({
 menu_data.push({
     title : '账号管理 - 小二' , 
     url: '/admin-user-center/1603173834935?config_id=1602392556225207&page_title=账号管理-小二&systemCode=CCS_ADMIN',
-    list : []
+},{
+    title : '导入',
+    url : '/import-excel?page_title=导入'
 })
 
 
@@ -88,7 +90,6 @@ class Index extends Component{
         lib.request({
             url: '/ucenter-admin/current/userInfo',
             success: (data) => {
-                console.log(data);
             }
         })
     }

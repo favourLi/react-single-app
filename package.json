@@ -1,6 +1,6 @@
 {
 	"name": "react-single-app",
-	"version": "1.4.1",
+	"version": "1.5.4",
 	"main": "lib/index.js",
 	"description": "fixed the event bug",
 	"repository": {
@@ -46,7 +46,8 @@
 	},
 	"scripts": {
 		"build": "webpack --config webpack.product.js",
-		"start": "webpack-dev-server --open --config webpack.dev.js --host 0.0.0.0 --disableHostCheck=true"
+		"watch": "webpack --watch --config webpack.product.js",
+		"start": "webpack-dev-server --open --config webpack.dev.js --host 127.0.0.1 --disableHostCheck=true "
 	},
 	"keywords": [],
 	"author": "",

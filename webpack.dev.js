@@ -3,6 +3,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const HappyPack = require('happypack');
+const webpack = require('webpack');
 const happyThreadPool = HappyPack.ThreadPool({
     size: 5
 })
@@ -48,7 +49,7 @@ module.exports = {
             template: './test/template.htm',
             inject: false,
             hash: true,
-        })
+        }),
     ],
     output: {
         filename: '[name].js',
@@ -91,8 +92,6 @@ module.exports = {
             }
         },
     },
-
-
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
@@ -101,7 +100,8 @@ module.exports = {
             rewrites: [
                 { from: /./, to: '/index.htm' }
             ]
-        }
-    }
+        },
+    },
+    
 };
 
