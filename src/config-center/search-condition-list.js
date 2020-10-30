@@ -188,47 +188,14 @@ function Textarea({item}){
 
 function CascaderControl({item}){
     let [refresh, setRefresh] = useState(0);
-    const options = [
-        {
-            value: 'zhejiang',
-            label: 'Zhejiang',
-            children: [
-                {
-                    value: 'hangzhou',
-                    label: 'Hangzhou',
-                    children: [
-                        {
-                            value: 'xihu',
-                            label: 'West Lake',
-                        },
-                    ],
-                },
-            ],
-        },
-        {
-            value: 'jiangsu',
-            label: 'Jiangsu',
-            children: [
-                {
-                    value: 'nanjing',
-                    label: 'Nanjing',
-                    children: [
-                        {
-                            value: 'zhonghuamen',
-                            label: 'Zhong Hua Men',
-                        },
-                    ],
-                },
-            ],
-        },
-    ];
     function onChange(value) {
+        item.value = value;
+        setRefresh(++refresh);
     }
-
     return (
         <div className='group'>
             <label>{item.label}</label>
-            <Cascader options={options} onChange={onChange} style={{ width: 260 }} placeholder="Please select" />
+            <Cascader options={item.list} onChange={onChange} style={{ width: 260 }} placeholder="Please select" />
         </div>
     )
 }
@@ -413,7 +380,7 @@ function SearchConditionList({ searchKeyList , onSearch }){
             if (item.type == 'multi-select') {
                 item.value = [];
             }
-            if (item.type == 'select' || item.type == 'search-select' || item.type == 'multi-select') {
+            if (item.type == 'select' || item.type == 'search-select' || item.type == 'multi-select' || item.type == 'cascader') {
                 if (!item.list) {
                     initSelect(item);
                 }
