@@ -361,7 +361,6 @@ function SearchConditionList({ searchKeyList , onSearch }){
         })
     }
     function init() {
-        $('.ant-picker input').val('');
         var map = new Map();
         window.location.search.substring(1).split('&').map((kv) => {
             let [key , value] = kv.split('=');

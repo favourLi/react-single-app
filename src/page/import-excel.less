@@ -1,0 +1,131 @@
+.import-excel{
+    padding: 30px 30px 0;
+    overflow: scroll;
+    height: 100%;
+    .step-1{
+        .box{
+            margin-top:30px;
+            border:solid 1px #ddd;
+            padding:20px 40px;
+            .title{
+                position: relative;
+                height: 36px;
+                line-height: 36px;
+                font-size: 14px;
+                color:#333;
+                font-weight: bold;
+                &:before{
+                    content: '';
+                    position: absolute;
+                    left: -12px;
+                    top:10px;
+                    width: 3px;
+                    height: 16px;
+                    background: #1890FF;
+                }
+            }
+            .text{
+                color:#666; 
+                margin-bottom:20px;
+            }
+            
+        }
+        .next{
+            margin:20px auto;
+            display: block;
+            
+        }
+    }
+    .step-2{
+        padding:50px;
+        .status{
+            text-align: center;
+            margin-top: 15px;
+        }
+        .info{
+            text-align: center;
+            margin-top: 5px;
+            color:#555;
+            span{
+                margin: 5px;
+                font-weight: bold;
+            }
+        }
+    }
+
+    .step-3{
+        margin-top:20px;
+        height: calc(100% - 60px);
+        display: flex;
+        flex-direction:column;
+        flex-wrap:wrap;
+        justify-content: flex-start;
+        
+        .info{
+            width: 100%;
+            .title{
+                font-size: 14px;
+                font-weight: bold;
+                color:#333;
+                span{
+                    margin:5px;
+                }
+            }
+            .sub-title{
+                color:#666;
+                margin:2px 0;
+            }
+        }
+        .tabs{
+            width: 100%;
+        }
+        .tab-contents{
+            width: 100%;
+            flex-grow:1;
+            position: relative;
+            .panel{
+                position: absolute;
+                left: 0;
+                right: 0;
+                top:0;
+                bottom:0;
+                overflow: scroll;
+                table{
+                    border-top:solid 1px #ddd;
+                    width: 100%;
+                    tr:nth-child(even) td , tr th{
+                        background: #FAFAFA;
+                    }
+                    tr:hover td{
+                        background:#e7e7e7;
+                    }
+
+                    th , td{
+                        padding:6px 8px;
+                        border-bottom:solid 1px #ddd;
+                    }
+                    td.no{
+                        min-width: 50px;
+                    }
+                    td{
+                        min-width: 100px;
+                    }
+                }
+            }
+            .reason-panel{
+                span{
+                    width: 50px;
+                    text-align: center;
+                    display: inline-block;
+                    
+                }
+                margin-bottom: 10px;
+            }
+        }
+        .btns{
+            text-align: center;
+            padding: 10px;
+        }
+    }
+
+}

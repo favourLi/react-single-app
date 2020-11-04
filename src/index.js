@@ -4,4 +4,5 @@ import lib from './util/lib';
 import event from './util/event';
 import Uploader from './component/uploader';
 import Outlet from './component/outlet';
-export {App, ConfigCenter, Uploader, Outlet, lib, event};
+import ImportExcel from './page/import-excel';
+export {App, ConfigCenter, Uploader, Outlet, ImportExcel ,lib, event};

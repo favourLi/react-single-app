@@ -103,6 +103,7 @@ class ConfigCenter extends React.Component{
 
     constructor(props) {
         super(props);
+        console.log(props);
         this.state = {
             pagination: {
                 currentPage: 1,
@@ -111,7 +112,7 @@ class ConfigCenter extends React.Component{
             },
             searchConditions: {},
             dataList: [],
-            config: this.getConfig(lib.getParam('config_id')),
+            config: props.config || this.getConfig(lib.getParam('config_id')),
             __detail__ : {
                 height : 300,
                 show: false
@@ -413,6 +414,7 @@ class ConfigCenter extends React.Component{
     renderOperation(){
         let {config} = this.state;
         let excel = config.excel;
+        console.log('------' , excel);
         return (
             <Fragment>
                 <div className='operation-left-panel'>
@@ -425,17 +427,10 @@ class ConfigCenter extends React.Component{
                     {   
                         excel.import  && 
                         <Fragment>
-                            <button className='btn' onClick={() => window.location = excel.importTemplate}>导入模板下载 &#xe639;</button>
-                            <button className='btn import' >
+                            <button className='btn import' onClick={() => 
+                                lib.openPage(`/import-excel?page_title=${lib.getParam('page_title')}导入&api=${encodeURIComponent(excel.import)}`)
+                            }>
                                 导入 &#xe639;
-                                <Uploader 
-                                    style={{height : '36px'}} 
-                                    allowTypes={['xls' , 'xlsx']}
-                                    onUploadStart={() => lib.wait}
-                                    onUploadEnd={() => {
-                                        lib.waitEnd();
-                                    }}
-                                />
                             </button>
                         </Fragment>
                     }
