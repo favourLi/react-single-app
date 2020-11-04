@@ -90,7 +90,7 @@ lib.setConfig({
 
 menu_data.push({
     title : '账号管理 - 小二' , 
-    url: '/admin-user-center/1603173834935?config_id=1602392556225207&page_title=账号管理-小二&systemCode=CCS_ADMIN',
+    url: '/warehouse/1603173834935?config_id=1604481092103925&page_title=账号管理-小二&systemCode=CCS_ADMIN',
 },{
     title : '导入',
     url : '/import-excel?page_title=导入'

@@ -195,7 +195,7 @@ function CascaderControl({item}){
     return (
         <div className='group'>
             <label>{item.label}</label>
-            <Cascader options={item.list} onChange={onChange} style={{ width: 260 }} placeholder="Please select" />
+            <Cascader options={item.list} onChange={onChange} style={{ width: 260 }} placeholder="" />
         </div>
     )
 }
