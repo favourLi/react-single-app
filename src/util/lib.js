@@ -182,19 +182,25 @@ var lib = {
         });
     },
     wait(time) {
-        var html = `
-            <div class='wait' id='wait'>
+        var div = document.getElementById('wait');
+        if(!div){
+            div = document.createElement('div');
+            div.className = 'wait';
+            div.id = 'wait';
+            div.innerHTML = `
                 <div class='mask'></div>
                 <img src='//dante-img.oss-cn-hangzhou.aliyuncs.com/30183475885.svg' />
-            </div>
-        `;
-        $('body').append(html);
+            `
+            document.body.append(div);
+        }
         if (time) {
             setTimeout(lib.waitEnd, time)
         }
     },
     waitEnd() {
-        $('#wait').remove();
+        if(document.getElementById('wait')){
+            document.getElementById('wait').remove();
+        }
     },
 
     setConfig(config){

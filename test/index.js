@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { App, ConfigCenter , Outlet, lib} from '../src/index';
+import { App, ConfigCenter , Outlet, lib , ImportExcel} from '../src/index';
 import Test from './test';
 import TestDetail from './test-detail'
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 import Doc from './doc';
 import UserCenter from './user-center';
 import ItemCenter from './item-center';
@@ -20,7 +20,8 @@ const pageMap = {
     'brand-center' : BrandCenter,
     'order': OrderList,
     'order-detail': OrderDetail,
-    'admin-user-center' : Outlet
+    'admin-user-center' : Outlet , 
+    'import-excel' : ImportExcel
 }
 
 const user = {
@@ -66,6 +67,18 @@ function dealData(list , id , fn){
 //     })
 //     console.log(config);
 // })
+dealData(json_data , 1597199079828173 , (config) => {
+    config.searchKeyList.push({
+        key : 'smallPrice,bigPrice',
+        type : 'range',
+        label:'价格'
+    });
+
+    dealData(config.tableFieldList , 1597200158410388 , (field) => {
+        field.type = 'function';
+        field.key = 'getUserId';
+    })
+})
 
 
 
@@ -77,8 +90,10 @@ lib.setConfig({
 
 menu_data.push({
     title : '账号管理 - 小二' , 
-    url: '/warehouse/1603173834935?config_id=1604481092103925&page_title=账号管理-小二&systemCode=CCS_ADMIN',
-    list : []
+    url: '/admin-user-center/1603173834935?config_id=1602392556225207&page_title=账号管理-小二&systemCode=CCS_ADMIN',
+},{
+    title : '导入',
+    url : '/import-excel?page_title=导入'
 })
 
 
@@ -88,7 +103,6 @@ class Index extends Component{
         lib.request({
             url: '/ucenter-admin/current/userInfo',
             success: (data) => {
-                console.log(data);
             }
         })
     }
