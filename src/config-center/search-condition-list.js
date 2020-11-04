@@ -305,6 +305,10 @@ function SearchConditionList({ searchKeyList , onSearch }){
                     searchCondition[select] = item.select;
                     searchCondition[queryNo] = item.value.split('\n').map(item => item.trim()).join(',')
                 }
+            } else if (item.type == 'select-textarea2') {
+                if (item.value.length) {
+                    searchCondition[item.select] = item.value.split('\n').map(item => item.trim()).join(',')
+                }
             } else if (item.type == 'select-input') {
                 if (item.value.length) {
                     let [select, queryNo] = item.key.split(",");
@@ -415,6 +419,7 @@ function SearchConditionList({ searchKeyList , onSearch }){
         'textarea' : Textarea ,
         'cascader': CascaderControl,
         'select-textarea': SelectTextArea,
+        'select-textarea2': SelectTextArea,
         'range' : Range,
         'select-input': SelectInput
     }

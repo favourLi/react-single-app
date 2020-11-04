@@ -53,19 +53,19 @@ function dealData(list , id , fn){
     config ? fn(config) : console.error(`找不到id:${id}的配置`);
 }
 
-dealData(json_data , 1597199079828173 , (config) => {
-    config.searchKeyList.push({
-        key : 'smallPrice,bigPrice',
-        type : 'range',
-        label:'价格'
-    });
+// dealData(json_data , 1597199079828173 , (config) => {
+//     config.searchKeyList.push({
+//         key : 'smallPrice,bigPrice',
+//         type : 'range',
+//         label:'价格'
+//     });
 
-    dealData(config.tableFieldList , 1597200158410388 , (field) => {
-        field.type = 'function';
-        field.key = 'getUserId';
-    })
-    console.log(config);
-})
+//     dealData(config.tableFieldList , 1597200158410388 , (field) => {
+//         field.type = 'function';
+//         field.key = 'getUserId';
+//     })
+//     console.log(config);
+// })
 
 
 
@@ -77,7 +77,7 @@ lib.setConfig({
 
 menu_data.push({
     title : '账号管理 - 小二' , 
-    url: '/admin-user-center/1603173834935?config_id=1602392556225207&page_title=账号管理-小二&systemCode=CCS_ADMIN',
+    url: '/warehouse/1603173834935?config_id=1604481092103925&page_title=账号管理-小二&systemCode=CCS_ADMIN',
     list : []
 })
 
