@@ -414,7 +414,6 @@ class ConfigCenter extends React.Component{
     renderOperation(){
         let {config} = this.state;
         let excel = config.excel;
-        console.log('------' , excel);
         return (
             <Fragment>
                 <div className='operation-left-panel'>
@@ -428,7 +427,9 @@ class ConfigCenter extends React.Component{
                         excel.import  && 
                         <Fragment>
                             <button className='btn import' onClick={() => 
-                                lib.openPage(`/import-excel?page_title=${lib.getParam('page_title')}导入&api=${encodeURIComponent(excel.import)}`)
+                                lib.openPage(`/import-excel?page_title=${lib.getParam('page_title')}导入&api=${encodeURIComponent(excel.import)}` , () => {
+                                    this.load();
+                                })
                             }>
                                 导入 &#xe639;
                             </button>

@@ -4,11 +4,9 @@ const { Step } = Steps;
 const { TabPane } = Tabs;
 import './import-excel.less';
 import Uploader from '@/component/uploader';
-import lib from '../util/lib';
+import {lib, event} from '../index';
 
-var importInfo = {
-    api : lib.getParam('api')
-};
+var importInfo = {};
 
 
 function Step1({setCurrent }){
@@ -85,6 +83,12 @@ function Step3({api , setCurrent}){
     let [active , setActive] = useState('1');
     var [data , setData] = useState(null);
     useEffect(()=> {
+        if(importInfo.refreshEvent){
+            event.emit(importInfo.refreshEvent);
+        }
+        if(importInfo.onImportEnd){
+            importInfo.onImportEnd();
+        }
         lib.request({
             url : `${importInfo.api}/import/query` ,
             success : data => {
@@ -189,9 +193,14 @@ function Table({hdlist = [], list = [], needReason}){
 
 
 
-function ImportExcel(){
-    var [current , setCurrent] = useState(2);
+function ImportExcel({api , onImportEnd}){
+    var [current , setCurrent] = useState(0);
     useEffect(()=> {
+        console.log('--- import excel ---');
+        importInfo.api =api || lib.getParam('api');
+        importInfo.refreshEvent = lib.getParam('refresh_event');
+        importInfo.onImportEnd = onImportEnd;
+        console.log(importInfo);
         lib.request({
             url : `${importInfo.api}/import/query` ,
             success : data => {
