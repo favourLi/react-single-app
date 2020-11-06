@@ -25,6 +25,17 @@ class UserCenter extends ConfigCenter{
             </table>
         }
     }
+    handle(row){
+        return <div className='link' onClick={() => {
+            this.setDetailData(row);
+        }}>详情</div>
+    }
+    renderDetail(row){
+        return <div>
+            <div>{row.id}</div>
+            <div>{row.name}</div>
+        </div>
+    }
 
 }
 

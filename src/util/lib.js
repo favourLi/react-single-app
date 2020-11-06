@@ -191,7 +191,7 @@ var lib = {
                 <div class='mask'></div>
                 <img src='//dante-img.oss-cn-hangzhou.aliyuncs.com/30183475885.svg' />
             `
-            document.body.append(div);
+            document.getElementById('react-single-app').append(div);
         }
         if (time) {
             setTimeout(lib.waitEnd, time)

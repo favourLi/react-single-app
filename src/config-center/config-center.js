@@ -91,8 +91,9 @@ function ResizeableDetail(props){
             grid={[1 , 1]}
             scale={1}
             onStop={(e) => {
-                props.setHeight(e.layerY);
+                props.setHeight(e.y);
             }}>
+            
             <div className='handle'></div>
         </Draggable>
     )
@@ -103,7 +104,6 @@ class ConfigCenter extends React.Component{
 
     constructor(props) {
         super(props);
-        console.log(props);
         this.state = {
             pagination: {
                 currentPage: 1,
@@ -118,6 +118,17 @@ class ConfigCenter extends React.Component{
                 show: false
             }
         };
+        this.__resetSize__ = this.__resetSize__.bind(this);
+        window.addEventListener("resize",this.__resetSize__,false);
+        
+    }
+
+    __resetSize__(){
+        this.__resetSize__.timer && clearTimeout(this.__resetSize__.timer);
+        this.__resetSize__.timer = setTimeout(() => this.setState(this.state) , 1000);
+    }
+    componentWillUnmount(){
+        window.removeEventListener("resize",this.__resetSize__);
     }
 
     setDetailData(data){
@@ -153,16 +164,15 @@ class ConfigCenter extends React.Component{
             try {
                 storage = JSON.parse(storage);
                 if (storage.tableFieldListVersion == config.tableFieldListVersion) {
-                    console.log(storage.tableFieldListVersion, config.tableFieldListVersion)
                     config.tableFieldList = storage.tableFieldList;
                     config.saveTableFieldList = true;
                 }
             } catch (e) {
-                console.log(e)
+                console.error(e)
             }
         }
         config.tableFieldList.map((item) => item.width = parseInt(item.width));
-        return config;
+        return JSON.parse(JSON.stringify(config));
     }
 
 
@@ -455,11 +465,11 @@ class ConfigCenter extends React.Component{
     render(){
         let {config , __detail__:detail} = this.state;
         return (
-            <div className={`config-center ${this.props.name}`}>
+            <div className={`react-single-app-config-center ${this.props.name}`}>
                 {this.renderModal && this.renderModal()}
                 <div >
                     <div className='search-condition-panel'>
-                        <SearchConditionList searchKeyList={config.searchKeyList} onSearch={(searchConditions) => {
+                        <SearchConditionList  searchKeyList={config.searchKeyList} onSearch={(searchConditions) => {
                             this.state.searchConditions = searchConditions;
                             this.state.pagination.currentPage = 1;
                             this.load(true);
@@ -485,8 +495,8 @@ class ConfigCenter extends React.Component{
                     {
                         detail.show && 
                         <div className='detail-panel' style={{ height: detail.height + 'px' }}>
-                            <ResizeableDetail height={detail.height} setHeight={(height) => {
-                                detail.height -= height;
+                            <ResizeableDetail height={detail.height} setHeight={(y) => {
+                                detail.height = document.body.clientHeight - y;
                                 detail.height = Math.max(detail.height, 200);
                                 detail.height = Math.min(detail.height, 500);
                                 this.setState({
