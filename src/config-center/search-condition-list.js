@@ -3,6 +3,7 @@ import { useHistory} from 'react-router-dom';
 import {Input, Select, DatePicker, Button, Cascader } from 'antd';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+const { TextArea } = Input;
 import './search-condition-list.less'
 import { lib } from '../index'
 import moment from 'moment'
@@ -191,7 +192,7 @@ function SelectTextArea({item}) {
         <div className='group' >
             <label>
                 <Select
-                    dropdownClassName="dropMenu"
+                    dropdownClassName="in-label-dropMenu"
                     value={item.select}
                     onChange={(e) => {
                         item.select = e;
@@ -202,7 +203,7 @@ function SelectTextArea({item}) {
                     })}
                 </Select>
             </label>
-            <textarea className='form-control'
+            <TextArea className='form-control'
                 value={item.value || ''}
                 style={{ width: 260, height: 69}}
                 onChange={e => {

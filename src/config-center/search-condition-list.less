@@ -13,11 +13,26 @@
             margin-right: 15px;
             display: inline-block;
             color:#555;
+            vertical-align: top;
+        .ant-select{
+                width: 90px;
+                font-size: 12px;
+                .ant-select-selection-item{
+                    text-overflow: unset;
+                }
+                .ant-select-arrow{
+                    right: 4px;
+                }
+            }
         }
         margin-top: 10px;
-        textarea::-webkit-input-placeholder{
-            color: #bbb;
+        textarea{
+            display: inline-block;
+            &::-webkit-input-placeholder{
+                color: #bbb;
+            }
         }
+
     }
     .range{
         input{
@@ -92,5 +107,11 @@
         left: 50%;
         transform: translateX(-25px);
         cursor: pointer;
+    }
+}
+.in-label-dropMenu{
+    .ant-select-item-option-content{
+        font-size: 12px;
+        text-overflow: inherit;
     }
 }
