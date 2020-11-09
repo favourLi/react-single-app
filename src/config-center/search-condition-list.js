@@ -24,28 +24,6 @@ function Text({item}){
     )
 }
 
-function SelectControl({item}){
-    let [refresh, setRefresh] = useState(0);
-    return (
-        <div className='group' >
-            <label>{item.label}</label>
-            <select value={item.value} className='form-control' style={{ width: '260px' }} 
-                onChange={e => {
-                    item.value = e.target.value;
-                    setRefresh(++refresh);
-                }} 
-            >
-                <option value=''>请选择</option>
-                {
-                    (item.list||[]).map((item, index) =>
-                        <option key={index} value={item.id}>{item.name}</option>
-                    )
-                }
-            </select>
-
-        </div>
-    )
-}
 
 function CommonSelect({item}){
     let [refresh, setRefresh] = useState(0);
@@ -424,7 +402,7 @@ function SearchConditionList({ searchKeyList , onSearch }){
             <div className='search-controls'>
                 {searchKeyList.map((item , key) => {
                     var Control = map[item.type];
-                    return Control && <Control item={item} key={key} />
+                    return Control && <Control item={item} key={`${location.path}/${key}`} />
                 })}
             </div>
             <div className='group group-btns' >

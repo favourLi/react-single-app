@@ -97,6 +97,7 @@ function App({ pageMap = {}, menuList = [], colStyleList=[] , topStyleList=[] , 
     } , [])
     return (
         <ConfigProvider locale={zhCN}>
+            <div id='react-single-app' >
                 {
                     isColMenu && 
                     <div className='sub-content'>
@@ -122,6 +123,7 @@ function App({ pageMap = {}, menuList = [], colStyleList=[] , topStyleList=[] , 
                         <NavigationBody pageList={pageList} pageMap={pageMap} configList={configList} />
                     </div>
                 </div>
+            </div>
         </ConfigProvider>
     )
 }

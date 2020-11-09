@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { App, ConfigCenter , Outlet, lib , ImportExcel} from '../src/index';
+import { App, ConfigCenter , Outlet, lib , ImportExcel , Uploader} from '../src/index';
 import Test from './test';
 import TestDetail from './test-detail'
 // import 'antd/dist/antd.css';
@@ -10,6 +10,7 @@ import ItemCenter from './item-center';
 import BrandCenter from './brand-center';
 import OrderList from './order-center/index';
 import OrderDetail from './order-center/detail';
+
 const pageMap = {
     'warehouse': Test,
     'warehouse-detail': TestDetail ,
@@ -21,7 +22,8 @@ const pageMap = {
     'order': OrderList,
     'order-detail': OrderDetail,
     'admin-user-center' : Outlet , 
-    'import-excel' : ImportExcel
+    'import-excel' : ImportExcel ,
+    'uploader' : Uploader
 }
 
 const user = {

@@ -21,16 +21,6 @@
         top: 50%;
         transform: translate(-50% , -50%);
     }
-    .preview{
-        position: absolute;
-        left: 0;
-        right: 0;
-        top:0;
-        bottom:0;
-        background: no-repeat center center #fff;
-        background-size: contain;
-        z-index: 5;
-    }
     .loading{
         position: absolute;
         left: 0;
@@ -96,6 +86,12 @@
         top:0;
         bottom:50px;
         text-align: center;
+        z-index: 5;
+        .name{
+            word-break: break-all;
+            line-height: 16px;
+            padding-top:6px;
+        }
         .pic{
             background-position:center center;
             background-repeat:no-repeat;
