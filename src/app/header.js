@@ -1,31 +1,100 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import './header.less';
 import { Drawer } from 'antd';
-import { createMenuStyle, createTopStyle } from './create-style';
 import {lib} from '../index'
+import {UserOutlined , CloudDownloadOutlined , LogoutOutlined , DownOutlined} from '@ant-design/icons';
+import {Popover , Menu , Button} from 'antd';
+import axios from 'axios';
 
 
 
-function SystemSet({mode , setColMenu}){
+function createMenuStyle({
+    backgroundColor, 
+    itemColor, 
+    hoverColor, 
+    hoverBackgroundColor,
+    selectSubColor ,
+    selectColor,
+    selectBackgroundColor,
+    selectRightBackgroundColor,
+    borderColor ,
+    logoColor}){
+    var css = `
+        .react-single-app-menu , .header.top{
+            background: ${backgroundColor};
+            border-color: ${borderColor};
+        }
+        .react-single-app-menu .logo{
+            color: ${logoColor};
+        }
+        .react-single-app-menu .item , .header.top span {
+            color:${itemColor};
+        }
+        .react-single-app-menu .item:hover , .header.top span:hover {
+            color:${hoverColor};
+            background: ${hoverBackgroundColor};
+        }
+        .react-single-app-menu .item.active-sub {
+            color: ${selectSubColor};
+        }
+        .react-single-app-menu .item.active {
+            color: ${selectColor};
+            background : ${selectBackgroundColor};
+        }
+        .react-single-app-menu .item.active:after{
+            background: ${selectRightBackgroundColor};
+        }
+    `
+    var style = document.createElement('style');
+    style.innerHTML = css;
+    document.head.append(style)
+}
+
+
+function SystemSet({menuType , setMenuType}){
     let [visible , setVisible] = useState(false);
-    let [refresh , setRefresh] = useState(0);
-    let {col , top , type} = mode;
-    let currentMode = mode[type];
-    function set(){
-        if (type == 'col') {
-            createMenuStyle(currentMode.list[currentMode.active]);
-        }
-        else {
-            createTopStyle(currentMode.list[currentMode.active]);
-        }
-        localStorage[`/style/type`] = type;
-        localStorage[`/style/colActiveId`] = col.list[col.active].id;
-        localStorage[`/style/topActiveId`] = top.list[top.active].id;
+    let [list , setList] = useState([]);
+    function setMode(menuType){
+        localStorage[`/style/menuType`] = menuType;
+        setMenuType(menuType);
+        lib.wait(500);
     }
-    set();
+    function setStyle(item){
+        localStorage[`/style`] = JSON.stringify(item);
+        createMenuStyle(item.colors);
+        lib.wait(500);
+    }
+    useEffect(() => {
+        axios.get('http://maria.yang800.com/api/data/86').then((json) => json.data.data)
+        .then((list) => {
+            setList(list)
+            if(!localStorage[`/style`] && list.length > 0){
+                setStyle(list[1]);
+            }
+        });
+        try{
+            createMenuStyle(JSON.parse(localStorage[`/style`]).colors);
+        }catch(e){}
+    } , []);
+
+    let modeList = [
+        {
+            type : 'col' , 
+            className : menuType != 'top' ? 'checked' : '' ,
+            img : 'https://dante-img.oss-cn-hangzhou.aliyuncs.com/97402116582.png' , 
+            title : '侧边导航'
+        },
+        {
+            type : 'top' , 
+            className : menuType == 'top' ? 'checked' : '' ,
+            img : 'https://dante-img.oss-cn-hangzhou.aliyuncs.com/97402116525.png' , 
+            title : '顶部导航'
+        }
+    ]
+
     return (
         <div className='system-set' >
-            <div className='set' onClick={() => setVisible(true)}>&#xe91e;</div>
+            <span className='set' onClick={() => setVisible(true)}>&#xe91e;</span>
             <Drawer
                 placement="right"
                 closable={false}
@@ -39,33 +108,21 @@ function SystemSet({mode , setColMenu}){
                 <div className='system-set' style={{ marginTop: '-32px' , marginLeft:'-12px' , marginRight:'-12px' }}>
                     <h3>导航方式</h3>
                     <ul className='mode'>
-                        <li className={type == 'col' ? 'checked' : ''} onClick={() => {
-                            mode.type = 'col';
-                            setColMenu(true);
-                            lib.wait(500);
-                        }}>
-                            <img src={mode.col.thumb} />
-                            侧边导航
-                        </li>
-                        <li className={type == 'top' ? 'checked' : ''} onClick={() => {
-                            mode.type = 'top';
-                            setColMenu(false);
-                            lib.wait(500);
-                        }}>
-                            <img src={mode.top.thumb} />
-                            顶部导航
-                        </li>
+                        {
+                            modeList.map(mode => 
+                                <li key={mode.type} className={mode.className} onClick={() => setMode(mode.type)}>
+                                    <img src={mode.img} />
+                                    {mode.title}
+                                </li>
+                            )
+                        }
                     </ul>
                     <h3>皮肤设置</h3>
                     <ul className='style'>
                         {
-                            currentMode.list.map((style , index) => 
-                                <li key={index} className={index == currentMode.active ? 'checked' : ''} style={{backgroundColor : style.backgroundColor}} onClick={() => {
-                                    currentMode.active = index;
-                                    setRefresh(++refresh);
-                                    lib.wait(500);
-                                }}>
-                                    <div>{style.name}</div>
+                            list.map((item , index) => 
+                                <li key={index} className={ 'checked' } style={{backgroundColor : item.mainColor}} onClick={() => setStyle(item)}>
+                                    <div>{item.title}</div>
                                 </li>
                             )
                         }
@@ -77,51 +134,50 @@ function SystemSet({mode , setColMenu}){
 }
 
 
-
-function User({user}){
+function User({systemList}){
+    let [name , setName] = useState('')
+    useEffect(()=> {
+        lib.request({
+            url: '/ucenter-account/current/userInfo',
+            success: data => setName(data.userName)
+        })
+    } , [])
 
     return (
         <div className='user'>
             {
-                user.systemList && user.systemList.length && 
-                <div className={`system ${user.systemList.length == 1 ? 'alone' : ''}`}>
-                    {user.systemList[user.activeSystem].name}
-                    {
-                        user.systemList.length > 1 && 
-                        <div className='header-tip'>
-                            <div className='list'>
-                                {
-                                    user.systemList.map((system, index) =>
-                                        user.activeSystem != index && <div key={index} onClick={() => window.location = system.url}>{system.name}</div>
-                                    )
-                                }
-                            </div>
-                        </div>
-                    }
+                systemList.length > 0 && 
+                    <Popover placement="top" content={
+                        systemList.map((system , key) => 
+                        <div className='item' key={key} onClick={() => location = system.url}>
+                                {system.name}
+                        </div>)
+                    } overlayClassName='react-single-app-popover'>
+                        <span style={{margin: '15px'}}>{systemList[0].name} <DownOutlined /></span>
+                    </Popover>
                     
-                </div>
             }
-            
-            <div className='name'>
-                {user.name}
-                <div className='header-tip'>
-                    <div className='list'>
-                        <div onClick={user.goUserCenter}><span>&#xe631;</span>用户中心</div>
-                        <div onClick={user.logout}><span>&#xe635;</span>退出登录</div>
+            <Popover placement="top" content={
+                <>
+                    <div className='item' onClick={() => lib.openPage('/personal-center?page_title=个人中心')}>
+                        <UserOutlined style={{marginRight : '10px'}} />个人中心
                     </div>
-                </div>
-            </div>
+                    <div className='item' onClick={() => lib.openPage('/download-center?page_title=下载中心')}>
+                        <CloudDownloadOutlined style={{marginRight : '10px'}} />下载中心
+                    </div>
+                    <div className='item' onClick={() => {
+                        lib.request({
+                            url: '/ucenter-admin/logout' ,
+                            success:() => window.location.reload()
+                        })
+                    }}><LogoutOutlined style={{marginRight : '10px'}} />退出登录</div>
+                </>
+            } overlayClassName='react-single-app-popover'>
+                <span>{name}</span>
+            </Popover>
         </div>
     )
 }
-
-
-
-
-
-
-
-
 
 export {User , SystemSet};
 

@@ -2,11 +2,16 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { BrowserRouter as Router, useHistory } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
-import Menu from './menu';
+import Menu from './menu1';
+
 import {User , SystemSet} from './header';
 import {Navigation , NavigationBody} from './navigation';
 import './app.less';
-import {event} from '../index'
+import {lib , event} from '../index'
+import DownloadCenter from '../page/download-center';
+import PersonalCenter from '../page/personal-center';
+import {message} from 'antd';
+
 /**
  * 
  * @param {menuList} props 菜单列表
@@ -17,42 +22,17 @@ import {event} from '../index'
  * @param {user} props 用户
  */
 
-function App({ pageMap = {}, menuList = [], colStyleList=[] , topStyleList=[] , configList = [] , user={}}){
-    let [mode ] = useState({});
+function App({ pageMap = {},  systemCode ,   colStyleList=[] , topStyleList=[] , configList = [] , user={}}){
     let [pageList, setPageList] = useState([]);
-    let [isColMenu, setColMenu] = useState(localStorage[`/style/type`] != 'top')
+    let [menuType , setMenuType] = useState(localStorage[`/style/menuType`] || 'col');
     let history = useHistory();
-    useMemo(()=> {
-        mode = Object.assign(mode, {
-            col: {
-                active: 0,
-                isFull: true,
-                thumb: 'https://dante-img.oss-cn-hangzhou.aliyuncs.com/97402116582.png',
-                list: colStyleList
-            },
-            top: {
-                active: 0,
-                thumb: 'https://dante-img.oss-cn-hangzhou.aliyuncs.com/97402116525.png',
-                list: topStyleList
-            },
-            type: 'col'
-        })
-        if (localStorage[`/style/type`]) {
-            mode.type = localStorage[`/style/type`];
-            let colActiveId = localStorage[`/style/colActiveId`];
-            let topActiveId = localStorage[`/style/topActiveId`];
-            mode.col.list.map((item, index) => {
-                if (colActiveId == item.id) {
-                    mode.col.active = index;
-                }
-            });
-            mode.top.list.map((item, index) => {
-                if (topActiveId == item.id) {
-                    mode.top.active = index;
-                }
-            });
-        } 
-    } , [])
+    let [menuList , setMenuList] = useState([]);
+    let [systemList , setSystemList] = useState([]);
+    pageMap = {
+        ...pageMap , 
+        'download-center' : DownloadCenter , 
+        'personal-center' : PersonalCenter
+    }
     useEffect(() => {
         function closePage(){
             var key = window.location.pathname.split('/').pop();
@@ -94,22 +74,42 @@ function App({ pageMap = {}, menuList = [], colStyleList=[] , topStyleList=[] , 
             pageList.push(activeItem);
             setPageList([...pageList]);
         })
-    } , [])
+    } , []);
+    useEffect(() => {
+        if(!systemCode){
+            return message.error('APP类必需传入参数systemCode');
+        }
+        lib.request({
+            url : '/ucenter-account/current/menuList' ,
+            data : {systemCode},
+            success : (data) => setMenuList(data)
+        })
+        lib.request({
+            url : '/ucenter-account/current/user/systemList',
+            success : (data) => {
+                console.log(data);
+                setSystemList(data.sort((a , b) => b.url.indexOf(systemCode) - a.url.indexOf(systemCode)))
+            }
+        })
+
+    } , []);
+
+
     return (
         <ConfigProvider locale={zhCN}>
             <div id='react-single-app' >
                 {
-                    isColMenu && 
+                    menuType != 'top' && 
                     <div className='sub-content'>
-                        <Menu menuList={menuList} type='col' />
+                        <Menu menuList={menuList} menuType={menuType} setMenuType={setMenuType} />
                     </div>
                 }
                 <div className='main-content'>
                     <div>
-                        <div className='header'  >
-                            {!isColMenu && <Menu menuList={menuList} type='top' />}
-                            <User user={user} />
-                            <SystemSet  mode={mode} setColMenu={setColMenu} />
+                        <div className={'header ' + menuType}  >
+                            {menuType == 'top' && <Menu menuList={menuList} menuType='top' />}
+                            <User user={user} systemList={systemList} />
+                            <SystemSet  menuType={menuType} setMenuType={setMenuType} />
                         </div>
                     </div>
                     {

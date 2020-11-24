@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Pagination, Checkbox, Empty} from 'antd';
+import { Pagination, Checkbox, Empty , Button , Modal} from 'antd';
 import { Resizable } from 'react-resizable';
 import './config-center.less';
 import SetUp from './set-up';
@@ -112,7 +112,7 @@ class ConfigCenter extends React.Component{
             },
             searchConditions: {},
             dataList: [],
-            config: props.config || this.getConfig(lib.getParam('config_id')),
+            config: this.getConfig(lib.getParam('config_id')),
             __detail__ : {
                 height : 300,
                 show: false
@@ -143,15 +143,19 @@ class ConfigCenter extends React.Component{
 
     getConfig(id) {
         let configList = this.props.configList;
-        let config;
-        for (var i = 0; i < configList.length; i++) {
-            if (configList[i].id == id) {
-                config = configList[i];
-                break;
+        let config = this.props.config;
+        if(id){
+            for (var i = 0; i < configList.length; i++) {
+                if (configList[i].id == id) {
+                    config = configList[i];
+                    break;
+                }
             }
         }
         if (!config) {
-            throw new Error(`Config center can't find config for ${id}`);
+            throw new Error(`page ${location.pathname} do not have a config; you can set the 
+                config to the page or set a config_id 
+            `);
         }
         config.tableFieldList.map((item) => {
             if(!item.width){
@@ -385,7 +389,7 @@ class ConfigCenter extends React.Component{
                                                             if (typeof this[item.key] != 'function'){
                                                                 console.error( new Error(`can not find the function ${item.key}`));
                                                             }else{
-                                                                html = this[item.key](row)
+                                                                html = this[item.key](row , index)
                                                             }
 
                                                         } catch (e) {
@@ -431,27 +435,42 @@ class ConfigCenter extends React.Component{
                 </div>
                 <div style={{ marginLeft: '15px' }}>
                     {this.renderRightOperation && this.renderRightOperation()}
-                </div>
-                <div className='btn-group'>
                     {   
-                        excel.import  && 
+                        excel?.import  && 
                         <Fragment>
-                            <button className='btn import' onClick={() => 
+                            <Button className='btn import' onClick={() => 
                                 lib.openPage(`/import-excel?page_title=${lib.getParam('page_title')}导入&api=${encodeURIComponent(excel.import)}` , () => {
                                     this.load();
                                 })
                             }>
                                 导入 &#xe639;
-                            </button>
+                            </Button>
                         </Fragment>
                     }
                     {
-                        excel.export  && <button className='btn'>
+                        excel?.export  && <Button className='btn' onClick={() => {
+                            let { pagination, searchConditions } = this.state;
+                            lib.request({
+                                url : excel.export , 
+                                needMask : true , 
+                                data : {...pagination , ...searchConditions},
+                                success : (json) => {
+                                    Modal.confirm({
+                                        okText: '去下载中心',
+                                        icon : null,
+                                        content : '新建下载任务成功',
+                                        onOk(){
+                                            lib.openPage('/download-center?page_title=下载中心')
+                                        }
+                                    })
+                                }
+                            })
+                        }}>
                             导出 &#xe638;
-
-                        </button>
+                        </Button>
                     }
                 </div>
+                    
                 
                 <SetUp {...this.state.config} save={(tableFieldList) => {
                     let config = this.state.config;

@@ -1,6 +1,6 @@
 {
 	"name": "react-single-app",
-	"version": "1.5.9",
+	"version": "1.5.22",
 	"main": "lib/index.js",
 	"description": "fixed the event bug",
 	"repository": {

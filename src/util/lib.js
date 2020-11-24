@@ -114,7 +114,7 @@ var lib = {
         needMask      boolean     否         是否需要遮照，默认为true
     **/
     request({ url, needMask = false, data , success = function(){}, fail = function(){} }) {
-
+        var loginHost;
         if(/yang800.com.cn$/.test(window.location.host)){
             var [clientId, clientSecret, prefixUrl] = [
                 '96A63530DA0C49BB9FABB66ED40FB3C7',
@@ -147,6 +147,8 @@ var lib = {
         var maskTime = new Date().getTime();
         if(url.indexOf('http://') == -1 && url.indexOf('https://') == -1){
             url = `${prefixUrl}${url}`;
+        }else{
+            loginHost = new URL(url).origin;
         }
         axios.request({
             url: url,
@@ -170,36 +172,35 @@ var lib = {
                     console.error('no login url;please set the webToken')
                 }
                 else{
-                    window.location = `${this.config.login}?redirectUrl=${encodeURIComponent(window.location.href)}`;
+                    window.location = `${this.config.login}/login?redirectUrl=${encodeURIComponent(window.location.href)}${loginHost ? '&host=' + loginHost : ''}`;
                 }
-                
             }  else if (code < 0) {
                 message.error(msg);
+                fail && fail(code, msg);
             } else {
-                fail(code, message);
+                fail(code, msg);
             }
             needMask && setTimeout(lib.waitEnd, 500 - new Date().getTime() + maskTime);
         });
     },
     wait(time) {
-        var div = document.getElementById('wait');
+        var div = document.getElementById('react-single-app-wait');
         if(!div){
             div = document.createElement('div');
-            div.className = 'wait';
-            div.id = 'wait';
+            div.id = 'react-single-app-wait';
             div.innerHTML = `
                 <div class='mask'></div>
                 <img src='//dante-img.oss-cn-hangzhou.aliyuncs.com/30183475885.svg' />
             `
-            document.getElementById('react-single-app').append(div);
+            document.body.append(div);
         }
         if (time) {
             setTimeout(lib.waitEnd, time)
         }
     },
     waitEnd() {
-        if(document.getElementById('wait')){
-            document.getElementById('wait').remove();
+        if(document.getElementById('react-single-app-wait')){
+            document.getElementById('react-single-app-wait').remove();
         }
     },
 

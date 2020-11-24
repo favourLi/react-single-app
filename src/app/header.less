@@ -4,132 +4,26 @@
     position: relative;
     z-index: 110;
     border-bottom: solid 1px #ddd;
+    background: #fff;
     display: flex;
     justify-content : flex-end;
     .user {
         height: 56px;
         cursor: pointer;
         margin-left: 20px;
-        
-        > div{
-            display: inline-block;
-            line-height: 56px;
-            font-size: 14px;
-            color:#333;
-            vertical-align: middle;
-        }
-        
-        .name , .system{
-            padding-right:26px;
-            position:relative;
-            cursor: pointer;
-            min-width: 10px;
-            height: 56px;
-            &.alone{
-                padding-right: 10px;
-                &:after{
-                    display: none;
-                }
-            }
-            &:after{
-                font-family: 'react-single-app-iconfont';
-                content:'\e6c7';
-                font-size: 14px;
-                text-align: center;
-                width: 28px;
-                transition: transform 0.2s;
-                position:absolute;                
-                top:0;
-                right: 0;
-            }
-            .header-tip{
-                position:absolute;
-                top:50px;
-                line-height: 40px;
-                padding-top:10px;
-                right: 0;
-                z-index: 10;
-                .list{
-                    background:#fff;
-                    width: 160px;
-                    box-shadow:0px 1px 4px 0px rgba(0,21,41,0.12);
-                    border-radius: 8px;
-                    display: none;
-                    user-select:none;
-                    &:before{
-                        font-family: 'react-single-app-iconfont';
-                        content: '\eb90';
-                        color: #fff;
-                        position: absolute;
-                        right: 30px;
-                        font-size: 16px;
-                        color:#fff;
-                        position:absolute;
-                        top:-12px;
-                        transform: rotate(90deg);
-                        text-shadow:-3px 0px 2px rgba(0,21,41,0.03);
-                    }
-                    div{
-                        border-bottom:solid 1px #ddd;
-                        color:#666;
-                        position:relative;
-                        padding-left: 16px;
-                        span{
-                            display: inline-block;
-                            font-family: 'react-single-app-iconfont';
-                            font-size: 16px;
-                            margin-right: 16px;
-                        }
-                    }
-                    div:hover{
-                        background: #eee;
-                        color:#333;
-                    }
-                    div:last-child{
-                        border:none;
-                    }
-                }
-            }
-        }
-        .system{
-            border:solid 1px #eee;
-            border-radius: 4px;
-            padding-left: 10px;
-            margin-right: 10px;
-            line-height: 32px;
-            height: 32px;
-            vertical-align: middle;
-            background:#eee;
-            z-index:110;
-            .header-tip{
-                top:30px;
-                padding-top:30px;
-                .list:before{
-                    top:8px;
-                }
-            }
-        }
-        .name:hover .list , .system:hover .list{
-            display: block;
-        }
-        .name:hover:after , .system:hover:after{
-            transform: rotate(90deg);
-        }
+        line-height: 56px;
     }
 
     .system-set{
-        margin-right: 20px;
+        margin:0 20px 0 15px;
+        display: inline-block;
         .set{
             font-family: 'react-single-app-menu';
             line-height: 56px;
             font-size: 20px;
-            color:#666;
             text-align: center;
             width: 50px;
             cursor: pointer;
-            &:hover{
-                color:#1890ff;
-            }
         }
     }
 }
@@ -151,6 +45,7 @@
     }
     li{
         float: left;
+        list-style: none;
     }
     .mode {
         li{

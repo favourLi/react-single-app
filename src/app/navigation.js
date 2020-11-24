@@ -47,18 +47,18 @@ function NavigationBody({pageList , pageMap , configList}){
     return (
         <Fragment>
             {
-                pageList.map((item) => {
+                pageList.map((item , index) => {
                     var names = item.url.split('/');
                     var name = names[0] || names[1];
                     var Page = pageMap[name];
                     var path = item.url.split('?')[0];
                     if (!Page){
                         console.error(`can't find page for name ${name}`)
-                        return (<div></div>)
+                        return (<div key={index}></div>)
                     }
                     return (
                         <Route key={path} path={path} children={(props) => 
-                            <MemoPage match={props.match} Page={Page} name={name} configList={configList} />
+                            <MemoPage match={props.match}  Page={Page} name={name} configList={configList} />
                         }/>
                     )
                 })

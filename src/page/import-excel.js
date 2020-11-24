@@ -196,11 +196,9 @@ function Table({hdlist = [], list = [], needReason}){
 function ImportExcel({api , onImportEnd}){
     var [current , setCurrent] = useState(0);
     useEffect(()=> {
-        console.log('--- import excel ---');
         importInfo.api =api || lib.getParam('api');
         importInfo.refreshEvent = lib.getParam('refresh_event');
         importInfo.onImportEnd = onImportEnd;
-        console.log(importInfo);
         lib.request({
             url : `${importInfo.api}/import/query` ,
             success : data => {

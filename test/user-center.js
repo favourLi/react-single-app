@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './user-center.less';
 import {ConfigCenter} from '../src/index';
-
+import {Button} from 'antd';
 class UserCenter extends ConfigCenter{
     getMainImage(row){
         return ('')
@@ -35,6 +35,9 @@ class UserCenter extends ConfigCenter{
             <div>{row.id}</div>
             <div>{row.name}</div>
         </div>
+    }
+    renderRightOperation(){
+        return <Button type='primary' style={{marginRight : '15px'}}>测试</Button>
     }
 
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { App, ConfigCenter , Outlet, lib , ImportExcel , Uploader} from '../src/index';
+import { App, ConfigCenter , Outlet, lib , ImportExcel , Uploader , PersonalCenter} from '../src/index';
 import Test from './test';
 import TestDetail from './test-detail'
 // import 'antd/dist/antd.css';
@@ -23,7 +23,8 @@ const pageMap = {
     'order-detail': OrderDetail,
     'admin-user-center' : Outlet , 
     'import-excel' : ImportExcel ,
-    'uploader' : Uploader
+    'uploader' : Uploader,
+    'personal-center' : PersonalCenter
 }
 
 const user = {
@@ -31,6 +32,9 @@ const user = {
     activeSystem : 0 ,
     systemList : [{
         name : 'OMS 小二后台',
+        url : ''
+    },{
+        name : '测试后台1',
         url : ''
     }],
     goUserCenter: () => {
@@ -69,6 +73,10 @@ dealData(json_data , 1597199079828173 , (config) => {
     })
 })
 
+dealData(json_data , 1597199079828173 , (config) => {
+    config.excel.export = '/ccs/hsCode/exportExcelByDownLoadCenter';
+    config.excel.import = '/abc'
+})
 
 
 
@@ -81,19 +89,21 @@ menu_data.push({
     title : '账号管理 - 小二' , 
     url: '/admin-user-center/1603173834935?config_id=1602392556225207&page_title=账号管理-小二&systemCode=CCS_ADMIN',
 },{
-    title : '导入',
-    url : '/import-excel?page_title=导入'
+    title : 'react-single-app',
+    icon: '&#xe8b9;',
+    list:[{
+        title : '导入',
+        url : '/import-excel?page_title=导入'
+    },{
+        title : '下载中心' ,
+        url : '/download-center?page_title=下载中心'
+    }]
 })
 
 
 class Index extends Component{
     constructor(props){
         super(props)
-        lib.request({
-            url: '/ucenter-admin/current/userInfo',
-            success: (data) => {
-            }
-        })
     }
 
     render(){
@@ -105,8 +115,8 @@ class Index extends Component{
                 topStyleList={mode_list.top}
                 configList={json_data}
                 user={user}
+                systemCode='CCS_ADMIN'
             />
-            
         )
         
     }

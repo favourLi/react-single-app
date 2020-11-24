@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Modal, Checkbox, Radio} from 'antd';
+import { Modal, Checkbox, Radio , Input} from 'antd';
 import { SortableContainer, SortableElement, sortableHandle } from 'react-sortable-hoc';
 import './set-up.less';
 
@@ -14,12 +14,12 @@ const SortableItem = SortableElement((props) => {
             <tr>
                 <DragHandle />
                 <td style={{ width: '160px' }}>{item.title}</td>
-                <td style={{ width: '120px' }}><input className='form-control' value={item.width} onChange={(e) => {
+                <td style={{ width: '120px' }}><Input value={item.width} onChange={(e) => {
                     if(/^\d*$/.test(e.target.value)){
                         item.width = parseInt(e.target.value) || '';
                         setRefresh(++refresh);
                     }
-                }}></input></td>
+                }}/></td>
                 <td style={{ width: '260px' }}>
                     <Radio.Group
                         options={[

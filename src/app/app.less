@@ -1,31 +1,32 @@
 @font-face {
-  font-family: 'react-single-app-iconfont';  /* project id 1257720 */
-  src: url('//at.alicdn.com/t/font_1257720_7tnazh2583h.eot');
-  src: url('//at.alicdn.com/t/font_1257720_7tnazh2583h.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_1257720_7tnazh2583h.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_1257720_7tnazh2583h.woff') format('woff'),
-  url('//at.alicdn.com/t/font_1257720_7tnazh2583h.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_1257720_7tnazh2583h.svg#iconfont') format('svg');
+    font-family: 'react-single-app-iconfont';  /* project id 1257720 */
+    src: url('//at.alicdn.com/t/font_1257720_7tnazh2583h.eot');
+    src: url('//at.alicdn.com/t/font_1257720_7tnazh2583h.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1257720_7tnazh2583h.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1257720_7tnazh2583h.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1257720_7tnazh2583h.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1257720_7tnazh2583h.svg#iconfont') format('svg');
 }
 
 @font-face {
-  font-family: 'react-single-app-menu';  /* project id 1978815 */
-  src: url('//at.alicdn.com/t/font_1978815_tjw56amd31k.eot');
-  src: url('//at.alicdn.com/t/font_1978815_tjw56amd31k.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_1978815_tjw56amd31k.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_1978815_tjw56amd31k.woff') format('woff'),
-  url('//at.alicdn.com/t/font_1978815_tjw56amd31k.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_1978815_tjw56amd31k.svg#iconfont') format('svg');
+    font-family: 'react-single-app-menu';  /* project id 1978815 */
+    src: url('//at.alicdn.com/t/font_1978815_1y8g9vezhyi.eot');
+    src: url('//at.alicdn.com/t/font_1978815_1y8g9vezhyi.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1978815_1y8g9vezhyi.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1978815_1y8g9vezhyi.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1978815_1y8g9vezhyi.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1978815_1y8g9vezhyi.svg#iconfont') format('svg');
 }
+  
 
 @font-face {
-  font-family: 'icon';  /* project id 2045147 */
-  src: url('//at.alicdn.com/t/font_2045147_kocrdsoilh.eot');
-  src: url('//at.alicdn.com/t/font_2045147_kocrdsoilh.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_2045147_kocrdsoilh.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_2045147_kocrdsoilh.woff') format('woff'),
-  url('//at.alicdn.com/t/font_2045147_kocrdsoilh.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_2045147_kocrdsoilh.svg#iconfont') format('svg');
+    font-family: 'icon';  /* project id 2045147 */
+    src: url('//at.alicdn.com/t/font_2045147_kocrdsoilh.eot');
+    src: url('//at.alicdn.com/t/font_2045147_kocrdsoilh.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_2045147_kocrdsoilh.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_2045147_kocrdsoilh.woff') format('woff'),
+    url('//at.alicdn.com/t/font_2045147_kocrdsoilh.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_2045147_kocrdsoilh.svg#iconfont') format('svg');
 }
 
 
@@ -59,6 +60,7 @@
                 top:0;
                 bottom:0;
                 overflow: hidden;
+                
             }
         }
     }
@@ -76,24 +78,41 @@
         z-index:2000;
     }
     //loading
-    .wait{
-        .mask{
-            z-index:2100;
-        }
-        img{
-            display: block;
-            width: 160px;
-            height: 160px;
-            position: fixed;
-            left: 50%;
-            top:50%;
-            margin-left:-80px;
-            margin-right:-80px;
-            z-index:2301;
-        }
+    
+    a , .link{
+        color:#1890ff;
+        text-decoration: none;
+        cursor:pointer;
+    }
+    a:hover , .link:hover{
+        color:#40a9ff;
     }
 
 }
 
+#react-single-app-wait{
+    .mask{
+        z-index:2100;
+        position: fixed;
+        left:0;
+        right:0;
+        top:0;
+        bottom: 0;
+        background: #000;
+        opacity: 0.6;
+        z-index:2000;
+    }
+    img{
+        display: block;
+        width: 160px;
+        height: 160px;
+        position: fixed;
+        left: 50%;
+        top:50%;
+        margin-left:-80px;
+        margin-right:-80px;
+        z-index:2301;
+    }
+}
 
 
