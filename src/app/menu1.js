@@ -13,17 +13,11 @@ function openPage(item){
 
 function isMatch(item){
     var reg = /(^\/\w+|config_id=\w+)/g;
-    return item.url?.match(reg)?.join('-') === `${location.pathname}${location.search}`.match(reg)?.join('-')
+    var urlMatch = item.url?.match(reg);
+    var locationMatch = `${location.pathname}${location.search}`.match(reg);
+    return urlMatch?.length > 0 && urlMatch?.join('-') === locationMatch?.join('-');
 }
 
-function MenuPopover({children , menuType}){
-    if(menuType == 'mini'){
-
-    }
-    else{
-        return children;
-    }
-}
 
 function Group({item , activeItem , activeSubItem , menuType}){
     let [isOpen , setOpen] = useState(false);
@@ -78,7 +72,7 @@ function PopoverGroup({item , activeItem , activeSubItem , menuType }){
     )
 }
 
-function ColMenu({list , menuType , setMenuType , activeItem , activeSubItem}){
+function ColMenu({list , menuType , setMenuType , activeItem , activeSubItem , systemList}){
     return (
         <div className='react-single-app-menu'>
             <div className={`react-single-app-menu-main ${menuType}`} >
@@ -88,7 +82,7 @@ function ColMenu({list , menuType , setMenuType , activeItem , activeSubItem}){
                         <span className='mini'>&#xe70f;</span> : 
                         <span>&#xe70e;</span>
                     }
-                    海关系统
+                    {systemList.length > 0 && systemList[0].name}
                 </div>
                 <VerticalScroll style={{width : menuType == 'mini' ? '64px' : '240px' , height : 'calc(100% - 56px)'}}>
                     {
@@ -100,7 +94,11 @@ function ColMenu({list , menuType , setMenuType , activeItem , activeSubItem}){
                 </VerticalScroll>
                 
             </div>
-            <div className={`shrink ${menuType}`} onClick={() => setMenuType(menuType == 'col' ? 'mini' : 'col')}></div>
+            <div className={`shrink ${menuType}`} onClick={() => {
+                let newType = menuType == 'col' ? 'mini' : 'col';
+                setMenuType(newType);
+                localStorage[`/style/menuType`] = newType;
+            }}></div>
         </div>
     )
 }
@@ -118,7 +116,7 @@ function TopMenu(props){
 }
 
 
-function Menu({menuList:list , menuType , setMenuType}){
+function Menu({menuList:list , menuType , setMenuType , systemList}){
     let activeItem = null;
     let activeSubItem = null;
     list.map(item => {
@@ -128,7 +126,7 @@ function Menu({menuList:list , menuType , setMenuType}){
         }
         item.list?.map(sub => isMatch(sub) && (activeItem = item , activeSubItem = sub))
     })
-    let props = {list , menuType , setMenuType , activeItem , activeSubItem}
+    let props = {list , menuType , setMenuType , activeItem , activeSubItem , systemList}
 
     return menuType == 'top' ? <TopMenu {...props} /> : <ColMenu {...props} />
 }

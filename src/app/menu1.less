@@ -1,4 +1,4 @@
-@itemHeight : 48px;
+@itemHeight : 40px;
 @iconWidth : 64px;
 .react-single-app-menu{
     position: relative;
@@ -35,10 +35,10 @@
             height: 56px;
             line-height: 56px;
             overflow: hidden;
-            font-size: 15px;
+            font-size: 14px;
             span{
                 width: auto;
-                margin: 0 20px;
+                margin: 0 10px 0 20px;
                 display: inline-block;
                 font-family: 'react-single-app-menu';
                 text-align: center;
@@ -55,11 +55,12 @@
             font-size: 14px;
             width: 240px;
             overflow: hidden;
-            padding-left: @iconWidth;
+            padding-left: 56px;
             position: relative;
             cursor: pointer;
             user-select: none;
             height: @itemHeight;
+            margin-bottom: 8px;
             .icon{
                 position: absolute;
                 width: @iconWidth;
@@ -93,8 +94,12 @@
             transition: height 0.3s;
             overflow: hidden;
             height: 48px;
+            cursor: pointer;
         }
         
+        &.mini .item{
+            width: 64px;
+        }
     }
 }
 

@@ -115,7 +115,7 @@ class Index extends Component{
                 topStyleList={mode_list.top}
                 configList={json_data}
                 user={user}
-                systemCode='CCS_ADMIN'
+                systemCode='SUPPLY_ADMIN'
             />
         )
         

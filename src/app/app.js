@@ -14,15 +14,12 @@ import {message} from 'antd';
 
 /**
  * 
- * @param {menuList} props 菜单列表
  * @param {pageMap} props 组件路由映射表
  * @param {configList} props 配置列表
- * @param {colStyleList} props 侧边栏样式
- * @param {topStyleList} props 顶部样式
- * @param {user} props 用户
+ * @param {systemCode} props 系统编码
  */
 
-function App({ pageMap = {},  systemCode ,   colStyleList=[] , topStyleList=[] , configList = [] , user={}}){
+function App({ pageMap = {},  systemCode ,  configList = [] }){
     let [pageList, setPageList] = useState([]);
     let [menuType , setMenuType] = useState(localStorage[`/style/menuType`] || 'col');
     let history = useHistory();
@@ -87,7 +84,6 @@ function App({ pageMap = {},  systemCode ,   colStyleList=[] , topStyleList=[] ,
         lib.request({
             url : '/ucenter-account/current/user/systemList',
             success : (data) => {
-                console.log(data);
                 setSystemList(data.sort((a , b) => b.url.indexOf(systemCode) - a.url.indexOf(systemCode)))
             }
         })
@@ -101,14 +97,14 @@ function App({ pageMap = {},  systemCode ,   colStyleList=[] , topStyleList=[] ,
                 {
                     menuType != 'top' && 
                     <div className='sub-content'>
-                        <Menu menuList={menuList} menuType={menuType} setMenuType={setMenuType} />
+                        <Menu systemList={systemList} menuList={menuList} menuType={menuType} setMenuType={setMenuType} />
                     </div>
                 }
                 <div className='main-content'>
                     <div>
                         <div className={'header ' + menuType}  >
                             {menuType == 'top' && <Menu menuList={menuList} menuType='top' />}
-                            <User user={user} systemList={systemList} />
+                            <User  systemList={systemList} />
                             <SystemSet  menuType={menuType} setMenuType={setMenuType} />
                         </div>
                     </div>
