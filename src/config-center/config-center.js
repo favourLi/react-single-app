@@ -144,7 +144,7 @@ class ConfigCenter extends React.Component{
     getConfig(id) {
         let configList = this.props.configList;
         let config = this.props.config;
-        if(id){
+        if(!config){
             for (var i = 0; i < configList.length; i++) {
                 if (configList[i].id == id) {
                     config = configList[i];
@@ -455,14 +455,7 @@ class ConfigCenter extends React.Component{
                                 needMask : true , 
                                 data : {...pagination , ...searchConditions},
                                 success : (json) => {
-                                    Modal.confirm({
-                                        okText: '去下载中心',
-                                        icon : null,
-                                        content : '新建下载任务成功',
-                                        onOk(){
                                             lib.openPage('/download-center?page_title=下载中心')
-                                        }
-                                    })
                                 }
                             })
                         }}>

@@ -55,7 +55,7 @@
             font-size: 14px;
             width: 240px;
             overflow: hidden;
-            padding-left: 56px;
+            padding-left: 52px;
             position: relative;
             cursor: pointer;
             user-select: none;
@@ -70,7 +70,7 @@
                 text-align: center;
                 line-height: @itemHeight;
                 font-family: 'react-single-app-menu';
-                font-size: 18px;
+                font-size: 16px;
             }
             .icon-down{
                 text-align: center;
@@ -110,16 +110,16 @@
     justify-content: flex-start;
     border-right: none;
     padding-left: 20px;
-    .group{
-        flex-grow:1;
-        cursor: pointer;
-        max-width: 100px;
-        text-align: center;
-    }
     .item{
         line-height: 55px;
         height: 55px;
         overflow: hidden;
+        flex-grow:1;
+        cursor: pointer;
+        max-width: 100px;
+        text-align: center;
+        margin-right: 5px;
+        box-sizing: border-box;
     }
 }
 
@@ -175,6 +175,7 @@
         overflow: hidden;
         border-bottom:solid 1px #e7e7e7;
         padding-left: 20px;
+        cursor: pointer;
     }
     .item:hover{
         background-color: #f7f7f7;

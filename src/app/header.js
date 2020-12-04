@@ -54,12 +54,14 @@ function createMenuStyle({
 function SystemSet({menuType , setMenuType}){
     let [visible , setVisible] = useState(false);
     let [list , setList] = useState([]);
+    let [activeStyle , setActiveStyle] = useState(null)
     function setMode(menuType){
         localStorage[`/style/menuType`] = menuType;
         setMenuType(menuType);
         lib.wait(500);
     }
     function setStyle(item){
+        setActiveStyle(item);
         localStorage[`/style`] = JSON.stringify(item);
         createMenuStyle(item.colors);
         lib.wait(500);
@@ -69,12 +71,14 @@ function SystemSet({menuType , setMenuType}){
         .then((list) => {
             setList(list)
             if(!localStorage[`/style`] && list.length > 0){
-                setStyle(list[1]);
+                setStyle(list.sort((a,b) => Math.random() - Math.random())[0]);
             }
         });
         try{
-            createMenuStyle(JSON.parse(localStorage[`/style`]).colors);
-        }catch(e){}
+            setStyle(JSON.parse(localStorage[`/style`]));
+        }catch(e){
+            // console.error(e);
+        }
     } , []);
 
     let modeList = [
@@ -121,7 +125,7 @@ function SystemSet({menuType , setMenuType}){
                     <ul className='style'>
                         {
                             list.map((item , index) => 
-                                <li key={index} className={ 'checked' } style={{backgroundColor : item.mainColor}} onClick={() => setStyle(item)}>
+                                <li key={index} className={activeStyle?.id === item.id ? 'checked' : '' } style={{backgroundColor : item.mainColor}} onClick={() => setStyle(item)}>
                                     <div>{item.title}</div>
                                 </li>
                             )

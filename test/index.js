@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { App, ConfigCenter , Outlet, lib , ImportExcel , Uploader , PersonalCenter} from '../src/index';
 import Test from './test';
 import TestDetail from './test-detail'
-// import 'antd/dist/antd.css';
 import Doc from './doc';
 import UserCenter from './user-center';
 import ItemCenter from './item-center';
@@ -110,11 +109,7 @@ class Index extends Component{
         return (
             <App
                 pageMap={pageMap}
-                menuList={menu_data}
-                colStyleList={mode_list.col}
-                topStyleList={mode_list.top}
                 configList={json_data}
-                user={user}
                 systemCode='SUPPLY_ADMIN'
             />
         )

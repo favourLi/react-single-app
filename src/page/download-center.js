@@ -1,6 +1,7 @@
 import React from 'react';
 import ConfigCenter from '../config-center/config-center';
 import lib from '../util/lib'
+import {Modal , Alert , Button} from 'antd';
 var config = {
     "id":1604886267662997,
     "title":"下载中心",
@@ -88,16 +89,24 @@ class DownloadCenter extends ConfigCenter {
                                         '删除' : '/park-gate/export/delete' ,
                                         '取消任务' : '/park-gate/export/cancel'
                                     }
-                                    lib.request({
-                                        url : map[item],
-                                        data : {
-                                            uid : row.uid
-                                        },
-                                        needMask : true , 
-                                        success : () => this.load()
+                                    Modal.confirm({
+                                        title : '请确认' + item ,
+                                        content : <>
+                                            <div>报表名称: {row.name}</div>
+                                            <div>完成时间: {row.finishTime}</div>
+                                        </>,
+                                        onOk :() =>{
+                                            lib.request({
+                                                url : map[item],
+                                                data : {
+                                                    uid : row.uid
+                                                },
+                                                needMask : true , 
+                                                success : () => this.load()
+                                            })
+                                        }
                                     })
                                 }
-
                             }}
                                 style={{ marginRight: '10px' }} 
                                 className='link' 
@@ -109,6 +118,12 @@ class DownloadCenter extends ConfigCenter {
                 }
             </>
         )
+    }
+    renderLeftOperation(){
+        return <>
+                <Alert style={{width : '450px' , display : 'inline-block' }} message='服务端数据将为您保留7天，已过期的数据将会自动删除' type="warning" showIcon  />
+                <Button style={{marginLeft: '20px'}} type='primary' onClick={() => this.load(true)}>刷新</Button>
+            </>
     }
 }
 

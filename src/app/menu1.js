@@ -12,7 +12,7 @@ function openPage(item){
 }
 
 function isMatch(item){
-    var reg = /(^\/\w+|config_id=\w+)/g;
+    var reg = /(^\/(\w|-)+|config_id=\w+)/g;
     var urlMatch = item.url?.match(reg);
     var locationMatch = `${location.pathname}${location.search}`.match(reg);
     return urlMatch?.length > 0 && urlMatch?.join('-') === locationMatch?.join('-');
@@ -38,7 +38,7 @@ function Group({item , activeItem , activeSubItem , menuType}){
             <div className={oneClass} onClick={() => item.list?.length == 0 ? openPage(item) :  setOpen(!isOpen)}>
                 <span className='icon' dangerouslySetInnerHTML={{__html : item.icon}}></span>
                 {item.title}
-                {item.list?.length > 0 && <RightOutlined  className='icon-down'  style={{fontSize : '15px' , transform}} />}
+                {item.list?.length > 0 && <RightOutlined  className='icon-down'  style={{fontSize : '14px' , transform}} />}
                 
             </div>
             {
@@ -56,19 +56,17 @@ function PopoverGroup({item , activeItem , activeSubItem , menuType }){
     let subList = item.list || [item]
 
     return (
-        <div className='group' >
-            <Popover placement={menuType == 'top' ? 'bottom' : "right"} content={
-                subList.map((sub , key) => 
-                <div onClick={() => openPage(sub)} 
-                    className={`item ${sub === activeSubItem && 'active'}`} key={key}>
-                        {sub.title}
-                </div>)
-            } overlayClassName='react-single-app-popover'>
-                <div className={`item ${item === activeItem && 'active'}`} onClick={() => openPage(item)}>
-                    {menuType == 'top' ? item.title : <span className='icon' dangerouslySetInnerHTML={{__html : item.icon}}></span>}
-                </div>
-            </Popover>
-        </div>
+        <Popover placement={menuType == 'top' ? 'bottom' : "right"} content={
+            subList.map((sub , key) => 
+            <div onClick={() => openPage(sub)} 
+                className={`item ${sub === activeSubItem && 'active'}`} key={key}>
+                    {sub.title}
+            </div>)
+        } overlayClassName='react-single-app-popover'>
+            <div className={`item ${item === activeItem && 'active'}`} onClick={() => openPage(item)}>
+                {menuType == 'top' ? item.title : <span className='icon' dangerouslySetInnerHTML={{__html : item.icon}}></span>}
+            </div>
+        </Popover>
     )
 }
 

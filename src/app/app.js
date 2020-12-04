@@ -59,8 +59,8 @@ function App({ pageMap = {},  systemCode ,  configList = [] }){
         }
         event.on('add-page', (page) => {
             pageList.push(page);
-            setPageList([...pageList]);
             history.push(page.url);
+            setPageList([...pageList]);
         });
         event.on('delete-page' , closePage);
         event.on('close-page' , closePage);
@@ -84,7 +84,7 @@ function App({ pageMap = {},  systemCode ,  configList = [] }){
         lib.request({
             url : '/ucenter-account/current/user/systemList',
             success : (data) => {
-                setSystemList(data.sort((a , b) => b.url.indexOf(systemCode) - a.url.indexOf(systemCode)))
+                setSystemList(data.sort((a , b) => b.systemCode.indexOf(systemCode) - a.systemCode.indexOf(systemCode)))
             }
         })
 
@@ -93,7 +93,7 @@ function App({ pageMap = {},  systemCode ,  configList = [] }){
 
     return (
         <ConfigProvider locale={zhCN}>
-            <div id='react-single-app' >
+            <div className='react-single-app' id='react-single-app'>
                 {
                     menuType != 'top' && 
                     <div className='sub-content'>

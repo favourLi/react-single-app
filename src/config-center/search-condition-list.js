@@ -120,7 +120,7 @@ function DateControl({item}){
                     }
                     else {
                         item.startValue = new Date(dates[0]).getTime();
-                        item.endValue = new Date(dates[1]).getTime() + 24 * 3600 * 1000;
+                        item.endValue = new Date(dates[1]).getTime() ;
                     }
                     setRefresh(++refresh);
                 }} />
@@ -264,12 +264,14 @@ function SearchConditionList({ searchKeyList , onSearch }){
                 searchCondition[key] = value;
             }
         })
-
         searchKeyList.map((item) => {
             if (item.type == 'date' || item.type == 'range') {
                 if (item.startValue) {
                     searchCondition[item.startKey] = item.startValue;
                     searchCondition[item.endKey] = item.endValue;
+                    if(item.type == 'date'){
+                        searchCondition[item.endKey] +=  24 * 3600 * 1000;
+                    }
                 }
                 map.set(item.startKey, item.startValue);
                 map.set(item.endKey, item.endValue);
@@ -309,6 +311,7 @@ function SearchConditionList({ searchKeyList , onSearch }){
         onSearch(searchCondition)
     }
     function reset(){
+        let s = location.search;
         searchKeyList.map((item) => {
             if (item.type == 'date' || item.type == 'range') {
                 if (item.startValue) {
@@ -319,8 +322,16 @@ function SearchConditionList({ searchKeyList , onSearch }){
             } else {
                 item.value = '';
             }
+            if(item.startKey){
+                s = s.replace(new RegExp(`&${item.startKey}=\\w+`) , '');
+                s = s.replace(new RegExp(`&${item.endKey}=\\w+`) , '');
+            }else{
+                s = s.replace(new RegExp(`&${item.key}=\\w+`) , '');
+            }
+            console.log(s);
         })
-        onSearch({});
+        history.replace(`${window.location.pathname}${s}`)
+        search();
         setRefresh(++refresh);
     }
 
