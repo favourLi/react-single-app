@@ -198,12 +198,14 @@ export default class ConfigCenter extends React.Component{
             <div className={`react-single-app-config-center ${this.props.name}`}>
                 {this.renderModal && this.renderModal()}
                 <div className='config-center-main'>
-                    <div className='search-condition-panel'>
-                        <SearchConditionList  searchKeyList={config.searchKeyList} onSearch={(searchConditions) => {
-                            this.state.searchConditions = searchConditions;
-                            this.state.pagination.currentPage = 1;
-                            this.load(true);
-                        }} />
+                    <div>
+                        <div className='search-condition-panel'>
+                            <SearchConditionList  searchKeyList={config.searchKeyList} onSearch={(searchConditions) => {
+                                this.state.searchConditions = searchConditions;
+                                this.state.pagination.currentPage = 1;
+                                this.load(true);
+                            }} />
+                        </div>
                     </div>
                     <div className='operation-panel'>
                         {this.renderOperation()}

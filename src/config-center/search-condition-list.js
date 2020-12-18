@@ -243,7 +243,7 @@ export default function ({ searchKeyList , onSearch }){
     useEffect(() => executeSearch(search) , [])
     return (
         <context.Provider value={{search , setSearch}} >
-            <div className={isMini ? 'mini-search-controls' : 'full-search-controls'}>
+            <div className={`${isMini ? 'mini-search-controls' : 'full-search-controls'}`}>
                 <div className='search-controls'>
                     {searchKeyList.map((item , index) => {
                         var Control = map[item.type];
