@@ -1,15 +1,19 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo , createContext , useContext } from 'react';
 import { BrowserRouter as Router, useHistory } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
-import Menu from './menu1';
+import Menu from './menu';
 
 import {User , SystemSet} from './header';
 import {Navigation , NavigationBody} from './navigation';
 import './app.less';
 import {lib , event} from '../index'
 import DownloadCenter from '../page/download-center';
+import ImportExcel from '../page/import-excel';
 import PersonalCenter from '../page/personal-center';
+import PermissionManage from '../account/permission-manage';
+import AccountManage from '../account/account-manage';
+import RoleManage from '../account/role-manage';
 import {message} from 'antd';
 
 /**
@@ -19,7 +23,7 @@ import {message} from 'antd';
  * @param {systemCode} props 系统编码
  */
 
-function App({ pageMap = {},  systemCode ,  configList = [] }){
+function App({ pageMap = {} ,  configList = [] }){
     let [pageList, setPageList] = useState([]);
     let [menuType , setMenuType] = useState(localStorage[`/style/menuType`] || 'col');
     let history = useHistory();
@@ -27,8 +31,12 @@ function App({ pageMap = {},  systemCode ,  configList = [] }){
     let [systemList , setSystemList] = useState([]);
     pageMap = {
         ...pageMap , 
+        'import-excel' : ImportExcel ,
         'download-center' : DownloadCenter , 
-        'personal-center' : PersonalCenter
+        'personal-center' : PersonalCenter ,
+        'permission-manage' : PermissionManage , 
+        'account-manage' : AccountManage ,
+        'role-manage' : RoleManage
     }
     useEffect(() => {
         function closePage(){
@@ -73,9 +81,10 @@ function App({ pageMap = {},  systemCode ,  configList = [] }){
         })
     } , []);
     useEffect(() => {
-        if(!systemCode){
-            return message.error('APP类必需传入参数systemCode');
+        if(!lib.config.systemCode){
+            return message.error('缺少参数systemCode');
         }
+        let systemCode = lib.config.systemCode;
         lib.request({
             url : '/ucenter-account/current/menuList' ,
             data : {systemCode},
@@ -131,7 +140,6 @@ function AppRouterWrap(props){
         </Router>
     )
 }
-
 
 export default AppRouterWrap;
 

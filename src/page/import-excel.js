@@ -35,7 +35,8 @@ function Step1({setCurrent }){
                 data : {
                     url : importInfo.file.src ,
                     faileCount : parseInt(Math.random() * 120) ,
-                    total : parseInt(Math.random() * 2000)
+                    total : parseInt(Math.random() * 2000),
+                    funcCode : lib.getParam('funcCode')
                 },
                 success : () => setCurrent(2)
             })
@@ -49,6 +50,7 @@ function Step2({setCurrent }){
     function query(){
         lib.request({
             url : `${importInfo.api}/import/query` ,
+            data : {funcCode : lib.getParam('funcCode')},
             success : data => {
                 if(data.step!= 2 ){
                     setCurrent(data.step);
@@ -91,6 +93,7 @@ function Step3({api , setCurrent}){
         }
         lib.request({
             url : `${importInfo.api}/import/query` ,
+            data : {funcCode : lib.getParam('funcCode')},
             success : data => {
                 setCurrent(data.step);
                 setData(data);
@@ -100,6 +103,7 @@ function Step3({api , setCurrent}){
     function confirm(){
         lib.request({
             url : `${importInfo.api}/import/confirm` ,
+            data : {funcCode : lib.getParam('funcCode')},
             success : data => {
                 setCurrent(1);
             }
@@ -201,6 +205,7 @@ function ImportExcel({api , onImportEnd}){
         importInfo.onImportEnd = onImportEnd;
         lib.request({
             url : `${importInfo.api}/import/query` ,
+            data : {funcCode : lib.getParam('funcCode')},
             success : data => {
                 importInfo.templateUrl = data.templateUrl;
                 setCurrent(data.step);

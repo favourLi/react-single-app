@@ -3,7 +3,7 @@ import { Pagination, Checkbox, Empty , Button , Modal} from 'antd';
 import { Resizable } from 'react-resizable';
 import './config-center.less';
 import SetUp from './set-up';
-import SearchConditionList from './search-condition-list';
+import SearchConditionList from './search-condition-list1';
 import md5 from 'md5';
 import Draggable from 'react-draggable'
 import { lib , Uploader } from '../index'
@@ -499,9 +499,12 @@ class ConfigCenter extends React.Component{
                     {this.renderTable()}
                 </div>
                 <div>
-                    <div className='pagination-panel'>
-                        {this.renderPagination()}
-                    </div>
+                    {
+                        this.state.pagination?.totalCount > 0 && 
+                        <div className='pagination-panel'>
+                            {this.renderPagination()}
+                        </div>
+                    }
                 </div>
                 <div>
                     {

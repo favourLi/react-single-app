@@ -2,8 +2,8 @@ import React, { useState, useMemo, useEffect } from 'react';
 import './header.less';
 import { Drawer } from 'antd';
 import {lib} from '../index'
-import {UserOutlined , CloudDownloadOutlined , LogoutOutlined , DownOutlined} from '@ant-design/icons';
-import {Popover , Menu , Button} from 'antd';
+import {UserOutlined , CloudDownloadOutlined , LogoutOutlined , DownOutlined , SwapOutlined} from '@ant-design/icons';
+import {Popover , Menu , Button , Modal , Dropdown} from 'antd';
 import axios from 'axios';
 
 
@@ -137,6 +137,59 @@ function SystemSet({menuType , setMenuType}){
     )
 }
 
+function ChangeAccount(){
+    let [list ,setList] = useState([]);
+    let [visible , setVisible] = useState(false);
+    useEffect(() => {
+        lib.request({
+            url : '/ucenter-account/current/masterUserList',
+            success : data => setList(data)
+        })
+    } , [])
+
+    return (
+        list?.length > 1 && 
+        <>
+            <div className='item' onClick={() => setVisible(true)}>
+                <SwapOutlined  style={{marginRight : '10px'}} />切换账号
+            </div>
+            <Drawer
+                placement="right"
+                closable={false}
+                onClose={() => setVisible(false)}
+                visible={visible}
+                closable
+                className='react-single-app-change-account'
+                style={{top : 56 }}
+                mask={false}
+            >
+                <div className='title'>切换账号</div>
+                {
+                    list.map(item => 
+                        <div  className={`item ${item.active && 'active'}`} key={item.id}
+                        onClick={() => {
+                            if(!item.active){
+                                lib.request({
+                                    url : '/ucenter-account/token/login',
+                                    data : {
+                                        masterUserName : item.name
+                                    },
+                                    needMask : true,
+                                    success : () => {
+                                        window.location = window.location.origin;
+                                    }
+                                })
+                            }
+                        }}
+                        > {item.name}</div>    
+                    )
+                }
+            </Drawer>
+
+        </>
+    )
+}
+
 
 function User({systemList}){
     let [name , setName] = useState('')
@@ -146,6 +199,31 @@ function User({systemList}){
             success: data => setName(data.userName)
         })
     } , [])
+    const menu = (
+        <Menu>
+            <Menu.Item>
+                <div className='item' onClick={() => lib.openPage('/personal-center?page_title=个人中心')}>
+                    <UserOutlined style={{marginRight : '10px'}} />个人中心
+                </div>
+            </Menu.Item>
+            <Menu.Item>
+                <div className='item'  onClick={() => lib.openPage('/download-center?page_title=下载中心')}>
+                    <CloudDownloadOutlined style={{marginRight : '10px'}} />下载中心
+                </div>
+            </Menu.Item>
+            <Menu.Item>
+                <ChangeAccount />
+            </Menu.Item>
+            <Menu.Item >
+                <div className='item logout'  onClick={() => {
+                    lib.request({
+                        url: '/ucenter-admin/logout' ,
+                        success:() => window.location.reload()
+                    })
+                }}><LogoutOutlined style={{marginRight : '10px'}} />退出登录</div>
+            </Menu.Item>
+        </Menu>
+      );
 
     return (
         <div className='user'>
@@ -161,24 +239,9 @@ function User({systemList}){
                     </Popover>
                     
             }
-            <Popover placement="top" content={
-                <>
-                    <div className='item' onClick={() => lib.openPage('/personal-center?page_title=个人中心')}>
-                        <UserOutlined style={{marginRight : '10px'}} />个人中心
-                    </div>
-                    <div className='item' onClick={() => lib.openPage('/download-center?page_title=下载中心')}>
-                        <CloudDownloadOutlined style={{marginRight : '10px'}} />下载中心
-                    </div>
-                    <div className='item' onClick={() => {
-                        lib.request({
-                            url: '/ucenter-admin/logout' ,
-                            success:() => window.location.reload()
-                        })
-                    }}><LogoutOutlined style={{marginRight : '10px'}} />退出登录</div>
-                </>
-            } overlayClassName='react-single-app-popover'>
+            <Dropdown overlay={menu} arrow placement="bottomCenter"  overlayClassName='react-single-app-user'>
                 <span>{name}</span>
-            </Popover>
+            </Dropdown>
         </div>
     )
 }

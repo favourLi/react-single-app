@@ -1,10 +1,13 @@
-import App from './app/app';
-import ConfigCenter from './config-center/config-center';
 import lib from './util/lib';
 import event from './util/event';
+import App from './app/app';
+import ConfigCenter from './config-center/config-center';
 import Uploader from './component/uploader';
 import Outlet from './component/outlet';
 import ImportExcel from './page/import-excel';
 import PersonalCenter from './page/personal-center';
 import DownloadCenter from './page/download-center';
-export {App, ConfigCenter, Uploader, Outlet, ImportExcel ,lib, event , PersonalCenter , DownloadCenter };
+import PermissionManage from './account/permission-manage';
+import AccountManage from './account/account-manage';
+import RoleManage from './account/role-manage';
+export {lib, event , App, ConfigCenter, Uploader, Outlet, ImportExcel , PersonalCenter , DownloadCenter , PermissionManage , AccountManage , RoleManage};

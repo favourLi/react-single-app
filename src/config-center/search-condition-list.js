@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { useHistory} from 'react-router-dom';
-import {Input, Select, DatePicker, Button, Cascader } from 'antd';
+import {Input, Select, DatePicker, Button, Cascader , Dropdown } from 'antd';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 import './search-condition-list.less'
@@ -215,6 +215,56 @@ function SelectTextArea({item}) {
     )
 }
 
+function SelectTextArea1({item}) {
+    let [refresh, setRefresh] = useState(0);
+    if (!item.select) {
+        item.select = JSON.parse(item.extra)[0].id
+    }
+    let str = "";
+    JSON.parse(item.extra).map(item => {
+        str += item.name + ','
+    })
+    const menu = (
+        <Menu>
+            {
+
+            }
+        </Menu>
+    )
+    return (
+        <div className='group' >
+            <label>
+            <Dropdown overlay={menu}>
+                <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                Hover me <DownOutlined />
+                </a>
+            </Dropdown>
+                <Select
+                    dropdownClassName="dropMenu"
+                    value={item.select}
+                    onChange={(e) => {
+                        item.select = e;
+                        setRefresh(++refresh);
+                    }}>
+                    {JSON.parse(item.extra).map(ite => {
+                        return <Option value={ite.id} key={ite.id}>{ite.name}</Option>
+                    })}
+                </Select>
+            </label>
+            <textarea className='form-control'
+                value={item.value || ''}
+                style={{ width: 260, height: 69}}
+                onChange={e => {
+                    item.value = e.target.value;
+                    setRefresh(++refresh);
+                }}
+                placeholder={`请输入${str}多条用换行隔开（不超过5000条）`}
+            />
+        </div>
+    )
+}
+
+
 function SelectInput({item}) {
     let [refresh, setRefresh] = useState(0);
     if (!item.select) {
@@ -270,8 +320,13 @@ function SearchConditionList({ searchKeyList , onSearch }){
                     searchCondition[item.startKey] = item.startValue;
                     searchCondition[item.endKey] = item.endValue;
                     if(item.type == 'date'){
-                        searchCondition[item.endKey] +=  24 * 3600 * 1000;
+                        searchCondition[item.startKey] -=  8 * 3600 * 1000;
+                        searchCondition[item.endKey] +=  16 * 3600 * 1000;
                     }
+                }
+                else{
+                    delete searchCondition[item.startKey];
+                    delete searchCondition[item.endKey];
                 }
                 map.set(item.startKey, item.startValue);
                 map.set(item.endKey, item.endValue);
@@ -379,6 +434,7 @@ function SearchConditionList({ searchKeyList , onSearch }){
                     item.list = JSON.parse(item.extra) || [];
                 }
             }
+
             if(!item.value){
                 var value = map.get(item.key);
                 if(item.type != 'text' && item.type != 'textarea'){
