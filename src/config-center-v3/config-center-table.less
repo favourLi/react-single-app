@@ -1,0 +1,52 @@
+.config-center-table{
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    th.ant-table-cell-ellipsis{
+        .title{
+            overflow: hidden;
+            width: 100%;
+            white-space: nowrap;
+            word-break: keep-all;
+            text-overflow: ellipsis;
+        }
+        overflow: visible;
+    }
+    .resizable-handle{
+        position: absolute;
+        width: 1px;
+        padding:0 10px;
+        top :0;
+        bottom: 0;
+        right: -9px;
+        cursor: col-resize;
+        &:before{
+            content:'';
+            width: 1px;
+            height: 60%;
+            background:#ddd;
+            display: block;
+            position: relative;
+            z-index: 1;
+            top: 20%;
+        }
+    }
+    th{
+        user-select: none;
+    }
+}
+.resizable-table .react-resizable {
+    position: relative;
+    background-clip: padding-box;
+}
+
+.resizable-table .react-resizable-handle {
+    position: absolute;
+    right: -5px;
+    bottom: 0;
+    z-index: 1;
+    width: 10px;
+    height: 100%;
+    cursor: col-resize;
+    background-image: none;
+}

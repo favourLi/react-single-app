@@ -79,6 +79,7 @@ function App({ pageMap = {} ,  configList = [] }){
             pageList.push(activeItem);
             setPageList([...pageList]);
         })
+        window.onresize = () => event.emit('window.resize')
     } , []);
     useEffect(() => {
         if(!lib.config.systemCode){
