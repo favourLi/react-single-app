@@ -18,7 +18,7 @@
         padding:0 10px;
         top :0;
         bottom: 0;
-        right: -9px;
+        right: -10px;
         cursor: col-resize;
         &:before{
             content:'';
@@ -34,19 +34,9 @@
     th{
         user-select: none;
     }
-}
-.resizable-table .react-resizable {
-    position: relative;
-    background-clip: padding-box;
-}
-
-.resizable-table .react-resizable-handle {
-    position: absolute;
-    right: -5px;
-    bottom: 0;
-    z-index: 1;
-    width: 10px;
-    height: 100%;
-    cursor: col-resize;
-    background-image: none;
+    th:last-child{
+        .resizable-handle:before{
+            display: none;
+        }
+    }
 }

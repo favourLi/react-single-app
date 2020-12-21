@@ -53,7 +53,6 @@ export default function ({columns , dataSource}){
     dataSource.map((item , index) => {
         item.key = index;
     });
-
     useEffect(() => {
         var resize = () => {
             setTimeout(() => setTableHeight(container.current.offsetHeight - 40));
@@ -63,39 +62,6 @@ export default function ({columns , dataSource}){
         return () => event.off('window.resize' , resize);
     }, [])
 
-    // let [list , setList] = useState([
-    //     {id : 1 , title : '中华人民共和国中华人民共和国中华人民共和国中华人民共和国' ,  key : 6} , 
-    //     {id : 2 , title : '小红' ,  key : 5} , 
-    //     {id : 3 , title : '小黑' ,  key : 4}
-    // ])
-    // let [columns , setColumns] = useState([
-    //     {
-    //         title: 'id',
-    //         dataIndex: 'id',
-    //         width: 200,
-    //     },
-    //     {
-    //         title: '中华人民共和国中华人民共和国中华人民共和国中华人民共和国',
-    //         dataIndex: 'title',
-    //         width: 500,
-    //         ellipsis: {
-    //             showTitle: false,
-    //         },
-    //     },
-    //     {
-    //         title: 'title1',
-    //         dataIndex: 'title',
-    //         width: 320,
-    //         index : 2,
-    //     },
-    //     {
-    //         title: 'title2',
-    //         dataIndex: 'title',
-    //         width: 220,
-    //         index : 3,
-    //         fixed: 'right',
-    //     },
-    // ])
     let [selectedRowKeys , setSelectedRowKeys] = useState([]);
     var components = {
         header: {

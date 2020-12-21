@@ -45,4 +45,35 @@
         padding:10px;
         border-top:solid 1px #E8E8E8;
     }
+    .config-center-detail{
+        border-top:solid 1px #eee;
+    }
+
+    .detail-panel{
+        .close{
+            position: absolute;
+            right: 0;
+            top: 5px;
+            height: 50px;
+            line-height: 50px;
+            width: 50px;
+            text-align: center;
+            z-index: 10;
+            font-family: 'react-single-app-iconfont';
+            font-size: 30px;
+            cursor: pointer;
+            color:#666;
+            &:hover{
+                color:#333;
+            }
+        }
+        .detail-content{
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top:11px;
+            bottom:0;
+            overflow: scroll;
+        }
+    }
 }
