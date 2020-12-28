@@ -1,4 +1,4 @@
-import React , {useState} from 'react';
+import React , {useState , useEffect} from 'react';
 import './uploader.less';
 import {Tooltip , message} from 'antd';
 import axios from 'axios';
@@ -67,15 +67,35 @@ function Preview({type , name , src}){
 
 /**
  * @param {style{width , height , ...}} 样式，一般指定width , height    可选   
- * @param {src} 默认图片URL                                            可选
+ * @param {defaultValue : {src , name}} 默认图片                                         可选
  * @param {allowTypes[]} 允许的图片类型，数组。默认不限制                  可选
  * @param {onUploadStart} 开始上传回调                                  可选
- * @param {onUploadEnd(src , name)} 结束上传回调                        可选
- * @param {onRemove} 删除图片回调                                       可选
+ * @param {onChange} 图片改变回调                                       可选
  */
-function Uploader({style , defaultValue = {} ,  allowTypes=[] , onUploadStart = function(){} , onUploadEnd = function(){} , onRemove=function(){}}){
-    let [src , setSrc] = useState(defaultValue.src || '');
+function Uploader({
+    style , 
+    defaultValue = {src : '' , name : ''} ,  
+    value ,
+    allowTypes = [] , 
+    onUploadStart = function(){} , 
+    onUploadEnd , 
+    onRemove  ,
+    onChange = function(){}
+}){
+    let [src , setSrc] = useState(defaultValue.src);
     let [name , setName] = useState(defaultValue.name);
+    let [config , setConfig] = useState({});
+    useEffect(() => {
+        axios.get('http://maria.yang800.com/api/data/v2/8').then(res => {
+            let config = {};
+            res.data.data.map(item => config[item.id] = item.name);
+            setConfig(config)
+        });
+    } , [])
+    if(value){
+        src = value.src;
+        name = value.name;
+    }
     let type = src.split('.').reverse()[0];
     let status = 'start';
     if (src && src.indexOf('dante-img.oss-cn-hangzhou.aliyuncs.com') > -1){
@@ -94,16 +114,20 @@ function Uploader({style , defaultValue = {} ,  allowTypes=[] , onUploadStart = 
             return message.error(`对不起，只支持类型为${allowTypes}的文件`)
         }
         setSrc(window.URL.createObjectURL(file));
-        onUploadStart();
+        
         var data = new FormData();
         var key = `${new Date().getTime() % 100000000}${parseInt(Math.random() * 1000)}.${suffix}`;
         data.append('name', 'dev/' + key);
         data.append('key', key);
-        data.append('policy', 'eyJleHBpcmF0aW9uIjoiMjAyMS0wMS0wMVQxMjowMDowMC4wMDBaIiwiY29uZGl0aW9ucyI6W1siY29udGVudC1sZW5ndGgtcmFuZ2UiLDAsMTA0ODU3NjAwMF1dfQ==');
-        data.append('OSSAccessKeyId', 'LTAIzH2kt3oukSR9');
+        data.append('policy', config.policy);
+        data.append('OSSAccessKeyId', config.OSSAccessKeyId);
         data.append('success_action_status', '200');
-        data.append('signature', 'VjVz6BCC3ZLqW/fgcpOPOc8hbfs=');
+        data.append('signature', config.signature);
         data.append('file', file);
+        onUploadStart({
+            src : 'https://dante-img.oss-cn-hangzhou.aliyuncs.com/' + key ,
+            name : file.name
+        });
         axios.request({
             url: 'https://dante-img.oss-cn-hangzhou.aliyuncs.com',
             method : 'POST' ,
@@ -112,9 +136,16 @@ function Uploader({style , defaultValue = {} ,  allowTypes=[] , onUploadStart = 
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         }).then((json) => {
-            onUploadEnd('https://dante-img.oss-cn-hangzhou.aliyuncs.com/' + key , file.name);
             setSrc('https://dante-img.oss-cn-hangzhou.aliyuncs.com/' + key);
             setName(file.name);
+            onChange({
+                src : 'https://dante-img.oss-cn-hangzhou.aliyuncs.com/' + key ,
+                name : file.name
+            })
+            if(onUploadEnd){
+                console.error('onUploadEnd函数即将弃用，请作用onChange来代替');
+                onUploadEnd('https://dante-img.oss-cn-hangzhou.aliyuncs.com/' + key , file.name);
+            }
         })
     }
 
@@ -129,7 +160,11 @@ function Uploader({style , defaultValue = {} ,  allowTypes=[] , onUploadStart = 
                 </div>
                 <div className='delete' onClick={() => {
                     setSrc('');
-                    onRemove();
+                    onChange(null);
+                    if(onRemove){
+                        console.error('onRemove函数即将弃用，请作用onChange来代替');
+                        onRemove();
+                    }
                 }}>&#xe659;</div>
             </div>
         </Tooltip >

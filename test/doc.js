@@ -4,15 +4,12 @@ import './doc.less';
 function Doc(){
     let [flag , setFlag] = useState(true)
     let style = flag ? {} : {maxHeight : '36px'};
-    
+    let [value , setValue] = useState(null);
     return <div style={{padding: '20px'}}>
         <Uploader 
-            onUploaderStart={() => {console.log('开始上传 ')}}
-            onUploaderEnd={(src) => {
-                console.log(src);
-            }}
+            onChange={value => setValue(value)}
+            value={value}
             style={{width:'160px' , height:'160px'}}
-            defaultValue={{src:'https://dante-img.oss-cn-hangzhou.aliyuncs.com/42547248838.xlsx' , name : '爱读书.key'}}
         />
 
         <div className='doc-group' style={style} onClick={() => setFlag(!flag)}>
