@@ -7,13 +7,12 @@ function Doc(){
     
     return <div style={{padding: '20px'}}>
         <Uploader 
-            allowTypes={['png' , 'jpg']}
             onUploaderStart={() => {console.log('开始上传 ')}}
             onUploaderEnd={(src) => {
                 console.log(src);
             }}
             style={{width:'160px' , height:'160px'}}
-            src='https://dante-img.oss-cn-hangzhou.aliyuncs.com/28562010515.png'
+            defaultValue={{src:'https://dante-img.oss-cn-hangzhou.aliyuncs.com/42547248838.xlsx' , name : '爱读书.key'}}
         />
 
         <div className='doc-group' style={style} onClick={() => setFlag(!flag)}>

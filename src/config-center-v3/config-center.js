@@ -6,7 +6,9 @@ import md5 from 'md5';
 import { lib ,  event} from '../index'
 import { Tooltip} from 'antd';
 import CTable from './config-center-table';
-import SetUp from '../config-center/set-up';
+import SetUp from './set-up';
+import Draggable from '../component/draggable';
+
 
 export default class ConfigCenter extends React.Component{
     constructor(props){
@@ -34,7 +36,6 @@ export default class ConfigCenter extends React.Component{
     resetSize(){
         this.resetSize.timer && clearTimeout(this.resetSize.timer);
         this.resetSize.timer = setTimeout(() => {
-            console.log(this.tablePanel.offsetHeight)
             this.setState({
                 tableHeight : this.tablePanel.offsetHeight - 40
             })
@@ -99,7 +100,6 @@ export default class ConfigCenter extends React.Component{
     }
     renderTable(){
         let {config , dataList , tableHeight} = this.state;
-        console.log('---' , config.tableFieldList);
         let columns = config.tableFieldList.map(item => {
             var column =  {
                 title: item.title,
@@ -109,15 +109,18 @@ export default class ConfigCenter extends React.Component{
                 fixed : item.display
             }
             if(item.type == 'function' || item.type == 'js'){
-                try {
-                    column.render = (_ , row , index) => item.type == 'js' ?  eval(item.key) : this[item.key](row , index)
-                } catch (e) {
-                    console.error(new Error(`error expression ${item.key}`) );
+                column.render = (_ , row , index) => {
+                    try {
+                        return item.type == 'js' ?  eval(item.key) : this[item.key](row , index)
+                    } catch (e) {
+                        console.error(e);
+                    }
                 }
+                
             }   
             return column;
         })
-        return (<CTable dataSource={dataList} columns={columns} tableHeight={tableHeight} />)
+        return (<CTable key={md5(JSON.stringify(columns))} dataSource={dataList} columns={columns} tableHeight={tableHeight} />)
     }
 
     renderPagination() {
@@ -129,6 +132,9 @@ export default class ConfigCenter extends React.Component{
                 total={this.state.pagination.totalCount}
                 onChange={(page, pageSize) => {
                     let { pagination } = this.state;
+                    this.setState({
+                        dataList : []
+                    })
                     pagination.currentPage = page;
                     if (pagination.pageSize != pageSize) {
                         pagination.pageSize = pageSize;
@@ -193,37 +199,53 @@ export default class ConfigCenter extends React.Component{
         )
     }
     render(){
-        let {config } = this.state;
+        let {config , detail } = this.state;
         return (
             <div className={`react-single-app-config-center ${this.props.name}`}>
                 {this.renderModal && this.renderModal()}
-                <div className='config-center-main'>
-                    <div>
-                        <div className='search-condition-panel'>
-                            <SearchConditionList  searchKeyList={config.searchKeyList} onSearch={(searchConditions) => {
-                                this.state.searchConditions = searchConditions;
-                                this.state.pagination.currentPage = 1;
-                                this.load(true);
-                            }} />
+                <Draggable axis='y' size={document.body.offsetHeight-300} onStop={() => event.emit('window.resize')}>
+                    <div className='config-center-main'>
+                        <div>
+                            <div className='search-condition-panel'>
+                                <SearchConditionList  searchKeyList={config.searchKeyList} onSearch={(searchConditions) => {
+                                    this.state.searchConditions = searchConditions;
+                                    this.state.pagination.currentPage = 1;
+                                    this.load(true);
+                                }} />
+                            </div>
+                        </div>
+                        <div className='operation-panel'>
+                            {this.renderOperation()}
+                        </div>
+                        <div className='table-panel' ref={(tablePanel) => {
+                            this.tablePanel = tablePanel;
+                        }}>
+                            {this.renderTable()}
+                        </div>
+                        <div>
+                            {
+                                this.state.pagination?.totalCount > 0 && 
+                                <div className='pagination-panel'>
+                                    {this.renderPagination()}
+                                </div>
+                            }
                         </div>
                     </div>
-                    <div className='operation-panel'>
-                        {this.renderOperation()}
-                    </div>
-                    <div className='table-panel' ref={(tablePanel) => {
-                        this.tablePanel = tablePanel;
-                    }}>
-                        {this.renderTable()}
-                    </div>
-                    <div>
-                        {
-                            this.state.pagination?.totalCount > 0 && 
-                            <div className='pagination-panel'>
-                                {this.renderPagination()}
+                    {
+                        detail.show && 
+                        <div className='config-center-detail'>
+                            <div className='close' onClick={() => {
+                                detail.show = false;
+                                detail.data = null;
+                                this.setState({ __detail__: detail });
+                            }}>&#xe60c;</div>
+                            <div className='detail-content' >
+                                {detail.show && this.renderDetail && this.renderDetail(detail.data)}
                             </div>
-                        }
-                    </div>
-                </div>
+                        </div>
+                    }
+                    
+                </Draggable>
             </div>
         )
     }

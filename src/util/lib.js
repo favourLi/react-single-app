@@ -181,10 +181,8 @@ var lib = {
             }
             needMask && setTimeout(lib.waitEnd, 500 - new Date().getTime() + maskTime);
         }).catch(e => {
-            Modal.error({
-                content: '网络错误，请稍后重试！' ,
-            });
             lib.waitEnd();
+            throw e;
         });
     },
     wait(time) {

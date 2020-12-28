@@ -1,12 +1,13 @@
 import React , {useState , useRef , useEffect} from 'react';
 import Draggable from 'react-draggable';
 import './draggable.less';
-
+import {event} from '../index';
 
 export default function MyDraggable({
     size = 200 ,
     axis = 'x',
-    children
+    children ,
+    onStop = function(){}
 }){
     let [start , setStart] = useState(null);
     let [move , setMove] = useState(null);
@@ -42,8 +43,12 @@ export default function MyDraggable({
         position = { x : 0, y : top};
     }
     useEffect(()=> {
-        max = isHorizontal ? container.current.clientWidth : container.current.clientHeight;
-        setMax(max);
+        function resize(){
+            max = isHorizontal ? container.current.clientWidth : container.current.clientHeight;
+            setMax(max);
+        }
+        resize();
+        event.on('window.resize' , resize);
     } , [])
     
     return (
@@ -74,6 +79,7 @@ export default function MyDraggable({
                     setSize(size + move - start)
                     setStart(null);
                     setMove(null);
+                    onStop();
                 }}
                 >
                 <div className='handle' >

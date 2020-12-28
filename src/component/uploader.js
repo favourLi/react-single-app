@@ -73,10 +73,10 @@ function Preview({type , name , src}){
  * @param {onUploadEnd(src , name)} 结束上传回调                        可选
  * @param {onRemove} 删除图片回调                                       可选
  */
-function Uploader({style , src = '' , allowTypes=[] , onUploadStart = function(){} , onUploadEnd = function(){} , onRemove=function(){}}){
-    var [src , setSrc] = useState(src);
-    var [type , setType] = useState('');
-    var [name , setName] = useState('');
+function Uploader({style , defaultValue = {} ,  allowTypes=[] , onUploadStart = function(){} , onUploadEnd = function(){} , onRemove=function(){}}){
+    let [src , setSrc] = useState(defaultValue.src || '');
+    let [name , setName] = useState(defaultValue.name);
+    let type = src.split('.').reverse()[0];
     let status = 'start';
     if (src && src.indexOf('dante-img.oss-cn-hangzhou.aliyuncs.com') > -1){
         // src += '?x-oss-process=image/resize,l_220';
@@ -114,7 +114,6 @@ function Uploader({style , src = '' , allowTypes=[] , onUploadStart = function()
         }).then((json) => {
             onUploadEnd('https://dante-img.oss-cn-hangzhou.aliyuncs.com/' + key , file.name);
             setSrc('https://dante-img.oss-cn-hangzhou.aliyuncs.com/' + key);
-            setType(suffix);
             setName(file.name);
         })
     }
