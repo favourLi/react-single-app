@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { Pagination, Checkbox, Empty , Button , Modal} from 'antd';
 import { Resizable } from 'react-resizable';
-// import './config-center.less';
+import './config-center.less';
 import SetUp from './set-up';
 import SearchConditionList from './search-condition-list';
 import md5 from 'md5';

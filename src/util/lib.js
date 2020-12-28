@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {event} from '../index';
 import md5 from 'md5';
-import {message} from 'antd';
+import {message , Modal} from 'antd';
 /**
     yyyy-MM-dd : 年月日
     yyyy-MM-dd hh:mm:ss 年月日 时分秒
@@ -163,7 +163,6 @@ var lib = {
             crossDomain: true,
         }).then( ({ data: json }) => {
             let { code, data, message : msg } = json;
-            // console.log(`------ ${url} ------`);
             // console.log(code , data , msg);
             if (code == 200) {
                 success(data);
@@ -181,6 +180,11 @@ var lib = {
                 fail(code, msg);
             }
             needMask && setTimeout(lib.waitEnd, 500 - new Date().getTime() + maskTime);
+        }).catch(e => {
+            Modal.error({
+                content: '网络错误，请稍后重试！' ,
+            });
+            lib.waitEnd();
         });
     },
     wait(time) {
@@ -203,7 +207,6 @@ var lib = {
             document.getElementById('react-single-app-wait').remove();
         }
     },
-
     setConfig(config){
         Object.assign(this.config , config);
         if(config.webToken == 'user'){
@@ -212,7 +215,6 @@ var lib = {
         if(config.webToken == 'admin'){
             this.config.login = /yang800.com$/.test(window.location.host) ? 'http://account.admin.yang800.com' : 'http://account.admin.yang800.cn'
         }
-        
     }
 }
 

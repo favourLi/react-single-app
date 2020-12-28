@@ -130,7 +130,7 @@ function MyDate({item}){
                 style={{ width: 260 }}
                 value={
                     search[start] ?
-                    [moment(new Date(search[start]).getTime()), moment(new Date(search[end]).getTime())]:
+                    [moment(parseInt(search[start])), moment(parseInt(search[end]))]:
                     []
                 }
                 onChange={(e, dates) => {
@@ -139,8 +139,8 @@ function MyDate({item}){
                         setKeyToObj(search , end , '');
                     }
                     else {
-                        setKeyToObj(search , start , new Date(dates[0]).getTime());
-                        setKeyToObj(search , end , new Date(dates[1]).getTime());
+                        setKeyToObj(search , start , new Date(dates[0]).getTime() - 8 * 3600 * 1000);
+                        setKeyToObj(search , end , new Date(dates[1]).getTime()  + 16 * 3600 * 1000 - 1);
                     }
                     setSearch({...search});
                 }} />
