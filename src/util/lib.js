@@ -150,7 +150,7 @@ var lib = {
         }else{
             loginHost = new URL(url).origin;
         }
-        axios.request({
+        return axios.request({
             url: url,
             method: 'POST',
             data: data,
@@ -166,19 +166,21 @@ var lib = {
             // console.log(code , data , msg);
             if (code == 200) {
                 success(data);
-            } else if (code == -1001) {
+                needMask && setTimeout(lib.waitEnd, 500 - new Date().getTime() + maskTime);
+                return data;
+            } 
+            else if (code == -1001) {
                 if(!this.config.login){
                     console.error('no login url;please set the webToken')
                 }
                 else{
                     window.location = `${this.config.login}/login?redirectUrl=${encodeURIComponent(window.location.href)}${loginHost ? '&host=' + loginHost : ''}`;
                 }
-            }  else if (code < 0) {
-                message.error(msg);
+            }  
+            else{
+                code < 0 && message.error(msg);
                 fail && fail(code, msg);
-            } else {
-                fail(code, msg);
-            }
+            } 
             needMask && setTimeout(lib.waitEnd, 500 - new Date().getTime() + maskTime);
         }).catch(e => {
             lib.waitEnd();
