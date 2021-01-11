@@ -1,6 +1,6 @@
 import React , {useState , useEffect} from 'react';
 import {lib } from '../index';
-import ConfigCenter from '../config-center-v3/config-center'
+import ConfigCenter from '../config-center/config-center'
 import {Button , message , Space , Modal , Switch , Select , Input , Form , Typography, Divider , Alert} from 'antd';
 import './account.less';
 const { Title, Paragraph } = Typography;

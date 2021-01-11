@@ -1,0 +1,37 @@
+.config-center-v3.item-editor{
+    position: relative;
+    overflow: hidden;
+    div.form{
+        position: absolute;
+        top:0;
+        left: 0;
+        bottom:60px;
+        right: 0;
+        overflow: scroll;
+        padding: 20px;
+    }
+    .ant-form-item-label > label{
+        padding-left: 15px;
+    }
+    .ant-row{
+        .ant-divider-horizontal.ant-divider-with-text-left{
+            &:before , &:after{
+                top:0;
+            }
+        }
+    }
+    
+    .ft{
+        position: fixed;
+        left: 160px;
+        right: 0;
+        bottom:0;
+        height: 60px;
+        line-height: 60px;
+        text-align: center;
+        border-top: solid 1px #eee;
+        box-shadow: 2px 0px 8px #f0f1f2;
+        background:#fff;
+    }
+}
+

@@ -10,4 +10,7 @@ import DownloadCenter from './page/download-center';
 import PermissionManage from './account/permission-manage';
 import AccountManage from './account/account-manage';
 import RoleManage from './account/role-manage';
-export {lib, event , App, ConfigCenter, Uploader, Outlet, ImportExcel , PersonalCenter , DownloadCenter , PermissionManage , AccountManage , RoleManage};
+import {SearchList , ItemEditor , ItemEditorModal} from './config-center-v3'
+
+
+export {lib, event , App, ConfigCenter, Uploader, Outlet, ImportExcel , PersonalCenter , DownloadCenter , PermissionManage , AccountManage , RoleManage , SearchList , ItemEditor , ItemEditorModal};

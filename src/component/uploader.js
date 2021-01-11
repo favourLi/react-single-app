@@ -119,10 +119,10 @@ function Uploader({
         var key = `${new Date().getTime() % 100000000}${parseInt(Math.random() * 1000)}.${suffix}`;
         data.append('name', 'dev/' + key);
         data.append('key', key);
-        data.append('policy', config.policy);
-        data.append('OSSAccessKeyId', config.OSSAccessKeyId);
+        data.append('policy', 'eyJleHBpcmF0aW9uIjoiMjAzMC0wMS0wMVQxMjowMDowMC4wMDBaIiwiY29uZGl0aW9ucyI6W1siY29udGVudC1sZW5ndGgtcmFuZ2UiLDAsMTA0ODU3NjAwMF1dfQ==');
+        data.append('OSSAccessKeyId', 'LTAI4GDcG22sccSsU4BCd3U9');
         data.append('success_action_status', '200');
-        data.append('signature', config.signature);
+        data.append('signature', 'dROu8xOLbLNAyqFlTVc5tvzUcAg=');
         data.append('file', file);
         onUploadStart({
             src : 'https://dante-img.oss-cn-hangzhou.aliyuncs.com/' + key ,

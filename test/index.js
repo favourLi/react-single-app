@@ -9,6 +9,8 @@ import ItemCenter from './item-center';
 import BrandCenter from './brand-center';
 import OrderList from './order-center/index';
 import OrderDetail from './order-center/detail';
+import GoodManage from './good-manage';
+
 
 const pageMap = {
     'warehouse': Test,
@@ -23,29 +25,27 @@ const pageMap = {
     'admin-user-center' : Outlet , 
     'import-excel' : ImportExcel ,
     'uploader' : Uploader,
-    'personal-center' : PersonalCenter
+    'personal-center' : PersonalCenter , 
+    'good-manage' : GoodManage
 }
 
 
 
 
-lib.setConfig({
-    webToken : 'admin' , 
-    systemCode : 'CCS_ADMIN'
-})
 // lib.setConfig({
-//     webToken : 'user' , 
-//     systemCode : 'ARES_WEB'
+//     webToken : 'admin' , 
+//     systemCode : 'CCS_ADMIN'
 // })
-
-
+lib.setConfig({
+    webToken : 'user' , 
+    systemCode : 'ARES_WEB'
+})
 
 
 class Index extends Component{
     constructor(props){
         super(props)
     }
-
     render(){
         return (
             <App
@@ -56,7 +56,6 @@ class Index extends Component{
         
     }
 }
-
 
 
 ReactDOM.render(<Index /> , document.getElementById('root'));
