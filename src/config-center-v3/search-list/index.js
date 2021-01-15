@@ -110,6 +110,7 @@ export default class SearchList extends React.Component{
                     dataList: data.dataList || []
                 })
                 this.tablePanel.scrollTop = 0;
+                setTimeout(this.resetSize);
             }
         })
     }

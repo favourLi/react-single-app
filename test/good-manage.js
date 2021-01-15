@@ -1,6 +1,6 @@
 import React , {useState , useEffect} from 'react';
 import {Space , Button, Row} from 'antd';
-import {lib , event, SearchList  } from '@/index';
+import {lib , event, SearchList  } from '../lib';
 import axios from 'axios';
 
 function ExpandRow({row, expanded}){
