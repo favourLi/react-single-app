@@ -6,7 +6,11 @@ import { lib } from '../index'
 import {RightOutlined } from '@ant-design/icons'
 import VerticalScroll from '../component/vertical-scroll';
 function openPage(item){
-    if(item.url){
+    if(item.url.indexOf('http://') > -1 || item.url.indexOf('https://') > -1){
+        let url = item.url.replace('?' , `/${new Date().getTime()}?`)
+        window.open(url);
+    }
+    else if(item.url){
         lib.openPage(item.url);
     }
 }
