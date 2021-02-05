@@ -1,6 +1,6 @@
 import React , {useState , useEffect} from 'react';
 import {Space , Button, Row} from 'antd';
-import {lib , event, SearchList  } from '../lib';
+import {lib , event, SearchList} from '@/index';
 import axios from 'axios';
 
 function ExpandRow({row, expanded}){
@@ -26,7 +26,7 @@ function ExpandRow({row, expanded}){
 
 class GoodManage extends SearchList{
     getConfig(){
-        return axios.get('http://maria.yang800.com/api/data/v2/44').then(res => res.data.data);
+        return axios.get('http://127.0.0.1:8080/api/data/v2/42').then(res => res.data.data);
     }
 
     getOperation(row){

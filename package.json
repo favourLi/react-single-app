@@ -1,8 +1,8 @@
 {
   "name": "react-single-app",
-  "version": "3.0.3",
+  "version": "3.0.7", 
   "main": "lib/index.js",
-  "description": "fixed the event bug",
+  "description": "history version 2.8.19",
   "repository": {
     "type": "git",
     "url": "git@code.aliyun.com:wenzhenghaha/react-single-app.git"
@@ -34,14 +34,19 @@
     "react-resizable": "^1.10.1",
     "react-sortable-hoc": "^1.11.0",
     "md5": "^2.3.0",
-    "moment": "^2.27.0"
+    "moment": "^2.27.0",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-decorators": "^7.12.12",
+    "babel-preset-mobx": "^2.0.0",
+    "mobx": "^6.0.4",
+    "mobx-react": "^7.0.5"
   },
   "devDependencies": {
     "array-move": "^3.0.1",
     "webpack-dev-server": "^3.2.1"
   },
   "scripts": {
-    "build": "webpack --config webpack/build.js",
+    "build": "webpack --config webpack/build-npm.js",
     "start": "webpack-dev-server --open  --host 0.0.0.0 --disableHostCheck=true --config webpack/start.js",
     "build-npm": "webpack --config webpack/build-npm.js"
   },

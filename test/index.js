@@ -40,6 +40,16 @@ lib.setConfig({
     webToken : 'user' , 
     systemCode : 'ARES_WEB'
 })
+// lib.setConfig({
+//     webToken : 'user',
+//     systemCode : 'DT_WMS'
+// })
+
+// lib.setConfig({
+//     webToken : 'admin' , 
+//     systemCode : 'ACCOUNT_ADMIN'
+// })
+
 
 
 class Index extends Component{

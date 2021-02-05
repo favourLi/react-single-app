@@ -26,6 +26,18 @@ function getMaxLevel(list , checkSet){
     return maxLevel
 }
 
+function initCheck(list , set){
+    if(!list){
+        return;
+    }
+    list.map(item => {
+        if(item.auth){
+            set.add(item.id);
+        }
+        initCheck(item.list , set);
+        initCheck(item.buttons , set);
+    })
+}
 
 function PermissionManage(){
     let [checkSet] = useState(new Set());
@@ -53,7 +65,8 @@ function PermissionManage(){
                 roleId ,
             },
             success : list => {
-                setList(list) 
+                setList(list);
+                initCheck(list , checkSet);
             }
         })
     } , [])

@@ -57,8 +57,8 @@ var lib = {
         if (url.indexOf("?") == -1 || url.indexOf('page_title') == -1) {
             return console.error('function openPage url must have a page_title or pageTitle value')
         }
-        url = url.replace(/\/\d{13}/, '');
-        url = url.replace('?', '/' + new Date().getTime() + '?');
+        // url = url.replace(/\/\d{13}/, '');
+        // url = url.replace('?', '/' + new Date().getTime() + '?');
         if (refreshFn) {
             var refreshEvent = new Date().getTime();
             url += `&refresh_event=${refreshEvent}`;
@@ -73,14 +73,8 @@ var lib = {
     /**
      * 关闭当前页面
      */
-    closePage() {
-        var refreshEvent = lib.getParam('refresh_event');
-        event.emit('delete-page');
-        setTimeout(() => {
-            if (refreshEvent) {
-                event.emit(refreshEvent, {}, true);
-            }
-        }, 100);
+    closePage(url) {
+        event.emit('delete-page' , {url});
     },
 
 
@@ -122,7 +116,7 @@ var lib = {
                 'http://danding-gateway.yang800.com.cn'
             ]
         }
-        else if(/yang800.com$/.test(window.location.host)){
+        else if(/yang800.com$/.test(window.location.host) && window.location.host != 'maria.yang800.com'){
             var [clientId, clientSecret, prefixUrl] = [
                 '9E514E70AD7D485986D687F64616C662',
                 '33F14542BB274284B63147E6C8F3DF9E' , 

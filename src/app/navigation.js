@@ -1,35 +1,26 @@
 import React, { Fragment, useMemo } from 'react';
-import { Route, Link } from 'react-router-dom';
-import './navigation.less';
+import { Route, Link , useHistory , withRouter} from 'react-router-dom';
 import {lib , event } from '../index'
+import {Tabs} from 'antd';
 
-function Navigation({pageList }){
+function NavigationHeader({pageList }){
+    let history = useHistory();
+    let activeKey = decodeURIComponent(window.location.pathname + window.location.search)
     return (
-        <ul className='navigation'>
-            {
-                pageList.map((item, index) =>
-                    <Route key={index} path={item.url.split('?')[0]} children={(props) =>
-                        <li title={lib.getParam('page_title' , item.url)} 
-                            className={(props.match ? 'active ' : '') }>
-                            <Link to={item.url}>
-                                {lib.getParam('page_title', item.url)}
-                            </Link>
-                            {
-                                props.match &&
-                                <div className='close' onClick={() => {
-                                    event.emit('delete-page')
-                                }}>&#xe60c;</div>
-                            }
-                        </li>
-                    } />
-
-                )
-            }
-            <li className='close-all' title='关闭其它页面' onClick={() => event.emit('close-other-page')}>&#xe659;</li>
-        </ul>
+        <div className='navigation-header'>
+            <Tabs type="editable-card" hideAdd activeKey={activeKey} onChange={url => history.push(url)} onEdit={url => {
+                lib.closePage(url);
+            }}>
+                {
+                    pageList.map((item, index) => 
+                    <Tabs.TabPane tab={lib.getParam('page_title', item.url)} key={item.url} closable={true}>
+                    </Tabs.TabPane>
+                    )
+                }
+            </Tabs>
+        </div>
     )
 }
-
 //useMemo
 
 function MemoPage({ match, Page, name, configList}){
@@ -45,13 +36,14 @@ function MemoPage({ match, Page, name, configList}){
 function NavigationBody({pageList , pageMap , configList}){
 
     return (
-        <Fragment>
+        <div className='navigation-body'>
             {
                 pageList.map((item , index) => {
-                    var names = item.url.split('/');
-                    var name = names[0] || names[1];
-                    var Page = pageMap[name];
                     var path = item.url.split('?')[0];
+                    var names = path.split('/');
+                    var name = names.pop();
+                    var Page = pageMap[name];
+                    
                     if (!Page){
                         console.error(`can't find page for name ${name}`)
                         return (<div key={index}></div>)
@@ -63,10 +55,19 @@ function NavigationBody({pageList , pageMap , configList}){
                     )
                 })
             }
-        </Fragment>
+        </div>
     )
 }
 
 
+function Navigation({pageList , pageMap , configList}){
+    return (
+        <div className='app-navigation'>
+            <NavigationHeader pageList={pageList} />
+            <NavigationBody pageList={pageList} pageMap={pageMap} configList={configList} />
+        </div>
+    )
+}
 
-export {Navigation , NavigationBody};
+
+export default withRouter(Navigation);

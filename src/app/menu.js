@@ -94,17 +94,17 @@ function ColMenu({list , menuType , setMenuType , activeItem , activeSubItem , s
                         ) 
                     }
                 </VerticalScroll>
-                
+                <div className={`shrink ${menuType}`} onClick={() => {
+                    let newType = menuType == 'col' ? 'mini' : 'col';
+                    setMenuType(newType);
+                    localStorage[`/style/menuType`] = newType;
+                }}></div>
             </div>
-            <div className={`shrink ${menuType}`} onClick={() => {
-                let newType = menuType == 'col' ? 'mini' : 'col';
-                setMenuType(newType);
-                localStorage[`/style/menuType`] = newType;
-            }}></div>
+            
         </div>
     )
 }
-
+ 
 function TopMenu(props){
     return (
         <div className='react-single-app-menu top'>

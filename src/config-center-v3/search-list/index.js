@@ -84,7 +84,7 @@ export default class SearchList extends React.Component{
         this.resetSize.timer && clearTimeout(this.resetSize.timer);
         this.resetSize.timer = setTimeout(() => {
             let {table} = this.state;
-            if(table.panel.current){
+            if(table.panel.current?.offsetHeight){
                 table.height = table.panel.current.offsetHeight - 40;
                 this.setState({table});
             }
@@ -97,11 +97,11 @@ export default class SearchList extends React.Component{
     }
     
     load(needMask) {
-        let { pagination, search } = this.state;
+        let { pagination, search , config } = this.state;
         var data = {};
         Object.assign(data, pagination, search);
         lib.request({
-            url: this.state.config.api,
+            url: config.page.api,
             data: data,
             needMask: needMask,
             success: (data) => {

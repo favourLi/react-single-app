@@ -18,32 +18,40 @@ function createMenuStyle({
     selectBackgroundColor,
     selectRightBackgroundColor,
     borderColor ,
-    logoColor}){
+    logoColor,
+    systemSelectColor,
+    systemSelectBackgroundColor
+}){
     var css = `
-        .react-single-app-menu , .header.top{
+        .app-menu , .header.top{
             background: ${backgroundColor};
             border-color: ${borderColor};
         }
-        .react-single-app-menu .logo{
+        .app-menu .logo{
             color: ${logoColor};
         }
-        .react-single-app-menu .item , .header.top span {
+        .app-menu .item  {
             color:${itemColor};
         }
-        .react-single-app-menu .item:hover , .header.top span:hover {
+        .app-menu .item:hover {
             color:${hoverColor};
             background: ${hoverBackgroundColor};
         }
-        .react-single-app-menu .item.active-sub {
+        .app-menu .item.active-sub , .app-menu .shrink {
             color: ${selectSubColor};
         }
-        .react-single-app-menu .item.active {
+        .app-menu .item.active , .app-menu .shrink {
             color: ${selectColor};
             background : ${selectBackgroundColor};
         }
-        .react-single-app-menu .item.active:after{
+        .app-menu .item.active:after{
             background: ${selectRightBackgroundColor};
         }
+        .app-header .system-list .active , .app-header .system-list div:hover{
+            background: ${systemSelectBackgroundColor};
+            color: ${systemSelectColor};
+        }
+
     `
     var style = document.createElement('style');
     style.innerHTML = css;
@@ -51,15 +59,10 @@ function createMenuStyle({
 }
 
 
-function SystemSet({menuType , setMenuType}){
+function SystemSet(){
     let [visible , setVisible] = useState(false);
     let [list , setList] = useState([]);
     let [activeStyle , setActiveStyle] = useState(null)
-    function setMode(menuType){
-        localStorage[`/style/menuType`] = menuType;
-        setMenuType(menuType);
-        lib.wait(500);
-    }
     function setStyle(item){
         setActiveStyle(item);
         localStorage[`/style`] = JSON.stringify(item);
@@ -71,7 +74,7 @@ function SystemSet({menuType , setMenuType}){
         .then((list) => {
             setList(list)
             if(!localStorage[`/style`] && list.length > 0){
-                setStyle(list.sort((a,b) => Math.random() - Math.random())[0]);
+                setStyle(list.sort(() => Math.random() - Math.random())[0]);
             }
         });
         try{
@@ -81,46 +84,19 @@ function SystemSet({menuType , setMenuType}){
         }
     } , []);
 
-    let modeList = [
-        {
-            type : 'col' , 
-            className : menuType != 'top' ? 'checked' : '' ,
-            img : 'https://dante-img.oss-cn-hangzhou.aliyuncs.com/97402116582.png' , 
-            title : '侧边导航'
-        },
-        {
-            type : 'top' , 
-            className : menuType == 'top' ? 'checked' : '' ,
-            img : 'https://dante-img.oss-cn-hangzhou.aliyuncs.com/97402116525.png' , 
-            title : '顶部导航'
-        }
-    ]
 
     return (
         <div className='system-set' >
             <span className='set' onClick={() => setVisible(true)}>&#xe91e;</span>
             <Drawer
                 placement="right"
-                closable={false}
                 onClose={() => setVisible(false)}
                 visible={visible}
-                closable
                 className='system-set'
                 style={{top : 56 }}
                 mask={false}
             >
                 <div className='system-set' style={{ marginTop: '-32px' , marginLeft:'-12px' , marginRight:'-12px' }}>
-                    <h3>导航方式</h3>
-                    <ul className='mode'>
-                        {
-                            modeList.map(mode => 
-                                <li key={mode.type} className={mode.className} onClick={() => setMode(mode.type)}>
-                                    <img src={mode.img} />
-                                    {mode.title}
-                                </li>
-                            )
-                        }
-                    </ul>
                     <h3>皮肤设置</h3>
                     <ul className='style'>
                         {
@@ -191,7 +167,7 @@ function ChangeAccount(){
 }
 
 
-function User({systemList}){
+function User(){
     let [name , setName] = useState('')
     useEffect(()=> {
         lib.request({
@@ -227,18 +203,6 @@ function User({systemList}){
 
     return (
         <div className='user'>
-            {
-                systemList.length > 0 && 
-                    <Popover placement="top" content={
-                        systemList.map((system , key) => 
-                        <div className='item' key={key} onClick={() => location = system.url}>
-                                {system.name}
-                        </div>)
-                    } overlayClassName='react-single-app-popover'>
-                        <span style={{margin: '15px'}}>{systemList[0].name} <DownOutlined /></span>
-                    </Popover>
-                    
-            }
             <Dropdown overlay={menu} arrow placement="bottomCenter"  overlayClassName='react-single-app-user'>
                 <span>{name}</span>
             </Dropdown>
@@ -246,7 +210,37 @@ function User({systemList}){
     )
 }
 
-export {User , SystemSet};
+
+function Header(){
+    let [systemList , setSystemList] = useState([]);
+    useEffect(() => {
+        lib.request({
+            url : '/ucenter-account/current/user/systemList',
+            success : (list) => setSystemList(list)
+        })
+    } , [])
+    return (
+        <div className='app-header'>
+            <div className='logo'>
+                <img src='https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg' />代塔供应链协作平台
+            </div>
+            <div className='system-list'>
+                {
+                    systemList.map(system => 
+                        <div key={system.systemCode} onClick={() => window.location = system.url} className={system.systemCode == lib.config.systemCode ? 'active' : ''}>
+                            {system.name}
+                        </div>
+                    )
+                }
+            </div>
+            <User   />
+            <SystemSet   />
+        </div>
+    )
+}
+
+
+export default Header;
 
 
 

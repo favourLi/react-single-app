@@ -1,12 +1,45 @@
-.header {
+.app-header {
+    position: absolute;
+    left: 0;
+    right: 0;
     height: 56px;
     z-index:20;
-    position: relative;
-    z-index: 110;
+    z-index: 60;
     border-bottom: solid 1px #ddd;
     background: #fff;
     display: flex;
     justify-content : flex-end;
+    box-shadow: 0 2px 8px #f0f1f2;
+    .logo{
+        line-height: 56px;
+        color: rgba(0,0,0,.85);
+        width: 240px;
+        font-size: 18px;
+        padding-left: 20px;
+        cursor: pointer;
+        img{
+            width: 24px;
+            margin-right: 20px;
+            float: left;
+            margin-top: 16px;
+        }
+    }
+    .system-list{
+        flex-grow : 1;
+        display: flex;
+        flex-direction: row;
+        padding-left: 20px;
+        div{
+            vertical-align: middle;
+            padding:0 20px;
+            cursor: pointer;
+            line-height: 56px;
+        }
+        .active , div:hover{
+            background: #1890FF;
+            color:#fff;
+        }
+    }
     .user {
         height: 56px;
         cursor: pointer;

@@ -2,11 +2,11 @@ import React, { useState, useEffect, useMemo , createContext , useContext } from
 import { BrowserRouter as Router, useHistory } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
-import Menu from './menu';
+import Menu from './menu1';
 
-import {User , SystemSet} from './header';
-import {Navigation , NavigationBody} from './navigation';
-import './app.less';
+import Header from './header';
+import Navigation  from './navigation';
+
 import {lib , event} from '../index'
 import DownloadCenter from '../page/download-center';
 import ImportExcel from '../page/import-excel';
@@ -15,7 +15,7 @@ import PermissionManage from '../account/permission-manage';
 import AccountManage from '../account/account-manage';
 import RoleManage from '../account/role-manage';
 import {message} from 'antd';
-
+import './app.less';
 /**
  * 
  * @param {pageMap} props 组件路由映射表
@@ -28,7 +28,7 @@ function App({ pageMap = {} ,  configList = [] }){
     let [menuType , setMenuType] = useState(localStorage[`/style/menuType`] || 'col');
     let history = useHistory();
     let [menuList , setMenuList] = useState([]);
-    let [systemList , setSystemList] = useState([]);
+    
     pageMap = {
         ...pageMap , 
         'import-excel' : ImportExcel ,
@@ -38,47 +38,39 @@ function App({ pageMap = {} ,  configList = [] }){
         'account-manage' : AccountManage ,
         'role-manage' : RoleManage
     }
-    useEffect(() => {
-        function closePage(){
-            var key = window.location.pathname.split('/').pop();
-            var active = -1;
-            pageList.map((item , index) => {
-                if(item.url.indexOf(key) > -1){
-                    active = index;
-                }
-            })
-            if(active > -1){
-                pageList.splice(active , 1);
-            }
-            var item = pageList[active] || pageList[active - 1]
-            if(item){
-                history.push(item.url);
-            }else{
-                history.push('/');
-            }
-            setPageList([...pageList]);
+    function closePage({url}){
+        let current = decodeURIComponent(window.location.pathname + window.location.search);
+        if(!url){
+            url = current;
         }
-
+        let index = pageList.findIndex(item => item.url == url);
+        if(url == current){
+            let item = pageList[index - 1] || pageList[index + 1] || {url : ''};
+            history.push(item.url )
+        }
+        pageList.splice(index , 1);
+        setPageList([...pageList]);
+    }
+    function addPage(page){
+        if(!pageList.find(item => item.url == page.url)){
+            pageList.push(page);
+        }
+        history.push(page.url);
+        setPageList([...pageList]);
+    }
+    function init(){
         if(window.location.pathname != '/'){
             pageList.push({
-                url: window.location.pathname + window.location.search
+                url: window.location.pathname + decodeURIComponent(window.location.search)
             });
             setPageList([...pageList]);
         }
-        event.on('add-page', (page) => {
-            pageList.push(page);
-            history.push(page.url);
-            setPageList([...pageList]);
-        });
+    }
+    useEffect(() => {
+        init();
+        event.on('add-page', addPage);
         event.on('delete-page' , closePage);
         event.on('close-page' , closePage);
-        event.on('close-other-page' , () => {
-            var key = window.location.pathname.split('/').pop();
-            var activeItem = pageList.find(item => item.url.indexOf(key) > -1);
-            pageList.splice(0);
-            pageList.push(activeItem);
-            setPageList([...pageList]);
-        })
         window.onresize = () => event.emit('window.resize')
     } , []);
     useEffect(() => {
@@ -91,43 +83,16 @@ function App({ pageMap = {} ,  configList = [] }){
             data : {systemCode},
             success : (data) => setMenuList(data)
         })
-        lib.request({
-            url : '/ucenter-account/current/user/systemList',
-            success : (data) => {
-                setSystemList(data.sort((a , b) => b.systemCode.indexOf(systemCode) - a.systemCode.indexOf(systemCode)))
-            }
-        })
-
     } , []);
 
 
     return (
         <ConfigProvider locale={zhCN}>
             <div className='react-single-app' id='react-single-app'>
-                {
-                    menuType != 'top' && 
-                    <div className='sub-content'>
-                        <Menu systemList={systemList} menuList={menuList} menuType={menuType} setMenuType={setMenuType} />
-                    </div>
-                }
-                <div className='main-content'>
-                    <div>
-                        <div className={'header ' + menuType}  >
-                            {menuType == 'top' && <Menu menuList={menuList} menuType='top' />}
-                            <User  systemList={systemList} />
-                            <SystemSet  menuType={menuType} setMenuType={setMenuType} />
-                        </div>
-                    </div>
-                    {
-                        pageList.length > 0 && 
-                        <div>
-                            <Navigation pageList={pageList} />
-                        </div>
-                    }
-                    
-                    <div className='main'>
-                        <NavigationBody pageList={pageList} pageMap={pageMap} configList={configList} />
-                    </div>
+                <Header  />
+                <div className='app-content'>
+                    <Menu  menuList={menuList}  />
+                    <Navigation pageList={pageList} pageMap={pageMap} configList={configList} />
                 </div>
             </div>
         </ConfigProvider>
