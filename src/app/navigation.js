@@ -34,7 +34,6 @@ function MemoPage({ match, Page, name, configList}){
 
 
 function NavigationBody({pageList , pageMap , configList}){
-
     return (
         <div className='navigation-body'>
             {
@@ -43,14 +42,14 @@ function NavigationBody({pageList , pageMap , configList}){
                     var names = path.split('/');
                     var name = names.pop();
                     var Page = pageMap[name];
-                    
+                    let match = decodeURIComponent(window.location.pathname + window.location.search) == decodeURIComponent(item.url);
                     if (!Page){
                         console.error(`can't find page for name ${name}`)
                         return (<div key={index}></div>)
                     }
                     return (
-                        <Route key={path} path={path} children={(props) => 
-                            <MemoPage match={props.match}  Page={Page} name={name} configList={configList} />
+                        <Route key={index} path={path} children={(props) => 
+                            <MemoPage match={match}  Page={Page} name={name} configList={configList} />
                         }/>
                     )
                 })

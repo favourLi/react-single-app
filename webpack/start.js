@@ -6,7 +6,7 @@ module.exports = merge(common, {
     devtool: 'source-map',
     devServer: {
         contentBase: './dist',
-        host: '0.0.0.0',
+        host: '127.0.0.1',
         historyApiFallback: {
             rewrites: [
                 { from: /./, to: '/index.htm' }

@@ -10,101 +10,47 @@
         **/
         .search-condition-panel{
             background:#fff;
-            overflow: hidden;
+            overflow: visible;
             position: relative;
             padding-bottom: 12px;
             min-height : 42px;
             padding-top: 10px;
-            padding-right: 20px;
             .ant-col{
                 line-height: 32px;
                 label{
-                    width: 110px;
+                    width: 100px;
                     text-align: right;
                     margin-right : 10px;
                     display: inline-block;
                 }
-                input , .ant-select{
-                    width: calc(100% - 120px);
+                > input , .ant-select , .ant-cascader-picker , .ant-picker , textarea{
+                    width: calc(100% - 110px);
                 }
-
-            }
-            
-
-
-            .group{
-                display: block;
-                width: 390px;
-                float: left;
-                label{
-                    width: 100px;
-                    text-align: right;
-                    margin-right: 15px;
-                    display: inline-block;
-                    color:#555;
-                    height: 32px;
-                    overflow: hidden;
-                    vertical-align: middle;
-                    line-height: 32px;
-                }
-                label.link{
-                    color:#1890ff;
-                    position: relative;
-                    padding-right: 12px;
-                    span{
-                        overflow: hidden;
-                        position: absolute;
-                        text-align: right;
-                        right: 0px;
-                        top: 10px;
-                    }
-                }
-                margin-top: 10px;
-                textarea::-webkit-input-placeholder{
-                    color: #bbb;
+                textarea{
+                    margin-left: 10px;
                 }
             }
-            .range{
-                input{
-                    width: 100px;
-                }
-                span{
-                    font-family: 'react-single-app-iconfont';
-                    color:#999;
-                    font-size: 12px;
-                }
-            }
-            .group-btns{
-                padding-left: 40px;
-                button{
-                    margin:0 5px;
-                }
-            }
-            .mini-search-controls , .full-search-controls{
+            .mini-search , .full-search{
                 border-bottom: solid 1px #E8E8E8;
                 padding-bottom:10px;
-                overflow: auto;
-            }
-            .mini-search-controls{
-                min-height : 50px;
-                .search-controls{
-                    height: 42px;
-                    overflow: hidden;
-                }
-            }
-            .search-controls{
-                margin-right: 136px;
                 overflow: hidden;
             }
-            .group-btns{
-                position: absolute;
-                right: 10px;
-                top:0px;
-                width:auto;
-                padding-left: 0;
-            }   
-        
-        
+            .mini-search{
+                height: 42px;
+                position: relative;
+                .search-btns{
+                    position: absolute;
+                    right: 0;
+                    background: #fff;
+                    .ant-space{
+                        padding-left: 0;
+                    }
+                }
+                
+            }
+            .search-btns .ant-space{
+                padding-left: 65px;
+            }
             .change-type{
                 width:26px;
                 text-align: center;
@@ -120,7 +66,7 @@
                 background:#F0F0F0;
                 cursor: pointer;
                 &:after{
-                    content:'\e664';
+                    content:'\e667';
                     font-family: 'react-single-app-iconfont';
                 }
                 &:before{
@@ -131,12 +77,11 @@
                     right: -10px;
                     top: -10px;
                 }
+                
             }
-            .full-search-controls{
-                min-height : 50px;
-                .change-type:after{
-                    content:'\e667';
-                    font-size: 14px;
+            .change-type.true{
+                &:after{
+                    content: '\e664'
                 }
             }
             .change-type-click{

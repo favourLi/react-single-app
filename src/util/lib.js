@@ -27,13 +27,10 @@ Date.prototype.format = function (fmt) { //author: meizz
     return fmt;
 }
 
-
-
 var lib = {
     config : {
         webToken : 'admin'
     } ,
-
     /**
     * 
     * @param url /test-detail?pageTitle=测试详情页 
@@ -60,7 +57,7 @@ var lib = {
         // url = url.replace(/\/\d{13}/, '');
         // url = url.replace('?', '/' + new Date().getTime() + '?');
         if (refreshFn) {
-            var refreshEvent = new Date().getTime();
+            var refreshEvent = md5(window.location.href);
             url += `&refresh_event=${refreshEvent}`;
         }
         event.emit('add-page', {

@@ -14,6 +14,7 @@ import PersonalCenter from '../page/personal-center';
 import PermissionManage from '../account/permission-manage';
 import AccountManage from '../account/account-manage';
 import RoleManage from '../account/role-manage';
+import ImportData from '../page/import-data';
 import {message} from 'antd';
 import './app.less';
 /**
@@ -36,7 +37,8 @@ function App({ pageMap = {} ,  configList = [] }){
         'personal-center' : PersonalCenter ,
         'permission-manage' : PermissionManage , 
         'account-manage' : AccountManage ,
-        'role-manage' : RoleManage
+        'role-manage' : RoleManage , 
+        'import-data' : ImportData
     }
     function closePage({url}){
         let current = decodeURIComponent(window.location.pathname + window.location.search);
@@ -52,6 +54,7 @@ function App({ pageMap = {} ,  configList = [] }){
         setPageList([...pageList]);
     }
     function addPage(page){
+        page.url = decodeURIComponent(page.url);
         if(!pageList.find(item => item.url == page.url)){
             pageList.push(page);
         }

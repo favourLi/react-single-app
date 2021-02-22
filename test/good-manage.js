@@ -26,7 +26,7 @@ function ExpandRow({row, expanded}){
 
 class GoodManage extends SearchList{
     getConfig(){
-        return axios.get('http://127.0.0.1:8080/api/data/v2/42').then(res => res.data.data);
+        return axios.get('http://maria.yang800.com/api/data/v2/91').then(res => res.data.data);
     }
 
     getOperation(row){

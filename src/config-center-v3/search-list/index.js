@@ -48,8 +48,6 @@ const ResizableTitle = props => {
 };
 
 
-
-
 export default class SearchList extends React.Component{
     constructor(props){
         super(props);
@@ -175,7 +173,7 @@ export default class SearchList extends React.Component{
             }   
             return column;
         })
-        let rowSelection = config.isBatch && {
+        let rowSelection = config.page.isBatch && {
             onChange : (_ , selectedRows) => {
                 this.setState({ selectedRows})
             },
@@ -227,7 +225,7 @@ export default class SearchList extends React.Component{
 
     renderOperation(){
         let {config , selectedRows} = this.state;
-        let excel = config.excel;
+        let page = config.page;
         return (
             <>
                 <div className='operation-left-panel'>
@@ -240,24 +238,28 @@ export default class SearchList extends React.Component{
                     <Space>
                         {this.renderRightOperation && this.renderRightOperation()}
                         {   
-                            excel?.import  && 
-                            <Button className='btn import' onClick={() => 
-                                lib.openPage(`/import-excel?page_title=${lib.getParam('page_title')}导入&api=${encodeURIComponent(excel.import)}` , () => {
+                            page?.import  && 
+                            <Button className='btn import' onClick={() => {
+                                let url = `/excel/import-data?page_title=${lib.getParam('page_title')}导入&code=${encodeURIComponent(page.import)}`;
+                                if(lib.getParam('compatible') == 'true'){
+                                    url = `/excel/import-excel?page_title=${lib.getParam('page_title')}导入&api=${encodeURIComponent(page.import)}`
+                                }
+                                lib.openPage(url , () => {
                                     this.load();
                                 })
-                            }>
+                            }}>
                                 导入 &#xe639;
                             </Button>
                         }
                         {
-                            excel?.export  && <Button className='btn' onClick={() => {
+                            page?.export  && <Button className='btn' onClick={() => {
                                 let { pagination, search } = this.state;
                                 lib.request({
-                                    url : excel.export , 
+                                    url : page.export , 
                                     needMask : true , 
                                     data : {...pagination , ...search},
                                     success : (json) => {
-                                                lib.openPage('/download-center?page_title=下载中心')
+                                                lib.openPage('/excel/download-center?page_title=下载中心')
                                     }
                                 })
                             }}>
