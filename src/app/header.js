@@ -70,7 +70,7 @@ function SystemSet(){
         lib.wait(500);
     }
     useEffect(() => {
-        axios.get('http://maria.yang800.com/api/data/86').then((json) => json.data.data)
+        axios.get('https://maria.yang800.com/api/data/86').then((json) => json.data.data)
         .then((list) => {
             setList(list)
             if(!localStorage[`/style`] && list.length > 0){

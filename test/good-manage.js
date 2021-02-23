@@ -26,14 +26,14 @@ function ExpandRow({row, expanded}){
 
 class GoodManage extends SearchList{
     getConfig(){
-        return axios.get('http://maria.yang800.com/api/data/v2/91').then(res => res.data.data);
+        return axios.get('http://maria.yang800.com/api/data/v2/117').then(res => res.data.data);
     }
 
-    getOperation(row){
+    myOperation(row){
         return (
             <Space size={15}>
                 <div className='link' onClick={() => {
-                    this.setDetail(row)
+                    lib.openPage('/doc?page_title=doc')
                 }}>详情</div>
                 {this.renderDeleteRow({
                     id: row.id , title : `你确定要删除${row.goodsName}吗？` , api :''

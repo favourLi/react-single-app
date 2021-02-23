@@ -30,11 +30,18 @@ function Step1(){
                     if(!file){
                         return message.error('请选上传Excel数据表')
                     }
+                    // 导入参数的添加
+                    // let extend = {};
+                    // decodeURIComponent(window.location.search).slice(1).split('&').map(item => {
+                    //     let [key , value] = item.split('=');
+                    //     if(['page_title' , 'api' , 'refresh_event'].indexOf(key) == -1){
+                    //         extend[key] = value;
+                    //     }
+                    // });
                     lib.request({
                         url : '/park-gate/import/create' ,
                         data : {
-                            systemCode , code ,
-                            file
+                            systemCode , code  , file
                         },
                         needMask : true , 
                         success : () => setStore({...store ,  status : 2 , file})

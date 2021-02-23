@@ -87,8 +87,6 @@ function App({ pageMap = {} ,  configList = [] }){
             success : (data) => setMenuList(data)
         })
     } , []);
-
-
     return (
         <ConfigProvider locale={zhCN}>
             <div className='react-single-app' id='react-single-app'>
@@ -101,7 +99,6 @@ function App({ pageMap = {} ,  configList = [] }){
         </ConfigProvider>
     )
 }
-
 function AppRouterWrap(props){
     return (
         <Router >

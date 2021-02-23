@@ -48,7 +48,7 @@ function NavigationBody({pageList , pageMap , configList}){
                         return (<div key={index}></div>)
                     }
                     return (
-                        <Route key={index} path={path} children={(props) => 
+                        <Route key={item.url} path={path} children={(props) => 
                             <MemoPage match={match}  Page={Page} name={name} configList={configList} />
                         }/>
                     )

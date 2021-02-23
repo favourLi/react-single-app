@@ -106,28 +106,21 @@ var lib = {
     **/
     request({ url, needMask = false, data , success = function(){}, fail = function(){} }) {
         var loginHost;
-        if(/yang800.com.cn$/.test(window.location.host)){
-            var [clientId, clientSecret, prefixUrl] = [
-                '96A63530DA0C49BB9FABB66ED40FB3C7',
-                'F6A99B36E4D24817AB037237454893D9',
-                'http://danding-gateway.yang800.com.cn'
-            ]
+        var [clientId, clientSecret, prefixUrl] = [
+            '9E514E70AD7D485986D687F64616C662',
+            '33F14542BB274284B63147E6C8F3DF9E' , 
+            `${location.protocol}//danding-gateway.yang800.com`
+        ]
+        if(lib.config.env != 'online'){
+            clientId = '96A63530DA0C49BB9FABB66ED40FB3C7';
+            clientSecret = 'F6A99B36E4D24817AB037237454893D9';
+            let map = {
+                'dev' : `${location.protocol}//danding-gateway-dev.yang800.com.cn` , 
+                'test' : `${location.protocol}//danding-gateway-test.yang800.com.cn` , 
+                'pre' : `${location.protocol}//danding-gateway-pre.yang800.com`
+            }
+            prefixUrl = map[lib.config.env];
         }
-        else if(/yang800.com$/.test(window.location.host) && window.location.host != 'maria.yang800.com'){
-            var [clientId, clientSecret, prefixUrl] = [
-                '9E514E70AD7D485986D687F64616C662',
-                '33F14542BB274284B63147E6C8F3DF9E' , 
-                'http://danding-gateway.yang800.com'
-            ]
-        }
-        else{
-            var [clientId, clientSecret, prefixUrl] = [
-                '96A63530DA0C49BB9FABB66ED40FB3C7',
-                'F6A99B36E4D24817AB037237454893D9',
-                'http://danding-gateway.yang800.cn'
-            ]
-        }
-        
         var timestamp = new Date().getTime()
         let md5Data = ''
         if(data){
@@ -160,13 +153,19 @@ var lib = {
                 needMask && setTimeout(lib.waitEnd, 500 - new Date().getTime() + maskTime);
                 return data;
             } 
-            else if (code == -1001) {
-                if(!this.config.login){
-                    console.error('no login url;please set the webToken')
+            else if (code == -1001 && location.pathname != '/login') {
+                let env = lib.config.env;
+                let protocol = `${location.protocol}`
+                let domain = lib.config.webToken == 'admin' ? 'login-admin' : 'login';
+                if(env != 'online'){
+                    domain += `-${env}`;
                 }
-                else{
-                    window.location = `${this.config.login}/login?redirectUrl=${encodeURIComponent(window.location.href)}${loginHost ? '&host=' + loginHost : ''}`;
+                let host = 'yang800.com';
+                if(['dev' , 'test'].indexOf(env) > -1){
+                    host += '.cn';
                 }
+                let redirectUrl = `redirectUrl=${encodeURIComponent(window.location.href)}`;
+                location = `${protocol}//${domain}.${host}/login?${redirectUrl}${loginHost ? '&host=' + loginHost : ''}`;
             }  
             else{
                 code < 0 && message.error(msg);
@@ -200,12 +199,6 @@ var lib = {
     },
     setConfig(config){
         Object.assign(this.config , config);
-        if(config.webToken == 'user'){
-            this.config.login = /yang800.com$/.test(window.location.host) ? 'http://account.yang800.com' : 'http://account.yang800.cn';
-        }
-        if(config.webToken == 'admin'){
-            this.config.login = /yang800.com$/.test(window.location.host) ? 'http://account.admin.yang800.com' : 'http://account.admin.yang800.cn'
-        }
     }
 }
 

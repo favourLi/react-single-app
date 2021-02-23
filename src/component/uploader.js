@@ -86,7 +86,7 @@ function Uploader({
     let [name , setName] = useState(defaultValue.name);
     let [config , setConfig] = useState({});
     useEffect(() => {
-        axios.get('http://maria.yang800.com/api/data/v2/8').then(res => {
+        axios.get('https://maria.yang800.com/api/data/v2/8').then(res => {
             let config = {};
             res.data.data.map(item => config[item.id] = item.name);
             setConfig(config)
