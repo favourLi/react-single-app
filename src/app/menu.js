@@ -1,45 +1,41 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React , { useState, useRef, useEffect } from 'react';
 import {  Route, useHistory, useRouteMatch , withRouter} from 'react-router-dom';
 import {Popover} from 'antd';
 import './menu.less';
 import { lib } from '../index'
-import {RightOutlined } from '@ant-design/icons'
+import {RightOutlined , BackwardOutlined , ForwardOutlined } from '@ant-design/icons'
 import VerticalScroll from '../component/vertical-scroll';
-function openPage(item){
-    if(item.url.indexOf('http://') > -1 || item.url.indexOf('https://') > -1){
-        let url = item.url.replace('?' , `/${new Date().getTime()}?`)
+
+function openPage(url){
+    if(url.indexOf('http://') > -1 || url.indexOf('https://') > -1){
+        url = url.replace('?' , `/${new Date().getTime()}?`)
         window.open(url);
     }
-    else if(item.url){
-        lib.openPage(item.url);
+    else if(url){
+        url = url.replace('//' , '/');
+        lib.openPage(url);
     }
 }
-
-function isMatch(item){
-    var reg = /(^\/(\w|-)+|config_id=\w+)/g;
-    var urlMatch = item.url?.match(reg);
-    var locationMatch = `${location.pathname}${location.search}`.match(reg);
-    return urlMatch?.length > 0 && urlMatch?.join('-') === locationMatch?.join('-');
-}
+var isMatch = url => window.location.pathname.indexOf(url) == 0 && url != '' && url != '/';
 
 
-function Group({item , activeItem , activeSubItem , menuType}){
+function Group({item}){
     let [isOpen , setOpen] = useState(false);
+    let match = isMatch(item.url);
+    useEffect(() => {
+        if(match){
+            setOpen(true);
+        }
+    } , []);
     let height = '48px';
-    if(isOpen && menuType != 'mini' && item.list?.length){
+    if(isOpen && item.list?.length){
         height = 48 + item.list.length * 48 + 'px';
     }
     let transform = `rotate(${isOpen ? 90 : 0}deg)`;
-    let oneClass = 'item ';
-    if(item === activeItem){
-        oneClass = 'item active';
-    }
-    if(item.list?.indexOf(activeSubItem) > -1){
-        oneClass = 'item active-sub'
-    }
     return (
         <div className='group' style={{height}}>
-            <div className={oneClass} onClick={() => item.list?.length == 0 ? openPage(item) :  setOpen(!isOpen)}>
+
+            <div className={`item ${match ? 'active-sub' : ''}`} onClick={() => item.list?.length == 0 ? openPage(item.url) :  setOpen(!isOpen)}>
                 <span className='icon' dangerouslySetInnerHTML={{__html : item.icon}}></span>
                 {item.title}
                 {item.list?.length > 0 && <RightOutlined  className='icon-down'  style={{fontSize : '14px' , transform}} />}
@@ -47,8 +43,8 @@ function Group({item , activeItem , activeSubItem , menuType}){
             </div>
             {
                 item.list?.map((sub , key) => 
-                    <div onClick={() => openPage(sub)} 
-                        className={`item ${sub === activeSubItem && 'active'}`} key={key}>
+                    <div onClick={() => openPage(item.url + sub.url)} 
+                        className={`item ${isMatch(item.url + sub.url.split('?')[0]) ? 'active' : ''}`} key={key}>
                             {sub.title}
                     </div>)
             }
@@ -56,84 +52,50 @@ function Group({item , activeItem , activeSubItem , menuType}){
     )
 }
 
-function PopoverGroup({item , activeItem , activeSubItem , menuType }){
+function PopoverGroup({item}){
     let subList = item.list || [item]
-
     return (
-        <Popover placement={menuType == 'top' ? 'bottom' : "right"} content={
+        <Popover placement={"right"}  content={
             subList.map((sub , key) => 
-            <div onClick={() => openPage(sub)} 
-                className={`item ${sub === activeSubItem && 'active'}`} key={key}>
+            <div onClick={() => openPage(item.url + sub.url)} 
+                className={`item ${isMatch(item.url + sub.url.split('?')[0]) && 'active'}`} key={key}>
                     {sub.title}
             </div>)
         } overlayClassName='react-single-app-popover'>
-            <div className={`item ${item === activeItem && 'active'}`} onClick={() => openPage(item)}>
-                {menuType == 'top' ? item.title : <span className='icon' dangerouslySetInnerHTML={{__html : item.icon}}></span>}
+            <div className={`item ${isMatch(item.url) && 'active'}`} onClick={() => openPage(item.url)}>
+                <span className='icon' dangerouslySetInnerHTML={{__html : item.icon}}></span>
             </div>
         </Popover>
     )
 }
 
-function ColMenu({list , menuType , setMenuType , activeItem , activeSubItem , systemList}){
+function Menu({menuList}) {
+    let [menuType , setMenuType] = useState(localStorage[`/style/menuType`] || 'col');
     return (
-        <div className='react-single-app-menu'>
-            <div className={`react-single-app-menu-main ${menuType}`} >
-                <div className='logo'>
-                    {
-                        menuType == 'mini' ? 
-                        <span className='mini'>&#xe70f;</span> : 
-                        <span>&#xe70e;</span>
-                    }
-                    {systemList.length > 0 && systemList[0].name}
-                </div>
-                <VerticalScroll style={{width : menuType == 'mini' ? '64px' : '240px' , height : 'calc(100% - 56px)'}}>
-                    {
-                        list.map((item,key) =>  menuType == 'col' ?
-                            <Group item={item} menuType={menuType} activeItem={activeItem} activeSubItem={activeSubItem} key={key} /> : 
-                            <PopoverGroup item={item} menuType={menuType} activeItem={activeItem} activeSubItem={activeSubItem} key={key}  />
-                        ) 
-                    }
-                </VerticalScroll>
-                <div className={`shrink ${menuType}`} onClick={() => {
-                    let newType = menuType == 'col' ? 'mini' : 'col';
-                    setMenuType(newType);
-                    localStorage[`/style/menuType`] = newType;
-                }}></div>
-            </div>
+        <div className='app-menu'>
             
+            <div className={`app-menu-main ${menuType}`}>
+                <VerticalScroll style={{width : menuType == 'mini' ? '64px' : '240px' , height : '100%'}}>
+                    {menuList.map((item , key) => 
+                        menuType == 'col' ?
+                        <Group key={key} item={item} menuType={menuType} /> :
+                        <PopoverGroup key={key} item={item}  />
+                    )}
+                </VerticalScroll>
+               
+            </div>
+            <div className={`shrink`} onClick={() => {
+                let newType = menuType == 'col' ? 'mini' : 'col';
+                setMenuType(newType);
+                localStorage[`/style/menuType`] = newType;
+            }}>
+                {
+                    menuType == 'mini' ? <ForwardOutlined /> :  <BackwardOutlined /> 
+                }
+                
+            </div>            
         </div>
-    )
-}
- 
-function TopMenu(props){
-    return (
-        <div className='react-single-app-menu top'>
-            {
-                props.list.map((item,key) =>  
-                    <PopoverGroup {...props} item={item} key={key}  />
-                ) 
-            }
-        </div>
-    )
+    );
 }
 
-
-function Menu({menuList:list , menuType , setMenuType , systemList}){
-    let activeItem = null;
-    let activeSubItem = null;
-    list.map(item => {
-        item.icon = item.icon || '&#xe89a;';
-        if(isMatch(item)){
-            activeItem = item;
-        }
-        item.list?.map(sub => isMatch(sub) && (activeItem = item , activeSubItem = sub))
-    })
-    let props = {list , menuType , setMenuType , activeItem , activeSubItem , systemList}
-
-    return menuType == 'top' ? <TopMenu {...props} /> : <ColMenu {...props} />
-}
-
-
-
-
-export default withRouter(Menu)
+export default withRouter(Menu);

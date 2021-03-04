@@ -11,7 +11,7 @@ function Step1(){
     let {store , setStore , systemCode , code} = useContext(context);
     let [file , setFile] = useState(null);
     return (
-        <div className='step1'>
+        <div className='step1' >
             <Divider orientation='left'>步骤1：下载模板并完成数据录入</Divider>
             <div className='tips'>请按照模板的格式准备导入的数据，模板中表头名称不可更，表头行不可删除，单次导入的数据不可超过10000条</div>
             <Space size={15} style={{margin: '10px 0 30px'}}>
@@ -25,7 +25,7 @@ function Step1(){
                 style={{marginTop : '10px'}} 
                 onChange={file => setFile(file)}
             />
-            <div className='ft'>
+            <div style={{marginTop: '15px'}}>
                 <Button type='primary' onClick={() => {
                     if(!file){
                         return message.error('请选上传Excel数据表')
@@ -144,7 +144,7 @@ function Step3(){
                 </Tabs>
                 <div className='height-panel' ref={heightPanel}></div>
             </div>
-            <div className='ft'>
+            <div className='ft' style={{marginTop : '15px'}}>
                 <Space size={15}>
                     <Button type='danger' onClick={() => finish(true)}>重新导入失败数据</Button>
                     <Button type='primary' onClick={() => finish()}>完成</Button>
@@ -218,15 +218,18 @@ function ImportData(){
                         <Step title='导入完成' />
                     </Steps>
                 </div>
-                {
-                    store.status == 1 && <Step1 />
-                }
-                {
-                    store.status == 2 && <Step2 />
-                }
-                {
-                    store.status == 3 && <Step3 />
-                }
+                <div style={{padding: '0 30px'}}>
+                    {
+                        store.status == 1 && <Step1 />
+                    }
+                    {
+                        store.status == 2 && <Step2 />
+                    }
+                    {
+                        store.status == 3 && <Step3 />
+                    }
+                </div>
+                
             </div>
         </context.Provider>
     )

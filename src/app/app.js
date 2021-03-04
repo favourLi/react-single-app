@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo , createContext , useContext } from
 import { BrowserRouter as Router, useHistory } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
-import Menu from './menu1';
+import Menu from './menu';
 
 import Header from './header';
 import Navigation  from './navigation';

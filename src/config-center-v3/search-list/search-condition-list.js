@@ -15,7 +15,12 @@ class Store{
     }
     search = {}
     setValue(key , value){
-        this.search[key] = value;
+        if(value == ''){
+            delete this.search[key];
+        }
+        else{
+            this.search[key] = value;
+        }
     }
     reset(){
         this.search = {}

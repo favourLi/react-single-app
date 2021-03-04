@@ -1,11 +1,12 @@
 import React, {  useState } from 'react';
-import { Pagination, Button , Space , Skeleton , Table , Modal , message} from 'antd';
+import { Pagination, Button , Space , Skeleton , Table , Modal , message , Tooltip} from 'antd';
 import SearchConditionList from './search-condition-list';
 import { lib ,  event} from '@/index'
 import SortTable from './sort-table';
 import './index.less';
 import { Resizable } from 'react-resizable';
 import MyDraggable from  './draggable';
+import { QuestionCircleOutlined} from '@ant-design/icons';
 
 const ResizableTitle = props => {
     const { onResize ,  ...restProps } = props;
@@ -146,7 +147,9 @@ export default class SearchList extends React.Component{
                     });
         let columns = list.map(item => {
             var column =  {
-                title: item.title,
+                title: item.tooltip ? <Tooltip placement="topLeft" title={item.tooltip} arrowPointAtCenter>
+                    {item.title} <QuestionCircleOutlined />
+                </Tooltip> : item.title,
                 dataIndex: item.key,
                 width: item.width,
                 ellipsis : {showTitle: false},
